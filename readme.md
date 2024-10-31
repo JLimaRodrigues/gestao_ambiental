@@ -9,14 +9,15 @@ E:\xampp\apache\conf\extra\httpd-vhosts.conf
 
 Adicione o seguinte código ao final do arquivo:
 
-<VirtualHost \*:80>
-DocumentRoot "E:/xampp/htdocs/gestao_ambiental"
-ServerName gestaoambiental.com.br
-<Directory "E:/xampp/htdocs/gestao_ambiental">
-Options Indexes FollowSymLinks
-AllowOverride All
-Require all granted
-</Directory>
+```apache
+<VirtualHost *:80>
+    DocumentRoot "E:/xampp/htdocs/gestao_ambiental"
+    ServerName gestaoambiental.com.br
+    <Directory "E:/xampp/htdocs/gestao_ambiental">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
 </VirtualHost>
 
 Esse código define o caminho do projeto como o diretório raiz para o endereço gestaoambiental.com.br.
