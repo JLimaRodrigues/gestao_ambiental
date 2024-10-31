@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="/gestao_ambiental/includes/estilo.css" rel="stylesheet">
+    <link href="/includes/estilo.css" rel="stylesheet">
 
     <title>Sistema de Gestão Ambiental</title>
 </head>
 
 <?php
 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/gestao_ambiental/config/global_constraints.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
 
 header('Content-Type: text/html; charset=UTF-8');
 ini_set('default_charset', 'utf-8');
@@ -26,7 +26,7 @@ date_default_timezone_set('America/Sao_Paulo');
 
 ini_set('session.gc_maxlifetime', 10800);
 
-require_once $_SERVER['DOCUMENT_ROOT'] . "/gestao_ambiental/config/includes.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/config/includes.php";
 
 require_once HOME_DIR . 'componentes/navbar.php';
 require_once HOME_DIR . 'includes/funcoes.php';

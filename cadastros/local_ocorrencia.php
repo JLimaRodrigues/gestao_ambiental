@@ -1,4 +1,4 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/gestao_ambiental/config/autoload.php'; ?>
+<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="/gestao_ambiental/includes/estilo.css" rel="stylesheet">
+    <link href="/includes/estilo.css" rel="stylesheet">
 
     <title>Local/Ocorrência</title>
 

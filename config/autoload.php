@@ -9,7 +9,7 @@
 <body>
 
     <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/gestao_ambiental/config/global_constraints.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
 
     header('Content-Type: text/html; charset=UTF-8');
     ini_set('default_charset', 'utf-8');
@@ -23,7 +23,7 @@
 
     ini_set('session.gc_maxlifetime', 10800);
 
-    require_once $_SERVER['DOCUMENT_ROOT'] . "/gestao_ambiental/config/includes.php";
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/config/includes.php";
 
     require_once HOME_DIR . 'componentes/navbar.php';
     require_once HOME_DIR . 'includes/funcoes.php';
