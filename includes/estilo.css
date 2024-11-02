@@ -44,22 +44,68 @@ footer {
     align-self: right !important;
 }
 
-.tabela{
-    background-color: #fff;
-}
-
 .tabela td {
-    border: 1px solid #ddd;
+    border: 1px solid #000000;
+    /* background-color: #fff; */
     padding: 8px;
     text-align: center;
 }
 
 .tabela thead th {
-    background-color: #f2f2f2;
+    background-color: #000000;
+    border: 1px solid #000000;
     text-align: center;
+    color: white;
 }
 
 .tabela tbody tr:hover td {
     background: lightgrey;
     color: black;
+}
+
+.dataTables_paginate .paginate_button {
+    margin: 10px 0px;
+}
+
+.page-item.active .page-link {
+    color: #fff;
+    background-color: #000;
+    border-color: #000;
+}
+
+.page-link {
+    color: #000;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
+.dataTables_length select {
+    height: 40px;
+    width: 85px;
+
+}
+
+.dataTables_filter {
+    float: right;
+    margin-bottom: 20px;
+    height: 40px;
+}
+
+.nav>li>a:not(.active):focus,
+.nav>li>a:not(.active):hover {
+    text-decoration: underline;
+    background-color: lightgray !important;
+}
+
+.form-control {
+    height: 40px
+}
+
+.form-select {
+    height: 40px
+}
+
+#observacao {
+    height: auto; 
+    min-height: 75px;
 }

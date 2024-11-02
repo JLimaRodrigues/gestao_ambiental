@@ -10,6 +10,7 @@
 
     <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . "/config/conexao.php";
 
     header('Content-Type: text/html; charset=UTF-8');
     ini_set('default_charset', 'utf-8');
@@ -27,6 +28,7 @@
 
     require_once HOME_DIR . 'componentes/navbar.php';
     require_once HOME_DIR . 'includes/funcoes.php';
+    
 
     ?>
 

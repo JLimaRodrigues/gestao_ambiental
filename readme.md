@@ -56,3 +56,13 @@ Observação: Para que as URLs internas funcionem corretamente, o projeto pode p
 ---
 
 Esse arquivo contém todas as instruções necessárias para configurar o Virtual Host e acessar o projeto pelo endereço `gestaoambiental.com.br`.
+
+
+### 5. Alterar senha do phpMyAdmin
+
+1. Alterar a senha do usuário root no site normalmente.
+
+2. Após, procurar pelo arquivo "config.inc.php" e alterar:
+
+$cfg['Servers'][$i]['user'] = 'root';
+$cfg['Servers'][$i]['password'] = 'resende123';
