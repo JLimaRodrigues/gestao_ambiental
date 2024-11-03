@@ -1,4 +1,130 @@
-<?php require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
+    header('Content-Type: application/json');
+    $con = connect_local_mysqli('gestao_ambiental');
+
+    $carregarDados = $_POST['carregarDados'] ?? '';
+
+    if ($carregarDados == 'sim') {
+
+        $sql = "SELECT subsecoes.*, setores.setor FROM subsecoes INNER JOIN setores on setores.id = subsecoes.setor_superior";
+        $resultado = mysqli_query($con, $sql);
+
+        $dados = [];
+
+        if ($resultado) {
+            while ($row = mysqli_fetch_assoc($resultado)) {
+                $dados[] = [
+                    'id' => $row['id'],
+                    'subsecao' => $row['subsecao'],
+                    'setor' => $row['setor'],
+                    'atividade' => $row['atividade'],
+                    'observacao' => $row['observacao']
+                ];
+            }
+
+            if (empty($dados)) {
+                echo json_encode(["error" => "Consulta não retornou dados."]);
+            } else {
+                echo json_encode(["dados" => $dados]);
+            }
+        } else {
+            echo json_encode(["error" => "Erro na execução da consulta."]);
+        }
+        exit;
+    }
+
+    if ($carregarDados == 'nao') {
+
+        if (empty($_POST['setor_superior'])) {
+            echo json_encode(["status" => "false", "message" => "Selecione um setor superior para esta subseção."]);
+            exit;
+        }
+
+        $id = $_REQUEST['id'] ?? '';
+        $subsecao = $_REQUEST['subsecao'] ?? '';
+        $setor_superior = $_REQUEST['setor_superior'] ?? '';
+        $atividade = $_REQUEST['atividade'] ?? '';
+        $observacao = $_REQUEST['observacao'] ?? '';
+
+        if (!empty($id)) {
+
+            $sql = "UPDATE subsecoes SET subsecao='$subsecao',setor_superior='$setor_superior',atividade='$atividade',observacao='$observacao' WHERE id = '$id' ";
+            $resultado = mysqli_query($con, $sql);
+
+            if ($resultado) {
+                echo json_encode(["status" => "true", "message" => "Subseção atualizada com sucesso."]);
+            } else {
+                echo json_encode(["status" => "false", "message" => "Erro ao atualizar subseção."]);
+            }
+            exit;
+        } else {
+
+            $sql = "INSERT INTO subsecoes(subsecao, setor_superior, atividade, observacao) VALUES ('$subsecao','$setor_superior','$atividade','$observacao')";
+
+            $resultado = mysqli_query($con, $sql);
+
+            if ($resultado) {
+                echo json_encode(["status" => "true", "message" => "Subseção adicionada com sucesso."]);
+            } else {
+                echo json_encode(["status" => "false", "message" => "Erro ao adicionar subseção."]);
+            }
+            exit;
+        }
+    }
+
+    if ($carregarDados == 'linha') {
+
+        $id = $_POST['id'];
+
+        $sql = "SELECT * FROM subsecoes WHERE id = '$id' ";
+        $resultado = mysqli_query($con, $sql);
+
+        $dados = [];
+
+        if ($resultado) {
+
+            $row = mysqli_fetch_assoc($resultado);
+
+            $dados[] = [
+                'id' => $row['id'],
+                'subsecao' => $row['subsecao'],
+                'setor' => $row['setor_superior'],
+                'atividade' => $row['atividade'],
+                'observacao' => $row['observacao']
+            ];
+
+
+            if (empty($dados)) {
+                echo json_encode(["error" => "Consulta não retornou dados."]);
+            } else {
+                echo json_encode(["dados" => $dados]);
+            }
+        } else {
+            echo json_encode(["error" => "Erro na execução da consulta."]);
+        }
+        exit;
+    }
+
+    if ($carregarDados == 'delete') {
+        $id = $_POST['id'];
+
+        $sql = "DELETE FROM subsecoes WHERE id = '$id' ";
+        $resultado = mysqli_query($con, $sql);
+
+        if ($resultado) {
+            echo json_encode(["dados" => "Setor deletado com sucesso."]);
+        } else {
+            echo json_encode(["error" => "Erro na execução da consulta."]);
+        }
+        exit;
+    }
+}
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +133,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="/includes/estilo.css" rel="stylesheet">
     <title>Subseção</title>
 
@@ -34,9 +161,6 @@
                             <tr>
                                 <th>Subseção</th>
                                 <th>Setor Superior</th>
-                                <th>Num. funcionários</th>
-                                <th>Responsável</th>
-                                <th>Contato</th>
                                 <th>Atividades</th>
                                 <th>Observação</th>
                                 <th>Opções</th>
@@ -60,39 +184,44 @@
                 <div class="modal-body">
                     <!-- Formulário dentro do modal -->
                     <form>
+                        <input type="hidden" class="form-control" id="id" name="id">
                         <div class="row mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="subsecao" class="form-label">Subseção:</label>
                                 <input type="text" class="form-control" id="subsecao" name="subsecao" value="">
+                                <span style="font-size: 12px;">30 caracteres restantes</span> <!-- Exibe caracteres restantes -->
                             </div>
-                            <div class="col-md-4">
-                                <label for="setorsuperior" class="form-label">Setor Superior:</label>
-                                <input type="text" class="form-control" id="setorsuperior" name="setorsuperior" value="">
+                            <div class="col-md-6">
+                                <label for="setor_superior" class="form-label">Setor Superior:</label>
+                                <select class="form-select ml-2" id="setor_superior" name="setor_superior" required>
+                                    <option value="" disabled selected>Selecione um setor superior...</option>
+                                    <?php
+                                    $con = connect_local_mysqli('gestao_ambiental');
+                                    $sql = "SELECT * FROM setores";
+                                    $resultado = mysqli_query($con, $sql);
+                                    while ($row = mysqli_fetch_assoc($resultado)) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['setor'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
                             </div>
-                            <div class="col-md-4">
-                                <label for="numfuncionarios" class="form-label">Num. funcionarios:</label>
-                                <input type="text" class="form-control" id="numfuncionarios" name="numfuncionarios" value="">
-                            </div>
+
                         </div>
 
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="responsavel" class="form-label">Responsável:</label>
-                                <input type="text" class="form-control" id="responsavel" name="responsavel">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="contato" class="form-label">Contato:</label>
-                                <input type="text" class="form-control" id="contato" name="contato" value="">
-                            </div>
+
+
+                        <div class="col-md-12">
+                            <label for="atividade" class="form-label">Atividades:</label>
+                            <textarea class="form-control" id="atividade" name="atividade" rows="3" max="50"></textarea>
+                            <span style="font-size: 12px;">200 caracteres restantes</span> <!-- Exibe caracteres restantes -->
                         </div>
+
+
                         <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="atividades" class="form-label">Atividades:</label>
-                                <input type="text" class="form-control" id="atividades" name="atividades" value="">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="obs" class="form-label">Observação:</label>
-                                <input type="text" class="form-control" id="obs" name="obs" value="">
+                            <div class="col-md-12">
+                                <label for="observacao" class="form-label">Observação:</label>
+                                <textarea class="form-control" id="observacao" name="observacao" rows="3" max="200"></textarea>
+                                <div id="charCount" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                             </div>
                         </div>
                     </form>
@@ -108,7 +237,7 @@
     <footer>Desenvolvido por: Douglas Marcondes.</footer>
 
     <!-- Bootstrap 5 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -118,9 +247,242 @@
     <script src="https://cdn.datatables.net/2.0.6/js/dataTables.bootstrap5.min.js"></script>
 
     <script type="text/javascript">
+        let datatable;
+
+        $('#id').val('');
+        $('#subsecao').val('');
+        $('#setorsuperior').prop('selectedIndex', 0);
+        $('#atividade').val('');
+        $('#observacao').val('');
+
+        const textarea = document.getElementById('observacao');
+        const charCount = document.getElementById('charCount');
+
+        textarea.addEventListener('input', function() {
+            const maxChars = 200;
+            if (textarea.value.length > maxChars) {
+                alert("Você ultrapassou o limite de 200 caracteres.");
+                textarea.value = textarea.value.substring(0, maxChars);
+            }
+            const remainingChars = maxChars - textarea.value.length;
+            charCount.textContent = `${remainingChars} caracteres restantes`;
+        });
+
+        const subsecaoInput = document.getElementById('subsecao');
+        const atividadeInput = document.getElementById('atividade');
+
+        function enforceMaxLength(inputElement, maxChars, spanElement) {
+            inputElement.addEventListener('input', function() {
+                if (inputElement.value.length > maxChars) {
+                    alert(`Você ultrapassou o limite de ${maxChars} caracteres.`);
+                    inputElement.value = inputElement.value.substring(0, maxChars);
+                }
+                const remainingChars = maxChars - inputElement.value.length;
+                spanElement.textContent = `${remainingChars} caracteres restantes`;
+            });
+        }
+
+        const subsecaoCharCount = subsecaoInput.nextElementSibling;
+        const atividadeCharCount = atividadeInput.nextElementSibling;
+
+        enforceMaxLength(subsecaoInput, 30, subsecaoCharCount);
+        enforceMaxLength(atividadeInput, 200, atividadeCharCount);
+
+
         $(document).ready(function() {
+
+            carregarDados();
+
             document.getElementById("addBtnSubSecao").addEventListener("click", function() {
                 $('#modal01').modal('show');
+            });
+        });
+
+        async function carregarDatatable(data) {
+            if (datatable) {
+                datatable.clear().rows.add(data).draw();
+            } else {
+                datatable = $('#tabela_subsecao').DataTable({
+                    language: {
+                        "url": "/componentes/datatablesPortugues.json"
+                    },
+                    data: data,
+                    columns: [{
+                            "data": "subsecao"
+                        },
+                        {
+                            "data": "setor"
+                        },
+                        {
+                            "data": "atividade"
+                        },
+                        {
+                            "data": "observacao"
+                        },
+                        {
+                            "data": null,
+                            "defaultContent": `
+                                                <div class="d-flex align-items-center">
+                                                    <button class="btn btn-sm btn-outline-dark edit me-1">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-danger delete">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </div>
+                                            `,
+                            "width": "90px"
+
+                        }
+                    ],
+                    columnDefs: [{
+                        targets: '_all',
+                        className: 'text-center'
+                    }],
+                    ordering: true,
+                    lengthMenu: [
+                        [10, 25, 50, -1],
+                        [10, 25, 50, "Todos"]
+                    ],
+                    drawCallback: function(settings) {
+
+                        var api = this.api();
+
+                        $('#tabela_subsecao tbody').on('click', '.edit', function(event) {
+
+                            var data = $('#tabela_subsecao').DataTable().row($(this).closest('tr')).data();
+                            var id = data.id;
+
+                            $('#modal01').modal('show');
+
+                            $.ajax({
+                                url: "subsecao.php",
+                                method: 'POST',
+                                data: {
+                                    id: id,
+                                    carregarDados: "linha"
+                                },
+                                success: function(response) {
+
+                                    if (response.dados && response.dados.length > 0) {
+                                        var data = response.dados[0];
+
+                                        $('#id').val(data.id);
+                                        $('#subsecao').val(data.subsecao);
+                                        $('#setor_superior').val(data.setor);
+                                        $('#atividade').val(data.atividade);
+                                        $('#observacao').val(data.observacao);
+
+                                        $('#modal01').modal('show');
+                                    } else {
+                                        console.error('Nenhum dado encontrado.');
+                                        alert('Erro: Nenhum dado encontrado.');
+                                    }
+                                },
+
+                                error: function(xhr, status, error) {
+                                    console.error('Erro no AJAX:', error);
+                                }
+                            });
+                        });
+
+                        $('#tabela_subsecao tbody').on('click', '.delete', function(event) {
+                            var data = $('#tabela_subsecao').DataTable().row($(this).closest('tr')).data();
+                            var id = data.id;
+
+                            if (confirm('Você tem certeza que deseja deletar este setor?')) {
+                                $.ajax({
+                                    url: "subsecao.php",
+                                    method: 'POST',
+                                    data: {
+                                        id: id,
+                                        carregarDados: "delete"
+                                    },
+                                    success: function(response) {
+
+                                        console.log(response);
+
+                                        if (response.dados) {
+                                            window.location.reload();
+                                        } else {
+                                            console.error('Erro na resposta:', response.error);
+                                            alert('Erro: ' + response.error);
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error('Erro no AJAX:', error);
+                                        alert('Erro na requisição: ' + error);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        function carregarDados() {
+            $.ajax({
+                url: 'subsecao.php',
+                type: "POST",
+                data: {
+                    carregarDados: "sim"
+                },
+                dataType: 'json',
+                success: function(response) {
+                    console.log('Resposta do servidor:', response);
+                    if (response.dados && Array.isArray(response.dados)) {
+                        carregarDatatable(response.dados);
+                    } else if (response.error) {
+                        console.error('Erro no servidor:', response.error);
+                    } else {
+                        console.error('Dados inválidos recebidos do servidor:', response);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro na requisição:', error);
+                }
+            });
+        }
+
+        $('#modal01').on('click', '#saveBtn', function() {
+            var id = $('#id').val();
+            var subsecao = $('#subsecao').val();
+            var setor_superior = $('#setor_superior').val();
+            var atividade = $('#atividade').val();
+            var observacao = $('#observacao').val();
+
+            $.ajax({
+                url: 'subsecao.php',
+                type: 'POST',
+                data: {
+                    id: id,
+                    subsecao: subsecao,
+                    setor_superior: setor_superior,
+                    atividade: atividade,
+                    observacao: observacao,
+                    carregarDados: 'nao'
+                },
+                success: function(response) {
+                    console.log(response);
+                    $('#modal01').modal('hide');
+
+                    if (response.status === 'true') {
+                        window.location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+
+                    $('#id').val('');
+                    $('#subsecao').val('');
+                    $('#setor_superior').val('');
+                    $('#atividade').val('');
+                    $('#observacao').val('');
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('Erro na requisição: ' + error);
+                }
             });
         });
     </script>
