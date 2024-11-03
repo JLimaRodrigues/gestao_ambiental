@@ -105,6 +105,11 @@ footer {
     height: 40px
 }
 
+#atividade {
+    height: auto; 
+    min-height: 50px;
+}
+
 #observacao {
     height: auto; 
     min-height: 75px;

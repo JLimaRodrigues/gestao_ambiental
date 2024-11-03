@@ -184,19 +184,19 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             <div class="col-md-6">
                                 <label for="setor" class="form-label">Setor:</label>
                                 <input type="text" class="form-control" id="setor" name="setor">
-                                <span></span>
+                                <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
                             <div class="col-md-6">
                                 <label for="localizacao" class="form-label">Localização:</label>
                                 <input type="text" class="form-control" id="localizacao" name="localizacao">
-                                <span></span>
+                                <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="observacao" class="form-label">Observação:</label>
                                 <textarea class="form-control" id="observacao" name="observacao" rows="3" max="200"></textarea>
-                                <div id="charCount" class="text-end">200 caracteres restantes</div>
+                                <div id="charCount" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                             </div>
                         </div>
                     </form>
