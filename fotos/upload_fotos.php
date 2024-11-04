@@ -1,9 +1,11 @@
 <?php
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
-    
+
     header('Content-Type: application/json');
     $con = connect_local_mysqli('gestao_ambiental');
 
@@ -146,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $caminhoArquivo = FOTOS_DIR . $arquivo;
 
                 if (file_exists($caminhoArquivo)) {
-                    unlink($caminhoArquivo); 
+                    unlink($caminhoArquivo);
                 }
 
                 echo json_encode(["dados" => "Foto deletada com sucesso."]);
@@ -159,6 +161,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
+
+if (isset($_GET['foto'])) {
+    define('FOTOS_DIR', 'E:/armazenamento_fotos/');
+    $foto = basename($_GET['foto']);
+    $caminhoCompleto = FOTOS_DIR . $foto;
+
+    if (file_exists($caminhoCompleto)) {
+        header('Content-Type: image/jpeg');
+        readfile($caminhoCompleto);
+        exit;
+    } else {
+        http_response_code(404);
+        echo "Imagem não encontrada.";
+    }
+} 
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 ?>
@@ -330,7 +348,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 <option value="" disabled selected>Selecione um setor...</option>
                                 <?php
                                 $con = connect_local_mysqli('gestao_ambiental');
-                                $sql = "SELECT * FROM setores";
+                                $sql = "SELECT * FROM setores ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
                                     echo "<option value='" . $row['id'] . "'>" . $row['setor'] . "</option>";
@@ -339,12 +357,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="subsecaoV" class="form-label"><strong>Subsecao:</strong></label>
+                            <label for="subsecaoV" class="form-label"><strong>Subseção:</strong></label>
                             <select class="form-select ml-2" id="subsecaoV" name="subsecaoV" required disabled>
                                 <option value="" disabled selected>Selecione uma subseção...</option>
                                 <?php
                                 $con = connect_local_mysqli('gestao_ambiental');
-                                $sql = "SELECT * FROM subsecoes";
+                                $sql = "SELECT * FROM subsecoes ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
                                     echo "<option value='" . $row['id'] . "'>" . $row['subsecao'] . "</option>";
@@ -361,7 +379,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 <option value="" disabled selected>Selecione um local...</option>
                                 <?php
                                 $con = connect_local_mysqli('gestao_ambiental');
-                                $sql = "SELECT * FROM local";
+                                $sql = "SELECT * FROM local ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
                                     echo "<option value='" . $row['id'] . "'>" . $row['local'] . "</option>";
@@ -396,6 +414,22 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         </div>
     </div>
 
+    <div class="modal fade" id="fotoModal" tabindex="-1" aria-labelledby="fotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="fotoModalLabel">Visualização da Foto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="fotoModalImg" src="" alt="Foto" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <footer>Desenvolvido por: Douglas Marcondes.</footer>
 
     <!-- Bootstrap 5 JS -->
@@ -425,6 +459,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             });
 
             carregarDados();
+
+            $('#tabela_fotos').on('click', '.foto-link', function(event) {
+                event.preventDefault();
+
+                // Obtém o nome do arquivo a partir do atributo data-foto
+                const nomeArquivo = $(this).data('foto');
+
+                // Monta a URL para o PHP que exibirá a imagem
+                const caminhoFoto = 'http://gestaoambiental.com.br/fotos/upload_fotos.php?foto=' + encodeURIComponent(nomeArquivo);
+
+                // Define o src da imagem na modal e exibe a modal
+                $('#fotoModalImg').attr('src', caminhoFoto);
+                $('#fotoModal').modal('show');
+            });
         });
 
         async function carregarDatatable(data) {
@@ -438,7 +486,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     data: data,
                     columns: [{
                             "data": "nome_arquivo",
-                            "defaultContent": "-",
+                            render: function(data, type, row) {
+                                if (type === 'display') {
+                                    return '<a href="#" class="foto-link" data-foto="' + data + '">' + data + '</a>';
+                                }
+                                return data;
+                            },
+                            "defaultContent": "-"
                         },
                         {
                             "data": "setor",

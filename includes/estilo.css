@@ -44,23 +44,42 @@ footer {
     align-self: right !important;
 }
 
+.tabela {
+    width: 100%;
+    border-collapse: collapse; 
+}
+
 .tabela td {
-    border: 1px solid #000000;
-    /* background-color: #fff; */
+    border: 1px solid #212529; 
     padding: 8px;
     text-align: center;
 }
 
 .tabela thead th {
-    background-color: #000000;
-    border: 1px solid #000000;
+    background-color: #212529; 
+    border: 1px solid #212529; 
     text-align: center;
-    color: white;
+    color: white; 
 }
 
 .tabela tbody tr:hover td {
-    background: lightgrey;
-    color: black;
+    background: lightgrey; 
+    color: black; 
+}
+
+.registros {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #212529; 
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.registros td {
+    padding: 6px;
+    font-weight: bold;
+    background-color: #212529;
 }
 
 .dataTables_paginate .paginate_button {
@@ -69,12 +88,12 @@ footer {
 
 .page-item.active .page-link {
     color: #fff;
-    background-color: #000;
-    border-color: #000;
+    background-color: #212529;
+    border-color: #212529;
 }
 
 .page-link {
-    color: #000;
+    color: #212529;
     background-color: #fff;
     border: 1px solid #dee2e6;
 }
@@ -116,4 +135,23 @@ footer {
 #observacao_ocorrencia {
     height: auto; 
     min-height: 75px;
+}
+
+.card-container {
+    border: 2px solid #212529;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+    transform: scale(0.9);
+    transform-origin: center;
+}
+
+.info {
+    margin: 5px 0;
+    line-height: 0.8;
+}
+
+.legenda {
+    color: white !important;
+    background-color: #212529 !important;
 }

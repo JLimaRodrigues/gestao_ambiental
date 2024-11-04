@@ -1,0 +1,4 @@
+# Ignora todos os arquivos .log
+*.opt
+*.frm
+*.ibd
