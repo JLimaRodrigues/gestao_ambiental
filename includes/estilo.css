@@ -5,7 +5,7 @@
 
 .nav-link:hover,
 .navbar-brand:hover {
-    color: #3cfa02;
+    color: #a3da22;
 }
 
 .dropdown-menu {
@@ -15,6 +15,7 @@
 .dropdown-menu.show {
     transform: translateY(0);
     opacity: 1;
+    border-bottom: 5px solid #a3da22;
 }
 
 .dropdown-item.selected {
@@ -25,9 +26,14 @@
 body {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 98vh;
     margin: 0;
+    padding: 0;
 }
+
 
 .container {
     flex: 1;
@@ -71,17 +77,20 @@ footer {
     width: 100%;
     border-collapse: collapse;
     background-color: #212529; 
-    color: white;
+    color: #f8f9fa;
     text-align: center;
     font-family: Arial, sans-serif;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .registros td {
-    padding: 6px;
+    padding: 10px;
     font-weight: bold;
     background-color: #212529;
+    border-bottom: 5px solid #a3da22;
 }
-
+ 
 .dataTables_paginate .paginate_button {
     margin: 10px 0px;
 }
@@ -154,4 +163,8 @@ footer {
 .legenda {
     color: white !important;
     background-color: #212529 !important;
+}
+
+.remover-botao{
+    color: red;
 }

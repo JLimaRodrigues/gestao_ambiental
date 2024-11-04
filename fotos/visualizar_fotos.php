@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <style>
-    
+
 </style>
 
 <body>
@@ -49,9 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     &nbsp;
     <div id="main" class="container-fluid" style="margin:5px;padding: 0px;">
         <div class="header">
-            <!-- <div class="logo" style="position: absolute; top: 20px; right: 20px;">
-                <img class="logo" src="../../../images/logo.png" alt="Logo" style="max-height: 150px;">
-            </div> -->
+            <div class="logo" style="position: absolute; top: 100px; right: 35px;">
+                <img class="logo" src="../includes/logo.ico" alt="Logo" style="max-height: 150px;">
+            </div>
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-12 mb-2 text-center">
                     <h1 class="titulo">Visualizar Fotos</h1>
@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </table>';
 
                     $imagens = [];
-                    //$legendas = [];
+                    $legendas = [];
                     $setor = [];
                     $subsecao = [];
                     $local = [];
@@ -239,34 +239,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             if (isset($row['nome_arquivo'])) {
                                 $imagens[] = $row['nome_arquivo'];
+                            } else {
+                                $imagens[] = '';
                             }
 
-                            if (isset($row['legenda'])) {
-                                if (substr($row['legenda'], 0, 2) == 'PP') {
-                                    $legendas[] = "Pesquisa de Preço";
-                                }
+                            if (isset($row['setor'])) {
+                                $legendas[] = $row['setor'] . " - " . $row['subsecao'];
                             } else {
-                                $legendas[] = "Outros";
+                                $legendas[] = '';
                             }
 
                             if (isset($row['setor'])) {
                                 $setor[] = $row['setor'];
+                            } else {
+                                $setor[] = '';
                             }
 
                             if (isset($row['subsecao'])) {
                                 $subsecao[] = $row['subsecao'];
+                            } else {
+                                $subsecao[] = '';
                             }
+
 
                             if (isset($row['local'])) {
                                 $local[] = $row['local'];
+                            } else {
+                                $local[] = '';
                             }
 
                             if (isset($row['ocorrencia'])) {
                                 $ocorrencia[] = $row['ocorrencia'];
+                            } else {
+                                $ocorrencia[] = '';
                             }
 
                             if (isset($row['data'])) {
                                 $data[] = $row['data'];
+                            } else {
+                                $data[] = '';
                             }
                         }
                     }
@@ -293,7 +304,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         echo '<div style="text-align: center;">
                             <div style="position: relative; display: inline-block;">
                                 <img src="' . $url_base . $imagem . '" alt="' . htmlspecialchars($imagem) . '" class="img-fluid foto" style="max-width: 100%; height: 380px; display: block;" onclick="openPopup(\'' . $url_base . $imagem . '\')">
-                                <img src="../../../images/logo.png" alt="Logo" class="logo" style="position: absolute; bottom: 5px; right: 5px; opacity: 0.5; max-height: 30px;">
+                                <img src="../includes/logo.ico" alt="Logo" class="logo" style="position: absolute; bottom: 5px; right: 5px; opacity: 0.5; max-height: 30px;">
                             </div>
                         </div>';
 
@@ -312,8 +323,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ?>
             </div>
         </div>
-
-
 
         <footer>Desenvolvido por: Douglas Marcondes.</footer>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
