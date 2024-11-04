@@ -110,7 +110,10 @@ footer {
     min-height: 50px;
 }
 
-#observacao {
+#observacao,
+#observacaoV,
+#observacao_local,
+#observacao_ocorrencia {
     height: auto; 
     min-height: 75px;
 }

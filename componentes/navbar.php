@@ -9,6 +9,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/fotos/visualizar_fotos.php">Fotos</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/fotos/upload_fotos.php">Upload</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Cadastros
