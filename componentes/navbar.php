@@ -6,9 +6,6 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/index.php">Início</a>
                 </li>
-                <li class="nav-item">
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Fotos
@@ -17,9 +14,6 @@
                         <li><a class="dropdown-item" href="/fotos/visualizar_fotos.php">Relatório</a></li>
                         <li><a class="dropdown-item" href="/fotos/registrar_fotos.php">Registrar</a></li>
                     </ul>
-                </li>
-                <li class="nav-item">
-                    &nbsp;&nbsp;&nbsp;&nbsp;
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -31,7 +25,19 @@
                         <li><a class="dropdown-item" href="/cadastros/local_ocorrencia.php">Local/Ocorrência</a></li>
                     </ul>
                 </li>
+                <!-- Botão de Backup -->
+                <li class="nav-item">
+                    <a class="nav-link btn btn-danger text-white fw-bold" href="#" role="button" onclick="confirmBackup()">Backup</a>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script>
+function confirmBackup() {
+    if (confirm("Tem certeza de que deseja fazer um backup do banco de dados?")) {
+        window.location.href = "/backup/backup.php";
+    }
+}
+</script>
