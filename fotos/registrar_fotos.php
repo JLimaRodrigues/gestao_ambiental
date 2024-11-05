@@ -32,7 +32,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'subsecao' => $row['subsecao'],
                     'local' => $row['local'],
                     'ocorrencia' => $row['ocorrencia'],
-                    'observacao' => $row['observacao']
+                    'observacao' => $row['observacao'],
+                    'conforme' => $row['conforme'],
+                    'lcastanheira' => $row['lcastanheira'],
+                    'evicastanheira' => $row['evicastanheira'],
+                    'limbauba' => $row['limbauba'],
+                    'eviimbauba' => $row['eviimbauba'],
+                    'lpaubrasil' => $row['lpaubrasil'],
+                    'evipaubrasil' => $row['evipaubrasil']
                 ];
             }
 
@@ -55,10 +62,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id_local = $_REQUEST['local'] ?? '';
         $id_ocorrencia = $_REQUEST['ocorrencia'] ?? '';
         $observacao = $_REQUEST['observacao'] ?? '';
+        $conforme = $_REQUEST['conforme'] ?? '';
+        $castanheira = $_REQUEST['castanheira'] ?? '';
+        $imbauba = $_REQUEST['imbauba'] ?? '';
+        $paubrasil = $_REQUEST['paubrasil'] ?? '';
+        $evicastanheira = $_REQUEST['evicastanheira'] ?? '';
+        $eviimbauba = $_REQUEST['eviimbauba'] ?? '';
+        $evipaubrasil = $_REQUEST['evipaubrasil'] ?? '';
+
 
         $dataFormatada = date('dmY', strtotime($data));
         $timestamp = time();
-        $nome_arquivo = "IMG_{$dataFormatada}_{$id_setor}_{$id_subsecao}_{$id_local}_{$id_ocorrencia}_{$timestamp}.jpg";
+        $nome_arquivo = "SGA_{$dataFormatada}_{$timestamp}.jpg";
 
         // Verifica se o arquivo foi enviado
         if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == UPLOAD_ERR_OK) {
@@ -68,8 +83,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Move o arquivo para o novo diretório com o novo nome
             if (move_uploaded_file($temp_path, $destination_path)) {
                 // Insere novo registro no banco de dados
-                $sql = "INSERT INTO fotos (nome_arquivo, data, id_setor, id_subsecao, id_local, id_ocorrencia, observacao) 
-                        VALUES ('$nome_arquivo', '$data', '$id_setor', '$id_subsecao', '$id_local', '$id_ocorrencia', '$observacao')";
+                $sql = "INSERT INTO fotos (nome_arquivo, data, id_setor, id_subsecao, id_local, id_ocorrencia, observacao, conforme, lcastanheira, evicastanheira, limbauba, eviimbauba, lpaubrasil, evipaubrasil) 
+                        VALUES ('$nome_arquivo', '$data', '$id_setor', '$id_subsecao', '$id_local', '$id_ocorrencia', '$observacao', '$conforme', '$castanheira', '$evicastanheira', '$imbauba', '$eviimbauba', '$paubrasil', '$evipaubrasil')";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -94,10 +109,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_POST['id'];
 
         $sql = "SELECT fotos.*, setor, subsecao, local, ocorrencia FROM fotos
-                INNER JOIN setores ON setores.id = fotos.id_setor
-                INNER JOIN subsecoes ON subsecoes.id = fotos.id_subsecao
-                INNER JOIN local ON local.id = fotos.id_local
-                INNER JOIN ocorrencia ON ocorrencia.id = fotos.id_ocorrencia
+                LEFT JOIN setores ON setores.id = fotos.id_setor
+                LEFT JOIN subsecoes ON subsecoes.id = fotos.id_subsecao
+                LEFT JOIN local ON local.id = fotos.id_local
+                LEFT JOIN ocorrencia ON ocorrencia.id = fotos.id_ocorrencia
                 WHERE id_fotos = '$id' ";
 
         $resultado = mysqli_query($con, $sql);
@@ -116,7 +131,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'id_ocorrencia' => $row['id_ocorrencia'],
                 'observacao' => $row['observacao'],
                 'nome_arquivo' => $row['nome_arquivo'],
-                'data' => $row['data']
+                'data' => $row['data'],
+                'conforme' => $row['conforme'],
+                'lcastanheira' => $row['lcastanheira'],
+                'evicastanheira' => $row['evicastanheira'],
+                'limbauba' => $row['limbauba'],
+                'eviimbauba' => $row['eviimbauba'],
+                'lpaubrasil' => $row['lpaubrasil'],
+                'evipaubrasil' => $row['evipaubrasil']
             ];
 
 
@@ -176,12 +198,13 @@ if (isset($_GET['foto'])) {
         http_response_code(404);
         echo "Imagem não encontrada.";
     }
-} 
+}
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
+
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -213,13 +236,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     <table width="100%" id="tabela_fotos" class="table table-striped tabela">
                         <thead>
                             <tr>
+                                <th>Conforme</th>
                                 <th>Foto</th>
                                 <th>Setor</th>
                                 <th>Subseção</th>
                                 <th>Local</th>
                                 <th>Ocorrência</th>
                                 <th>Data</th>
-                                <th>Observação</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -278,7 +301,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         </div>
 
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="local" class="form-label"><strong>Local:</strong></label>
                                 <select class="form-select ml-2" id="local" name="local" required>
                                     <option value="" disabled selected>Selecione um local...</option>
@@ -292,7 +315,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                     ?>
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="ocorrencia" class="form-label"><strong>Ocorrência:</strong></label>
                                 <select class="form-select ml-2" id="ocorrencia" name="ocorrencia" required>
                                     <option value="" disabled selected>Selecione uma ocorrência...</option>
@@ -306,6 +329,77 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                     ?>
                                 </select>
                             </div>
+                            <div class="col-md-4">
+                                <label for="conforme" class="form-label"><strong>Conforme:</strong></label>
+                                <select class="form-select ml-2" id="conforme" name="conforme" required>
+                                    <option value="" disabled selected>Selecione uma opção...</option>
+                                    <option value="S">Sim</option>
+                                    <option value="N">Não</option>
+                                    <option value="P">Parcial</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="castanheira" class="form-label"><strong>Lista Castanheira:</strong></label>
+                                <select class="form-select ml-2" id="castanheira" name="castanheira" required>
+                                    <option value="" disabled selected>Selecione um item...</option>
+                                    <?php
+                                    $con = connect_local_mysqli('gestao_ambiental');
+                                    $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
+                                    $resultado = mysqli_query($con, $sql);
+                                    while ($row = mysqli_fetch_assoc($resultado)) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="imbauba" class="form-label"><strong>Lista Imbaúba:</strong></label>
+                                <select class="form-select ml-2" id="imbauba" name="imbauba" required>
+                                    <option value="" disabled selected>Selecione um item...</option>
+                                    <?php
+                                    $con = connect_local_mysqli('gestao_ambiental');
+                                    $sql = "SELECT * FROM lista_imbauba ORDER BY 2 ASC";
+                                    $resultado = mysqli_query($con, $sql);
+                                    while ($row = mysqli_fetch_assoc($resultado)) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="paubrasil" class="form-label"><strong>Lista Pau Brasil:</strong></label>
+                                <select class="form-select ml-2" id="paubrasil" name="paubrasil" required>
+                                    <option value="" disabled selected>Selecione um item...</option>
+                                    <?php
+                                    $con = connect_local_mysqli('gestao_ambiental');
+                                    $sql = "SELECT * FROM lista_pau_brasil ORDER BY 2 ASC";
+                                    $resultado = mysqli_query($con, $sql);
+                                    while ($row = mysqli_fetch_assoc($resultado)) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="evicastanheira" class="form-label"><strong>Evidência Castanheira:</strong></label>
+                                <textarea class="form-control" id="evicastanheira" name="evicastanheira" rows="3" max="200"></textarea>
+                                <div id="charCount1" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="eviimbauba" class="form-label"><strong>Evidência Imbaúba:</strong></label>
+                                <textarea class="form-control" id="eviimbauba" name="eviimbauba" rows="3" max="200"></textarea>
+                                <div id="charCount2" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="evipaubrasil" class="form-label"><strong>Evidência Pau Brasil:</strong></label>
+                                <textarea class="form-control" id="evipaubrasil" name="evipaubrasil" rows="3" max="200"></textarea>
+                                <div id="charCount3" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -313,6 +407,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             <textarea class="form-control" id="observacao" name="observacao" rows="3" max="200"></textarea>
                             <div id="charCount" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                         </div>
+
                     </form>
                     <div class="mb-3">
                         <label for="imagem" class="form-label"><strong>Escolher arquivo</strong></label>
@@ -373,7 +468,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     </div>
 
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="localV" class="form-label"><strong>Local:</strong></label>
                             <select class="form-select ml-2" id="localV" name="localV" required disabled>
                                 <option value="" disabled selected>Selecione um local...</option>
@@ -387,7 +482,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="ocorrenciaV" class="form-label"><strong>Ocorrência:</strong></label>
                             <select class="form-select ml-2" id="ocorrenciaV" name="ocorrenciaV" required disabled>
                                 <option value="" disabled selected>Selecione uma ocorrência...</option>
@@ -400,6 +495,73 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 }
                                 ?>
                             </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="conformeV" class="form-label"><strong>Conforme:</strong></label>
+                            <select class="form-select ml-2" id="conformeV" name="conformeV" required disabled>
+                                <option value="" disabled selected>Selecione uma opção...</option>
+                                <option value="S">Sim</option>
+                                <option value="N">Não</option>
+                                <option value="P">Parcial</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="castanheiraV" class="form-label"><strong>Lista Castanheira:</strong></label>
+                            <select class="form-select ml-2" id="castanheiraV" name="castanheiraV" required disabled>
+                                <option value="" disabled selected>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="imbaubaV" class="form-label"><strong>Lista Imbaúba:</strong></label>
+                            <select class="form-select ml-2" id="imbaubaV" name="imbaubaV" required disabled>
+                                <option value="" disabled selected>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_imbauba ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="paubrasilV" class="form-label"><strong>Lista Pau Brasil:</strong></label>
+                            <select class="form-select ml-2" id="paubrasilV" name="paubrasilV" required disabled>
+                                <option value="" disabled selected>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_pau_brasil ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="evicastanheiraV" class="form-label"><strong>Evidência Castanheira:</strong></label>
+                                <textarea class="form-control" id="evicastanheiraV" name="evicastanheiraV" rows="3" max="200" disabled></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="eviimbaubaV" class="form-label"><strong>Evidência Imbaúba:</strong></label>
+                                <textarea class="form-control" id="eviimbaubaV" name="eviimbaubaV" rows="3" max="200" disabled></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="evipaubrasilV" class="form-label"><strong>Evidência Pau Brasil:</strong></label>
+                                <textarea class="form-control" id="evipaubrasilV" name="evipaubrasilV" rows="3" max="200" disabled></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -444,7 +606,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
     <script type="text/javascript">
         let datatable;
+        var INCLUDES_URL = "<?php echo INCLUDES_URL; ?>";
 
+        $('#conforme').val('');
         $('#id_foto').val('');
         $('#data').val('');
         $('#setor').val('');
@@ -452,6 +616,36 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         $('#local').val('');
         $('#ocorrencia').val('');
         $('#observacao').val('');
+        $('#castanheira').val('');
+        $('#imbauba').val('');
+        $('#paubrasil').val('');
+        $('#evicastanheira').val('');
+        $('#eviimbauba').val('');
+        $('#evipaubrasil').val('');
+
+        const evicastanheira = document.getElementById('evicastanheira');
+        const eviimbauba = document.getElementById('eviimbauba');
+        const evipaubrasil = document.getElementById('evipaubrasil');
+        const observacao = document.getElementById('observacao');
+        const maxChars = 200;
+
+        function enforceMaxLength(input) {
+            input.addEventListener('input', function() {
+                if (input.value.length > maxChars) {
+                    alert("Você ultrapassou o limite de 200 caracteres.");
+                    input.value = input.value.substring(0, maxChars);
+                }
+
+                const remainingChars = maxChars - input.value.length;
+                const charCountElement = input.nextElementSibling;
+                charCountElement.textContent = `${remainingChars} caracteres restantes`;
+            });
+        }
+
+        enforceMaxLength(evicastanheira);
+        enforceMaxLength(eviimbauba);
+        enforceMaxLength(evipaubrasil);
+        enforceMaxLength(observacao);
 
         $(document).ready(function() {
             document.getElementById("addBtnFoto").addEventListener("click", function() {
@@ -467,7 +661,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                 const nomeArquivo = $(this).data('foto');
 
                 // Monta a URL para o PHP que exibirá a imagem
-                const caminhoFoto = 'http://gestaoambiental.com.br/fotos/upload_fotos.php?foto=' + encodeURIComponent(nomeArquivo);
+                const caminhoFoto = 'http://gestaoambiental.com.br/fotos/registrar_fotos.php?foto=' + encodeURIComponent(nomeArquivo);
 
                 // Define o src da imagem na modal e exibe a modal
                 $('#fotoModalImg').attr('src', caminhoFoto);
@@ -485,6 +679,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     },
                     data: data,
                     columns: [{
+                            "data": null,
+                            "defaultContent": "-"
+                        },
+                        {
                             "data": "nome_arquivo",
                             render: function(data, type, row) {
                                 if (type === 'display') {
@@ -514,15 +712,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             "data": "data",
                             "render": function(data) {
                                 if (data) {
-                                    const dateParts = data.split('-'); // Divide o formato "YYYY-MM-DD"
-                                    return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`; // Retorna como "DD/MM/YYYY"
+                                    const dateParts = data.split('-');
+                                    return `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}`;
                                 }
-                                return ''; // Retorna vazio se o dado for nulo
+                                return '';
                             },
-                            "defaultContent": "-",
-                        },
-                        {
-                            "data": "observacao",
                             "defaultContent": "-",
                         },
                         {
@@ -542,9 +736,26 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         }
                     ],
                     columnDefs: [{
-                        targets: '_all',
-                        className: 'text-center'
-                    }],
+                            targets: '_all',
+                            className: 'text-center'
+                        }, {
+                            targets: 0,
+                            render: function(data, type, row) {
+
+                                if (data.conforme == 'S') {
+                                    return `<img src='${INCLUDES_URL}/alerta/ok.png' title='Conforme' style='width: 25px; height: 25px;' />`;
+                                } else if (data.conforme == 'N') {
+                                    return `<img src='${INCLUDES_URL}/alerta/erro.png' title='Não Conforme' style='width: 25px; height: 25px;' />`;
+                                } else if (data.conforme == 'P') {
+                                    return `<img src='${INCLUDES_URL}/alerta/parcial.png' title='Parcialmente Conforme' style='width: 25px; height: 25px;'/>`;
+                                }
+
+                                return ' ';
+
+                            }
+                        }
+
+                    ],
                     ordering: true,
                     lengthMenu: [
                         [10, 25, 50, -1],
@@ -562,7 +773,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             $('#modal02').modal('show');
 
                             $.ajax({
-                                url: "upload_fotos.php",
+                                url: "registrar_fotos.php",
                                 method: 'POST',
                                 data: {
                                     id: id,
@@ -580,6 +791,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                         $('#localV').val(data.id_local);
                                         $('#ocorrenciaV').val(data.id_ocorrencia);
                                         $('#observacaoV').val(data.observacao);
+                                        $('#conformeV').val(data.conforme);
+                                        $('#castanheiraV').val(data.lcastanheira);
+                                        $('#imbaubaV').val(data.limbauba);
+                                        $('#paubrasilV').val(data.lpaubrasil);
+                                        $('#evicastanheiraV').val(data.evicastanheira);
+                                        $('#eviimbaubaV').val(data.eviimbauba);
+                                        $('#evipaubrasilV').val(data.evipaubrasil);
 
                                         $('#modal02').modal('show');
                                     } else {
@@ -600,7 +818,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
                             if (confirm('Você tem certeza que deseja deletar esta foto?')) {
                                 $.ajax({
-                                    url: "upload_fotos.php",
+                                    url: "registrar_fotos.php",
                                     method: 'POST',
                                     data: {
                                         id: id,
@@ -631,7 +849,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
         function carregarDados() {
             $.ajax({
-                url: 'upload_fotos.php',
+                url: 'registrar_fotos.php',
                 type: "POST",
                 data: {
                     carregarDados: "sim"
@@ -657,24 +875,38 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             var formData = new FormData();
 
             var fileInput = $('#imagem')[0].files[0];
+            var conforme = $('#conforme').val();
             var setor = $('#setor').val();
             var data = $('#data').val();
             var subsecao = $('#subsecao').val();
             var local = $('#local').val();
             var ocorrencia = $('#ocorrencia').val();
             var observacao = $('#observacao').val();
+            var castanheira = $('#castanheira').val();
+            var imbauba = $('#imbauba').val();
+            var paubrasil = $('#paubrasil').val();
+            var evicastanheira = $('#evicastanheira').val();
+            var eviimbauba = $('#eviimbauba').val();
+            var evipaubrasil = $('#evipaubrasil').val();
 
             formData.append('imagem', fileInput);
+            formData.append('conforme', conforme);
             formData.append('setor', setor);
             formData.append('data', data);
             formData.append('subsecao', subsecao);
             formData.append('local', local);
             formData.append('ocorrencia', ocorrencia);
             formData.append('observacao', observacao);
+            formData.append('castanheira', castanheira);
+            formData.append('paubrasil', paubrasil);
+            formData.append('imbauba', imbauba);
+            formData.append('evicastanheira', evicastanheira);
+            formData.append('eviimbauba', eviimbauba);
+            formData.append('evipaubrasil', evipaubrasil);
             formData.append('carregarDados', 'nao');
 
             $.ajax({
-                url: 'upload_fotos.php',
+                url: 'registrar_fotos.php',
                 type: 'POST',
                 data: formData,
                 processData: false,

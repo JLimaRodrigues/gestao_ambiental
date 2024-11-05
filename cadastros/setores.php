@@ -21,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dados[] = [
                     'id' => $row['id'],
                     'setor' => $row['setor'],
-                    'localizacao' => $row['localizacao'],
-                    'observacao' => $row['observacao']
+                    'localizacao' => $row['localizacao']
                 ];
             }
 
@@ -41,14 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_REQUEST['id'] ?? '';
         $setor = $_REQUEST['setor'] ?? '';
         $localizacao = $_REQUEST['localizacao'] ?? '';
-        $observacao = $_REQUEST['observacao'] ?? '';
-
         if (!empty($id)) {
 
-            $sql = "INSERT INTO SETORES (setor, localizacao, observacao) VALUES ('$setor','$localizacao','$observacao')";
-
-
-            $sql = "UPDATE setores SET setor='$setor',localizacao='$localizacao',observacao='$observacao' WHERE id = '$id'";
+            $sql = "UPDATE setores SET setor='$setor',localizacao='$localizacao' WHERE id = '$id'";
             $resultado = mysqli_query($con, $sql);
 
             if ($resultado) {
@@ -59,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
 
-            $sql = "INSERT INTO SETORES (setor, localizacao, observacao) VALUES ('$setor','$localizacao','$observacao')";
+            $sql = "INSERT INTO SETORES (setor, localizacao) VALUES ('$setor','$localizacao')";
             $resultado = mysqli_query($con, $sql);
 
             if ($resultado) {
@@ -87,8 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dados[] = [
                 'id' => $row['id'],
                 'setor' => $row['setor'],
-                'localizacao' => $row['localizacao'],
-                'observacao' => $row['observacao']
+                'localizacao' => $row['localizacao']
             ];
 
 
@@ -122,7 +115,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -154,7 +147,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             <tr>
                                 <th>Setor</th>
                                 <th>Localização</th>
-                                <th>Observação</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -190,13 +182,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="observacao" class="form-label">Observação:</label>
-                                <textarea class="form-control" id="observacao" name="observacao" rows="3" max="200"></textarea>
-                                <div id="charCount" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -225,7 +210,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         $('#id').val('');
         $('#setor').val('');
         $('#localizacao').val('');
-        $('#observacao').val('');
 
         $(document).ready(function() {
             document.getElementById("addBtnSetor").addEventListener("click", function() {
@@ -233,20 +217,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             });
 
             carregarDados();
-        });
-
-        const textarea = document.getElementById('observacao');
-        const charCount = document.getElementById('charCount');
-
-        textarea.addEventListener('input', function() {
-            const maxChars = 200;
-            if (textarea.value.length > maxChars) {
-                alert("Você ultrapassou o limite de 200 caracteres.");
-                textarea.value = textarea.value.substring(0, maxChars);
-            }
-
-            const remainingChars = maxChars - textarea.value.length;
-            charCount.textContent = `${remainingChars} caracteres restantes`;
         });
 
         const setorInput = document.getElementById('setor');
@@ -283,9 +253,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         },
                         {
                             "data": "localizacao"
-                        },
-                        {
-                            "data": "observacao"
                         },
                         {
                             "data": null,
@@ -338,7 +305,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                         $('#id').val(data.id);
                                         $('#setor').val(data.setor);
                                         $('#localizacao').val(data.localizacao);
-                                        $('#observacao').val(data.observacao);
 
                                         $('#modal01').modal('show');
                                     } else {
@@ -416,7 +382,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             var id = $('#id').val();
             var setor = $('#setor').val();
             var localizacao = $('#localizacao').val();
-            var observacao = $('#observacao').val();
 
             $.ajax({
                 url: 'setores.php',
@@ -425,7 +390,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     id: id,
                     setor: setor,
                     localizacao: localizacao,
-                    observacao: observacao,
                     carregarDados: 'nao'
                 },
                 success: function(response) {
@@ -441,7 +405,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     $('#id').val('');
                     $('#setor').val('');
                     $('#localizacao').val('');
-                    $('#observacao').val('');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);

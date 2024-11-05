@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -23,9 +23,9 @@ $setor = '';
 $subsecao = '';
 $local = '';
 $ocorrencia = '';
+$conforme = '';
 
-$url_base = "https://webinterno.ninfa.com.br/fotos_app/";
-$url_base = "http://gestaoambiental.com.br/fotos/upload_fotos.php?foto=";
+$url_base = "http://gestaoambiental.com.br/fotos/registrar_fotos.php?foto=";
 
 $total = '';
 
@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subsecao = $_REQUEST['subsecao'] ?? '';
     $local = $_REQUEST['local'] ?? '';
     $ocorrencia = $_REQUEST['ocorrencia'] ?? '';
+    $conforme = $_REQUEST['conforme'] ?? '';
 }
 
 ?>
@@ -63,17 +64,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <div class="container">
                     <div class="row w-100 justify-content-center align-items-end">
-
                         <div class="form-group col-md-2">
                             <label for="datade" class="form-label"><strong>De:</strong></label>
                             <input type="date" class="form-control form-control-sm" id="datade" name="datade" value="<?= $datade ?>">
                         </div>
-
                         <div class="form-group col-md-2">
                             <label for="dataate" class="form-label"><strong>Até:</strong></label>
                             <input type="date" class="form-control form-control-sm" id="dataate" name="dataate" value="<?= $dataate ?>">
                         </div>
-
                         <div class="form-group col-md-2">
                             <label for="setor"><strong>Setor</strong></label>
                             <select class="form-select ml-2" id="setor" name="setor" data-placeholder="Selecione um setor...">
@@ -87,7 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ?>
                             </select>
                         </div>
-
+                        <div class="col-md-2 mt-4">
+                            <button type="button" class="btn btn-dark w-100 btn" id="pesquisarBtn" onclick="document.getElementById('form1').submit();">Pesquisar</button>
+                        </div>
+                    </div>
+                    <div class="row w-100 justify-content-center align-items-end">
                         <div class="form-group col-md-2">
                             <label for="subsecao" class="form-label"><strong>Subseção:</strong></label>
                             <select class="form-select ml-2" id="subsecao" name="subsecao" data-placeholder="Selecione uma subseção...">
@@ -102,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ?>
                             </select>
                         </div>
-
                         <div class="form-group col-md-2">
                             <label for="local" class="form-label"><strong>Local:</strong></label>
                             <select class="form-select ml-2" id="local" name="local" data-placeholder="Selecione um local...">
@@ -117,7 +118,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ?>
                             </select>
                         </div>
-
                         <div class="form-group col-md-2">
                             <label for="ocorrencia" class="form-label"><strong>Ocorrência:</strong></label>
                             <select class="form-select ml-2" id="ocorrencia" name="ocorrencia" data-placeholder="Selecione uma ocorrência...">
@@ -132,15 +132,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ?>
                             </select>
                         </div>
+                        <div class="col-md-2 mt-4">
+                            <button type="button" class="btn btn-danger w-100 btn" id="resetBtn">Resetar</button>
+                        </div>
                     </div>
-                    <div class="row w-100 justify-content-center align-items-end">
-                        <div class="col-md-2 mt-4">
-                            <button type="button" class="btn btn-dark w-100 btn-sm" id="pesquisarBtn" onclick="document.getElementById('form1').submit();">Pesquisar</button>
-                        </div>
-                        <div class="col-md-2 mt-4">
-                            <button type="button" class="btn btn-danger w-100 btn-sm" id="resetBtn">Resetar</button>
-                        </div>
 
+                    <div class="row w-100 justify-content-center align-items-end">
+                        <div class="form-group col-md-2">
+                            <label for="castanheira" class="form-label"><strong>Castanheira:</strong></label>
+                            <select class="form-select ml-2" id="castanheira" name="castanheira" data-placeholder="Selecione um item...">
+                                <option value="" disabled <?= empty($castanheira) ? 'selected' : '' ?>>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="imbauba" class="form-label"><strong>Imbaúba:</strong></label>
+                            <select class="form-select ml-2" id="imbauba" name="imbauba" data-placeholder="Selecione um item...">
+                                <option value="" disabled <?= empty($imbauba) ? 'selected' : '' ?>>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_imbauba ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="paubrasil" class="form-label"><strong>Pau Brasil:</strong></label>
+                            <select class="form-select ml-2" id="paubrasil" name="paubrasil" data-placeholder="Selecione um item...">
+                                <option value="" disabled <?= empty($paubrasil) ? 'selected' : '' ?>>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_pau_brasil ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="conforme" class="form-label"><strong>Conforme:</strong></label>
+                            <select class="form-select ml-2" id="conforme" name="conforme" data-placeholder="Selecione uma opção...">
+                                <option value="" disabled <?= empty($conforme) ? 'selected' : '' ?>>Selecione uma opção...</option>
+                                <option value="S">Sim</option>
+                                <option value="N">Não</option>
+                                <option value="P">Parcial</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -149,13 +197,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row justify-content-center align-items-center">
             <div class="col-md-12">
                 <?php
-                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia) {
+                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme) {
 
                     $filtroData = '';
                     $filtroSetor = '';
                     $filtroSubsecao = '';
                     $filtroLocal = '';
                     $filtroOcorrencia = '';
+                    $filtroConforme = '';
 
                     if ($datade && $dataate) {
                         $filtroData = " AND data BETWEEN '$datade' AND '$dataate'";
@@ -177,17 +226,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $filtroOcorrencia = " AND id_ocorrencia = '$ocorrencia' ";
                     }
 
-                    $sql = "SELECT nome_arquivo, setor, subsecao, local, ocorrencia, data FROM fotos
+                    if ($conforme) {
+                        $filtroConforme = " AND conforme = '$conforme' ";
+                    }
+
+                    $sql = "SELECT nome_arquivo, 
+                                setor, 
+                                subsecao, 
+                                local, 
+                                ocorrencia,
+                                data, 
+                                conforme,
+                                lista_castanheira.item as item_cast,
+                                evicastanheira as desc_cast,
+                                lista_imbauba.item as item_imb,
+                                eviimbauba desc_imb,
+                                lista_pau_brasil.item as item_pau,
+                                evipaubrasil as desc_pau
+                            FROM fotos
                             LEFT JOIN setores on id_setor = setores.id
                             LEFT JOIN subsecoes on id_subsecao = subsecoes.id
                             LEFT JOIN local on id_local = local.id
                             LEFT JOIN ocorrencia on id_ocorrencia = ocorrencia.id
+                            LEFT JOIN lista_castanheira on lcastanheira = lista_castanheira.id
+                            LEFT JOIN lista_imbauba on limbauba = lista_imbauba.id
+                            LEFT JOIN lista_pau_brasil on lpaubrasil = lista_pau_brasil.id
                             WHERE 1=1"
                         . $filtroData
                         . $filtroSetor
                         . $filtroSubsecao
                         . $filtroLocal
-                        . $filtroOcorrencia;
+                        . $filtroOcorrencia
+                        . $filtroConforme;
 
                     $resultado = mysqli_query($con, $sql);
 
@@ -201,7 +271,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         . $filtroSetor
                         . $filtroSubsecao
                         . $filtroLocal
-                        . $filtroOcorrencia;
+                        . $filtroOcorrencia
+                        . $filtroConforme;
                     $resultadoT = mysqli_query($con, $sqlT);
 
                     if (!$resultadoT) {
@@ -233,6 +304,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $local = [];
                     $ocorrencia = [];
                     $data = [];
+                    $conforme = [];
+                    $corconforme = [];
+                    $castanheira = [];
+                    $imbauba = [];
+                    $paubrasil = [];
 
                     if ($resultado != null) {
                         while ($row = mysqli_fetch_assoc($resultado)) {
@@ -244,7 +320,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
 
                             if (isset($row['setor'])) {
-                                $legendas[] = $row['setor'] . " - " . $row['subsecao'];
+                                $legendas[] = $row['setor'] . (!empty($row['subsecao']) ? ' - ' . $row['subsecao'] : '');
                             } else {
                                 $legendas[] = '';
                             }
@@ -279,6 +355,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             } else {
                                 $data[] = '';
                             }
+
+                            if (isset($row['conforme'])) {
+                                if ($row['conforme'] == 'S') {
+                                    $conforme[] = 'Sim';
+                                    $corconforme[] = 'green';
+                                } else if ($row['conforme'] == 'N') {
+                                    $conforme[] = 'Não';
+                                    $corconforme[] = 'red';
+                                } else if ($row['conforme'] == 'P') {
+                                    $conforme[] = 'Parcial';
+                                    $corconforme[] = 'orange';
+                                }
+                            } else {
+                                $conforme[] = '';
+                            }
+
+                            if (isset($row['item_cast'])) {
+                                $castanheira[] = $row['item_cast'] . (!empty($row['desc_cast']) ? ' - ' . $row['desc_cast'] : '');
+                            } else {
+                                $castanheira[] = '';
+                            }
+
+                            if (isset($row['item_imb'])) {
+                                $imbauba[] = $row['item_imb'] . (!empty($row['desc_imb']) ? ' - ' . $row['desc_imb'] : '');
+                            } else {
+                                $imbauba[] = '';
+                            }
+
+                            if (isset($row['item_pau'])) {
+                                $paubrasil[] = $row['item_pau'] . (!empty($row['desc_pau']) ? ' - ' . $row['desc_pau'] : '');
+                            } else {
+                                $paubrasil[] = '';
+                            }
                         }
                     }
 
@@ -294,13 +403,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         if (isset($legendas[$contador])) {
                             $legendaTexto = $legendas[$contador];
-                            $classeLegenda = $legendaTexto === "Abastecimento Depois" ? ' legenda-pequena' : '';
+                            // Aplica a classe se a string for maior que 20 caracteres
+                            $classeLegenda = (strlen($legendaTexto) > 20) ? ' legenda-pequena' : '';
 
                             echo '<div class="text-center legenda' . $classeLegenda . '" style="padding: 10px; margin-bottom: 5px; border-radius: 5px; position: relative;">';
                             echo '<b>' . $legendaTexto . '</b>';
                             echo '<i class="bi bi-x remover-botao" onclick="removerCard(this)" style="cursor: pointer; position: absolute; top: 10px; right: 10px;"></i>';
                             echo '</div>';
                         }
+
+
                         echo '<div style="text-align: center;">
                             <div style="position: relative; display: inline-block;">
                                 <img src="' . $url_base . $imagem . '" alt="' . htmlspecialchars($imagem) . '" class="img-fluid foto" style="max-width: 100%; height: 380px; display: block;" onclick="openPopup(\'' . $url_base . $imagem . '\')">
@@ -308,11 +420,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                         </div>';
 
-                        echo '<p class="info data" style="margin: 5px 0;"><b>Data:</b> ' . banco_para_data($data[$contador]) . '</p>';
-                        echo '<p class="info setor" style="margin: 5px 0;"><b>Setor:</b> ' . $setor[$contador] . '</p>';
-                        echo '<p class="info subsecao" style="margin: 5px 0;"><b>Subseção:</b> ' . $subsecao[$contador] . '</p>';
-                        echo '<p class="info local" style="margin: 5px 0;"><b>Local:</b> ' . $local[$contador] . '</p>';
-                        echo '<p class="info ocorrencia" style="margin: 5px 0;"><b>Ocorrência:</b> ' . $ocorrencia[$contador] . '</p>';
+                        if (!empty($conforme[$contador]) && $conforme[$contador] !== '-') {
+                            echo '<p class="info conforme" style="margin: 5px 0;"><b>Conforme:</b> <span style="color: ' . $corconforme[$contador] . '; font-weight: bold;">' . $conforme[$contador] . '</span></p>';
+                        }
+
+                        if (!empty($data[$contador]) && $data[$contador] !== '-') {
+                            echo '<p class="info data" style="margin: 5px 0;"><b>Data:</b> ' . banco_para_data($data[$contador]) . '</p>';
+                        }
+
+                        if (!empty($local[$contador]) && $local[$contador] !== '-') {
+                            echo '<p class="info local" style="margin: 5px 0;"><b>Local:</b> ' . $local[$contador] . '</p>';
+                        }
+
+                        if (!empty($ocorrencia[$contador]) && $ocorrencia[$contador] !== '-') {
+                            echo '<p class="info ocorrencia" style="margin: 5px 0;"><b>Ocorrência:</b> ' . $ocorrencia[$contador] . '</p>';
+                        }
+
+                        if (!empty($castanheira[$contador]) && $castanheira[$contador] !== '-') {
+                            echo '<p class="info castanheira" style="margin: 5px 0;"><b>L.Castanheira:</b> ' . $castanheira[$contador] . '</p>';
+                        }
+
+                        if (!empty($imbauba[$contador]) && $imbauba[$contador] !== '-') {
+                            echo '<p class="info imbauba" style="margin: 5px 0;"><b>L.Imbaúba:</b> ' . $imbauba[$contador] . '</p>';
+                        }
+
+                        if (!empty($paubrasil[$contador]) && $paubrasil[$contador] !== '-') {
+                            echo '<p class="info paubrasil" style="margin: 5px 0;"><b>L.Pau Brasil:</b> ' . $paubrasil[$contador] . '</p>';
+                        }
+
+
                         echo '</div>';
                         $contador++;
                     }
@@ -333,7 +469,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
 
-                $('#setor, #subsecao, #local, #ocorrencia').select2({
+                $('#setor, #subsecao, #local, #ocorrencia, #conforme, #castanheira, #imbauba, #paubrasil').select2({
                     placeholder: function() {
                         return $(this).data('placeholder');
                     },
@@ -359,6 +495,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $('#subsecao').val("").trigger('change');
                 $('#local').val("").trigger('change');
                 $('#ocorrencia').val("").trigger('change');
+                $('#conforme').val("").trigger('change');
             });
 
             function restructureRows() {

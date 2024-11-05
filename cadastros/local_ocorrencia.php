@@ -22,8 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dados[] = [
                         'id' => $row['id'],
                         'local' => $row['local'],
-                        'descricao' => $row['descricao'],
-                        'observacao' => $row['observacao']
+                        'descricao' => $row['descricao']
                     ];
                 }
 
@@ -42,11 +41,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_REQUEST['id'] ?? '';
             $local = $_REQUEST['local'] ?? '';
             $descricao = $_REQUEST['descricao'] ?? '';
-            $observacao = $_REQUEST['observacao'] ?? '';
 
             if (!empty($id)) {
 
-                $sql = "UPDATE local SET LOCAL='$local', descricao='$descricao', observacao='$observacao' WHERE id = '$id'";
+                $sql = "UPDATE local SET LOCAL='$local', descricao='$descricao' WHERE id = '$id'";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -57,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             } else {
 
-                $sql = "INSERT INTO LOCAL (local, descricao, observacao) VALUES ('$local','$descricao','$observacao')";
+                $sql = "INSERT INTO LOCAL (local, descricao) VALUES ('$local','$descricao')";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -85,8 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dados[] = [
                     'id' => $row['id'],
                     'local' => $row['local'],
-                    'descricao' => $row['descricao'],
-                    'observacao' => $row['observacao']
+                    'descricao' => $row['descricao']
                 ];
 
 
@@ -135,8 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while ($row = mysqli_fetch_assoc($resultado)) {
                     $dados[] = [
                         'id' => $row['id'],
-                        'ocorrencia' => $row['ocorrencia'],
-                        'observacao' => $row['observacao']
+                        'ocorrencia' => $row['ocorrencia']
                     ];
                 }
 
@@ -154,11 +150,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($carregarDados == 'nao') {
             $id = $_REQUEST['id'] ?? '';
             $ocorrencia = $_REQUEST['ocorrencia'] ?? '';
-            $observacao = $_REQUEST['observacao'] ?? '';
 
             if (!empty($id)) {
 
-                $sql = "UPDATE OCORRENCIA SET ocorrencia='$ocorrencia', observacao='$observacao' WHERE id = '$id'";
+                $sql = "UPDATE OCORRENCIA SET ocorrencia='$ocorrencia' WHERE id = '$id'";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -169,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             } else {
 
-                $sql = "INSERT INTO OCORRENCIA (ocorrencia, observacao) VALUES ('$ocorrencia', '$observacao')";
+                $sql = "INSERT INTO OCORRENCIA (ocorrencia) VALUES ('$ocorrencia')";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -196,8 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $dados[] = [
                     'id' => $row['id'],
-                    'ocorrencia' => $row['ocorrencia'],
-                    'observacao' => $row['observacao']
+                    'ocorrencia' => $row['ocorrencia']
                 ];
 
 
@@ -231,7 +225,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -246,52 +240,52 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
 <body>
 
-    <div class="container-fluid">
-        <div class="container">
-            <h1>Local/Ocorrência</h1>
-        </div>
-        <div class="row">
-            <!-- Tabela de Setores -->
-            <div class="col-md-6 mt-3">
-                <div class="row justify-content-end mb-2">
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-dark" id="addBtnLocal">Cadastrar Local</button>
-                    </div>
-                </div>
-                <table width="100%" id="tabela_local" class="table table-striped tabela">
-                    <thead>
-                        <tr>
-                            <th>Local</th>
-                            <th>Descrição</th>
-                            <th>Observações</th>
-                            <th>Opções</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Seus dados do data table aqui -->
-                    </tbody>
-                </table>
+    <div class="container">
+        <div class="container-fluid">
+            <div class="container">
+                <h1>Local/Ocorrência</h1>
             </div>
-
-            <!-- Tabela de Ocorrências -->
-            <div class="col-md-6 mt-3">
-                <div class="row justify-content-end mb-2">
-                    <div class="col-auto">
-                        <button type="button" class="btn btn-dark" id="addBtnOcorrencia">Cadastrar Ocorrência</button>
+            <div class="row">
+                <!-- Tabela de Setores -->
+                <div class="col-md-6 mt-3">
+                    <div class="row justify-content-end mb-2">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-dark" id="addBtnLocal">Cadastrar Local</button>
+                        </div>
                     </div>
+                    <table width="100%" id="tabela_local" class="table table-striped tabela">
+                        <thead>
+                            <tr>
+                                <th>Local</th>
+                                <th>Descrição</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Seus dados do data table aqui -->
+                        </tbody>
+                    </table>
                 </div>
-                <table width="100%" id="tabela_ocorrencia" class="table table-striped tabela">
-                    <thead>
-                        <tr>
-                            <th>Ocorrência</th>
-                            <th>Observações</th>
-                            <th>Opções</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Seus dados do data table aqui -->
-                    </tbody>
-                </table>
+
+                <!-- Tabela de Ocorrências -->
+                <div class="col-md-6 mt-3">
+                    <div class="row justify-content-end mb-2">
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-dark" id="addBtnOcorrencia">Cadastrar Ocorrência</button>
+                        </div>
+                    </div>
+                    <table width="100%" id="tabela_ocorrencia" class="table table-striped tabela">
+                        <thead>
+                            <tr>
+                                <th>Ocorrência</th>
+                                <th>Opções</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Seus dados do data table aqui -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -321,13 +315,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="observacao_local" class="form-label">Observação:</label>
-                                <textarea class="form-control" id="observacao_local" name="observacao_local" rows="3" max="200"></textarea>
-                                <div id="charCountObsLocal" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -349,19 +336,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                 <div class="modal-body">
                     <!-- Formulário dentro do modal -->
                     <form>
-                        <input type="text" class="form-control" id="id_ocorrencia" name="id_ocorrencia">
+                        <input type="hidden" class="form-control" id="id_ocorrencia" name="id_ocorrencia">
                         <div class="row mb-3">
                             <div class="col-md-12">
                                 <label for="ocorrencia" class="form-label">Ocorrência:</label>
                                 <input type="text" class="form-control" id="ocorrencia" name="ocorrencia" value="">
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="observacao_ocorrencia" class="form-label">Observações:</label>
-                                <textarea class="form-control" id="observacao_ocorrencia" name="observacao_ocorrencia" rows="3" max="200"></textarea>
-                                <div id="charCountObsOcorr" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                             </div>
                         </div>
                     </form>
@@ -395,11 +375,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
         $('#id_local').val('');
         $('#local').val('');
         $('#descricao').val('');
-        $('#observacao_local').val('');
 
         $('#id_ocorrencia').val('');
         $('#ocorrencia').val('');
-        $('#observacao_ocorrencia').val('');
 
         $(document).ready(function() {
 
@@ -413,27 +391,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
             carregarDadosLocal();
             carregarDadosOcorrencia();
         });
-
-        function setupCharCounter(textarea, charCount, maxChars = 200) {
-            textarea.addEventListener('input', function() {
-                if (textarea.value.length > maxChars) {
-                    alert("Você ultrapassou o limite de 200 caracteres.");
-                    textarea.value = textarea.value.substring(0, maxChars);
-                }
-
-                const remainingChars = maxChars - textarea.value.length;
-                charCount.textContent = `${remainingChars} caracteres restantes`;
-            });
-        }
-
-        const textareaObsLocal = document.getElementById('observacao_local');
-        const charCountObsLocal = document.getElementById('charCountObsLocal');
-        const textareaObsOcorr = document.getElementById('observacao_ocorrencia');
-        const charCountObsOcorr = document.getElementById('charCountObsOcorr');
-
-        setupCharCounter(textareaObsLocal, charCountObsLocal);
-        setupCharCounter(textareaObsOcorr, charCountObsOcorr);
-
 
         const local = document.getElementById('local');
         const descricao = document.getElementById('descricao');
@@ -474,9 +431,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                         },
                         {
                             "data": "descricao"
-                        },
-                        {
-                            "data": "observacao"
                         },
                         {
                             "data": null,
@@ -533,7 +487,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                                         $('#id_local').val(data.id);
                                         $('#local').val(data.local);
                                         $('#descricao').val(data.descricao);
-                                        $('#observacao_local').val(data.observacao);
 
                                         $('#modal01').modal('show');
                                     } else {
@@ -613,7 +566,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
             var id = $('#id_local').val();
             var local = $('#local').val();
             var descricao = $('#descricao').val();
-            var observacao = $('#observacao_local').val();
 
             $.ajax({
                 url: 'local_ocorrencia.php',
@@ -622,7 +574,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                     id: id,
                     local: local,
                     descricao: descricao,
-                    observacao: observacao,
                     carregarDados: 'nao',
                     qual: "local"
                 },
@@ -639,7 +590,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                     $('#id').val('');
                     $('#local').val('');
                     $('#descricao').val('');
-                    $('#observacao_local').val('');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
@@ -661,9 +611,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                     data: data,
                     columns: [{
                             "data": "ocorrencia"
-                        },
-                        {
-                            "data": "observacao"
                         },
                         {
                             "data": null,
@@ -718,7 +665,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
                                         $('#id_ocorrencia').val(data.id);
                                         $('#ocorrencia').val(data.ocorrencia);
-                                        $('#observacao_ocorrencia').val(data.observacao);
 
                                         $('#modal02').modal('show');
                                     } else {
@@ -797,7 +743,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
         $('#modal02').on('click', '#saveBtnOcorrencia', function() {
             var id = $('#id_ocorrencia').val();
             var ocorrencia = $('#ocorrencia').val();
-            var observacao = $('#observacao_ocorrencia').val();
 
             $.ajax({
                 url: 'local_ocorrencia.php',
@@ -805,7 +750,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                 data: {
                     id: id,
                     ocorrencia: ocorrencia,
-                    observacao: observacao,
                     carregarDados: 'nao',
                     qual: "ocorrencia"
                 },
@@ -821,7 +765,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
                     $('#id').val('');
                     $('#ocorrencia').val('');
-                    $('#observacao_ocorrencia').val('');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);

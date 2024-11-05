@@ -20,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'id' => $row['id'],
                     'subsecao' => $row['subsecao'],
                     'setor' => $row['setor'],
-                    'atividade' => $row['atividade'],
-                    'observacao' => $row['observacao']
+                    'atividade' => $row['atividade']
                 ];
             }
 
@@ -47,11 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $subsecao = $_REQUEST['subsecao'] ?? '';
         $setor_superior = $_REQUEST['setor_superior'] ?? '';
         $atividade = $_REQUEST['atividade'] ?? '';
-        $observacao = $_REQUEST['observacao'] ?? '';
 
         if (!empty($id)) {
 
-            $sql = "UPDATE subsecoes SET subsecao='$subsecao',setor_superior='$setor_superior',atividade='$atividade',observacao='$observacao' WHERE id = '$id' ";
+            $sql = "UPDATE subsecoes SET subsecao='$subsecao',setor_superior='$setor_superior',atividade='$atividade' WHERE id = '$id' ";
             $resultado = mysqli_query($con, $sql);
 
             if ($resultado) {
@@ -62,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
 
-            $sql = "INSERT INTO subsecoes(subsecao, setor_superior, atividade, observacao) VALUES ('$subsecao','$setor_superior','$atividade','$observacao')";
+            $sql = "INSERT INTO subsecoes(subsecao, setor_superior, atividade) VALUES ('$subsecao','$setor_superior','$atividade')";
 
             $resultado = mysqli_query($con, $sql);
 
@@ -92,8 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'id' => $row['id'],
                 'subsecao' => $row['subsecao'],
                 'setor' => $row['setor_superior'],
-                'atividade' => $row['atividade'],
-                'observacao' => $row['observacao']
+                'atividade' => $row['atividade']
             ];
 
 
@@ -127,7 +124,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -162,7 +159,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                                 <th>Subseção</th>
                                 <th>Setor Superior</th>
                                 <th>Atividades</th>
-                                <th>Observação</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -205,24 +201,11 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                                     ?>
                                 </select>
                             </div>
-
                         </div>
-
-
-
                         <div class="col-md-12">
                             <label for="atividade" class="form-label">Atividades:</label>
                             <textarea class="form-control" id="atividade" name="atividade" rows="3" max="50"></textarea>
                             <span style="font-size: 12px;">200 caracteres restantes</span> <!-- Exibe caracteres restantes -->
-                        </div>
-
-
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="observacao" class="form-label">Observação:</label>
-                                <textarea class="form-control" id="observacao" name="observacao" rows="3" max="200"></textarea>
-                                <div id="charCount" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
-                            </div>
                         </div>
                     </form>
                 </div>
@@ -253,20 +236,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
         $('#subsecao').val('');
         $('#setorsuperior').prop('selectedIndex', 0);
         $('#atividade').val('');
-        $('#observacao').val('');
-
-        const textarea = document.getElementById('observacao');
-        const charCount = document.getElementById('charCount');
-
-        textarea.addEventListener('input', function() {
-            const maxChars = 200;
-            if (textarea.value.length > maxChars) {
-                alert("Você ultrapassou o limite de 200 caracteres.");
-                textarea.value = textarea.value.substring(0, maxChars);
-            }
-            const remainingChars = maxChars - textarea.value.length;
-            charCount.textContent = `${remainingChars} caracteres restantes`;
-        });
 
         const subsecaoInput = document.getElementById('subsecao');
         const atividadeInput = document.getElementById('atividade');
@@ -315,9 +284,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                         },
                         {
                             "data": "atividade"
-                        },
-                        {
-                            "data": "observacao"
                         },
                         {
                             "data": null,
@@ -371,7 +337,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                                         $('#subsecao').val(data.subsecao);
                                         $('#setor_superior').val(data.setor);
                                         $('#atividade').val(data.atividade);
-                                        $('#observacao').val(data.observacao);
 
                                         $('#modal01').modal('show');
                                     } else {
@@ -450,7 +415,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
             var subsecao = $('#subsecao').val();
             var setor_superior = $('#setor_superior').val();
             var atividade = $('#atividade').val();
-            var observacao = $('#observacao').val();
 
             $.ajax({
                 url: 'subsecao.php',
@@ -460,7 +424,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                     subsecao: subsecao,
                     setor_superior: setor_superior,
                     atividade: atividade,
-                    observacao: observacao,
                     carregarDados: 'nao'
                 },
                 success: function(response) {
@@ -477,7 +440,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                     $('#subsecao').val('');
                     $('#setor_superior').val('');
                     $('#atividade').val('');
-                    $('#observacao').val('');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);

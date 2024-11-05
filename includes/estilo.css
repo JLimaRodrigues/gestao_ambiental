@@ -137,11 +137,14 @@ footer {
     height: auto; 
     min-height: 50px;
 }
-
+#evicastanheira,
+#evicastanheiraV,
+#eviimbauba,
+#eviimbaubaV,
+#evipaubrasil,
+#evipaubrasilV,
 #observacao,
-#observacaoV,
-#observacao_local,
-#observacao_ocorrencia {
+#observacaoV {
     height: auto; 
     min-height: 75px;
 }
@@ -158,6 +161,7 @@ footer {
 .info {
     margin: 5px 0;
     line-height: 0.8;
+    text-align: justify;
 }
 
 .legenda {
@@ -165,6 +169,12 @@ footer {
     background-color: #212529 !important;
 }
 
+.legenda-pequena {
+    font-size: 13px !important;
+}
+
 .remover-botao{
     color: red;
+    font-weight: bold;
+    font-size: 20px;
 }
