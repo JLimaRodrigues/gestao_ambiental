@@ -20,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             while ($row = mysqli_fetch_assoc($resultado)) {
                 $dados[] = [
                     'id' => $row['id'],
-                    'setor' => $row['setor'],
-                    'localizacao' => $row['localizacao']
+                    'setor' => $row['setor']
                 ];
             }
 
@@ -42,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $localizacao = $_REQUEST['localizacao'] ?? '';
         if (!empty($id)) {
 
-            $sql = "UPDATE setores SET setor='$setor',localizacao='$localizacao' WHERE id = '$id'";
+            $sql = "UPDATE setores SET setor='$setor' WHERE id = '$id'";
             $resultado = mysqli_query($con, $sql);
 
             if ($resultado) {
@@ -80,8 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $dados[] = [
                 'id' => $row['id'],
-                'setor' => $row['setor'],
-                'localizacao' => $row['localizacao']
+                'setor' => $row['setor']
             ];
 
 
@@ -136,7 +134,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         <div class="container-fluid">
             <div class="row justify-content-end">
                 <div class="col-md-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-dark" id="addBtnSetor">Cadastrar Setor</button>
+                    <button type="button" class="btn btn-dark" id="addBtnSetor">Cadastrar Setor/OM</button>
                 </div>
             </div>
             <br>
@@ -146,7 +144,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         <thead>
                             <tr>
                                 <th>Setor</th>
-                                <th>Localização</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -164,7 +161,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cadastrar Setor</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Cadastrar Setor/OM</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
@@ -172,13 +169,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         <input type="hidden" class="form-control" id="id" name="id">
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="setor" class="form-label">Setor:</label>
+                                <label for="setor" class="form-label">Setor/OM:</label>
                                 <input type="text" class="form-control" id="setor" name="setor">
-                                <span style="font-size: 12px;">30 caracteres restantes</span>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="localizacao" class="form-label">Localização:</label>
-                                <input type="text" class="form-control" id="localizacao" name="localizacao">
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
                         </div>
@@ -209,7 +201,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
         $('#id').val('');
         $('#setor').val('');
-        $('#localizacao').val('');
 
         $(document).ready(function() {
             document.getElementById("addBtnSetor").addEventListener("click", function() {
@@ -220,7 +211,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         });
 
         const setorInput = document.getElementById('setor');
-        const localizacaoInput = document.getElementById('localizacao');
         const maxChars = 30;
 
         function enforceMaxLength(input) {
@@ -237,7 +227,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         }
 
         enforceMaxLength(setorInput);
-        enforceMaxLength(localizacaoInput);
 
         async function carregarDatatable(data) {
             if (datatable) {
@@ -250,9 +239,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     data: data,
                     columns: [{
                             "data": "setor"
-                        },
-                        {
-                            "data": "localizacao"
                         },
                         {
                             "data": null,
@@ -304,7 +290,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
                                         $('#id').val(data.id);
                                         $('#setor').val(data.setor);
-                                        $('#localizacao').val(data.localizacao);
 
                                         $('#modal01').modal('show');
                                     } else {
@@ -381,7 +366,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         $('#modal01').on('click', '#saveBtn', function() {
             var id = $('#id').val();
             var setor = $('#setor').val();
-            var localizacao = $('#localizacao').val();
 
             $.ajax({
                 url: 'setores.php',
@@ -389,7 +373,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                 data: {
                     id: id,
                     setor: setor,
-                    localizacao: localizacao,
                     carregarDados: 'nao'
                 },
                 success: function(response) {
