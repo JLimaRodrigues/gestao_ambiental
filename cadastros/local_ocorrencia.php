@@ -234,7 +234,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="/includes/estilo.css" rel="stylesheet">
 
-    <title>Local/Ocorrência</title>
+    <title>Local/Evidência</title>
 
 </head>
 
@@ -267,17 +267,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                     </table>
                 </div>
 
-                <!-- Tabela de Ocorrências -->
+                <!-- Tabela de Evidência -->
                 <div class="col-md-6 mt-3">
                     <div class="row justify-content-end mb-2">
                         <div class="col-auto">
-                            <button type="button" class="btn btn-dark" id="addBtnOcorrencia">Cadastrar Ocorrência</button>
+                            <button type="button" class="btn btn-dark" id="addBtnOcorrencia">Cadastrar Evidência</button>
                         </div>
                     </div>
                     <table width="100%" id="tabela_ocorrencia" class="table table-striped tabela">
                         <thead>
                             <tr>
-                                <th>Ocorrência</th>
+                                <th>Evidência</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -330,7 +330,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Cadastrar Ocorrência</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Cadastrar Evidência</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
                 </div>
                 <div class="modal-body">
@@ -339,7 +339,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                         <input type="hidden" class="form-control" id="id_ocorrencia" name="id_ocorrencia">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label for="ocorrencia" class="form-label">Ocorrência:</label>
+                                <label for="ocorrencia" class="form-label">Evidência:</label>
                                 <input type="text" class="form-control" id="ocorrencia" name="ocorrencia" value="">
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>

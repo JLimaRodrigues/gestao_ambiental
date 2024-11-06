@@ -285,7 +285,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="subsecao" class="form-label"><strong>Subsecao:</strong></label>
+                                <label for="subsecao" class="form-label"><strong>Subseção:</strong></label>
                                 <select class="form-select ml-2" id="subsecao" name="subsecao" required>
                                     <option value="" disabled selected>Selecione uma subseção...</option>
                                     <?php
@@ -316,9 +316,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="ocorrencia" class="form-label"><strong>Ocorrência:</strong></label>
+                                <label for="ocorrencia" class="form-label"><strong>Evidência:</strong></label>
                                 <select class="form-select ml-2" id="ocorrencia" name="ocorrencia" required>
-                                    <option value="" disabled selected>Selecione uma ocorrência...</option>
+                                    <option value="" disabled selected>Selecione uma evidência...</option>
                                     <?php
                                     $con = connect_local_mysqli('gestao_ambiental');
                                     $sql = "SELECT * FROM ocorrencia";
@@ -341,12 +341,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="castanheira" class="form-label"><strong>Lista Castanheira:</strong></label>
-                                <select class="form-select ml-2" id="castanheira" name="castanheira" required>
+                                <label for="imbauba" class="form-label"><strong>Lista Imbaúba:</strong></label>
+                                <select class="form-select ml-2" id="imbauba" name="imbauba" required>
                                     <option value="" disabled selected>Selecione um item...</option>
                                     <?php
                                     $con = connect_local_mysqli('gestao_ambiental');
-                                    $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
+                                    $sql = "SELECT * FROM lista_imbauba ORDER BY 2 ASC";
                                     $resultado = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($resultado)) {
                                         echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
@@ -355,12 +355,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 </select>
                             </div>
                             <div class="col-md-4">
-                                <label for="imbauba" class="form-label"><strong>Lista Imbaúba:</strong></label>
-                                <select class="form-select ml-2" id="imbauba" name="imbauba" required>
+                                <label for="castanheira" class="form-label"><strong>Lista Castanheira:</strong></label>
+                                <select class="form-select ml-2" id="castanheira" name="castanheira" required>
                                     <option value="" disabled selected>Selecione um item...</option>
                                     <?php
                                     $con = connect_local_mysqli('gestao_ambiental');
-                                    $sql = "SELECT * FROM lista_imbauba ORDER BY 2 ASC";
+                                    $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
                                     $resultado = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($resultado)) {
                                         echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
@@ -386,15 +386,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="evicastanheira" class="form-label"><strong>Evidência Castanheira:</strong></label>
-                                <textarea class="form-control" id="evicastanheira" name="evicastanheira" rows="3" max="200"></textarea>
-                                <div id="charCount1" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
-                            </div>
-                            <div class="col-md-4">
                                 <label for="eviimbauba" class="form-label"><strong>Evidência Imbaúba:</strong></label>
                                 <textarea class="form-control" id="eviimbauba" name="eviimbauba" rows="3" max="200"></textarea>
                                 <div id="charCount2" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                             </div>
+
+                            <div class="col-md-4">
+                                <label for="evicastanheira" class="form-label"><strong>Evidência Castanheira:</strong></label>
+                                <textarea class="form-control" id="evicastanheira" name="evicastanheira" rows="3" max="200"></textarea>
+                                <div id="charCount1" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
+                            </div>
+
                             <div class="col-md-4">
                                 <label for="evipaubrasil" class="form-label"><strong>Evidência Pau Brasil:</strong></label>
                                 <textarea class="form-control" id="evipaubrasil" name="evipaubrasil" rows="3" max="200"></textarea>
@@ -403,7 +405,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         </div>
 
                         <div class="mb-3">
-                            <label for="observacao" class="form-label"><strong>Observação:</strong></label>
+                            <label for="observacao" class="form-label"><strong>Ação Corretiva:</strong></label>
                             <textarea class="form-control" id="observacao" name="observacao" rows="3" max="200"></textarea>
                             <div id="charCount" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                         </div>
@@ -483,9 +485,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <label for="ocorrenciaV" class="form-label"><strong>Ocorrência:</strong></label>
+                            <label for="ocorrenciaV" class="form-label"><strong>Evidência:</strong></label>
                             <select class="form-select ml-2" id="ocorrenciaV" name="ocorrenciaV" required disabled>
-                                <option value="" disabled selected>Selecione uma ocorrência...</option>
+                                <option value="" disabled selected>Selecione uma evidência...</option>
                                 <?php
                                 $con = connect_local_mysqli('gestao_ambiental');
                                 $sql = "SELECT * FROM ocorrencia";
@@ -508,20 +510,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-4">
-                            <label for="castanheiraV" class="form-label"><strong>Lista Castanheira:</strong></label>
-                            <select class="form-select ml-2" id="castanheiraV" name="castanheiraV" required disabled>
-                                <option value="" disabled selected>Selecione um item...</option>
-                                <?php
-                                $con = connect_local_mysqli('gestao_ambiental');
-                                $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
-                                $resultado = mysqli_query($con, $sql);
-                                while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
                             <label for="imbaubaV" class="form-label"><strong>Lista Imbaúba:</strong></label>
                             <select class="form-select ml-2" id="imbaubaV" name="imbaubaV" required disabled>
                                 <option value="" disabled selected>Selecione um item...</option>
@@ -535,6 +523,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 ?>
                             </select>
                         </div>
+                        <div class="col-md-4">
+                            <label for="castanheiraV" class="form-label"><strong>Lista Castanheira:</strong></label>
+                            <select class="form-select ml-2" id="castanheiraV" name="castanheiraV" required disabled>
+                                <option value="" disabled selected>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
                         <div class="col-md-4">
                             <label for="paubrasilV" class="form-label"><strong>Lista Pau Brasil:</strong></label>
                             <select class="form-select ml-2" id="paubrasilV" name="paubrasilV" required disabled>
@@ -551,13 +554,14 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label for="evicastanheiraV" class="form-label"><strong>Evidência Castanheira:</strong></label>
-                                <textarea class="form-control" id="evicastanheiraV" name="evicastanheiraV" rows="3" max="200" disabled></textarea>
-                            </div>
-                            <div class="col-md-4">
                                 <label for="eviimbaubaV" class="form-label"><strong>Evidência Imbaúba:</strong></label>
                                 <textarea class="form-control" id="eviimbaubaV" name="eviimbaubaV" rows="3" max="200" disabled></textarea>
                             </div>
+                            <div class="col-md-4">
+                                <label for="evicastanheiraV" class="form-label"><strong>Evidência Castanheira:</strong></label>
+                                <textarea class="form-control" id="evicastanheiraV" name="evicastanheiraV" rows="3" max="200" disabled></textarea>
+                            </div>
+
                             <div class="col-md-4">
                                 <label for="evipaubrasilV" class="form-label"><strong>Evidência Pau Brasil:</strong></label>
                                 <textarea class="form-control" id="evipaubrasilV" name="evipaubrasilV" rows="3" max="200" disabled></textarea>
@@ -565,7 +569,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="observacaoV" class="form-label"><strong>Observação:</strong></label>
+                        <label for="observacaoV" class="form-label"><strong>Ação Corretiva:</strong></label>
                         <textarea class="form-control" id="observacaoV" name="observacaoV" rows="3" max="200" disabled></textarea>
                     </div>
                 </div>
