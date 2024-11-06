@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
 
-            $sql = "INSERT INTO SETORES (setor, localizacao) VALUES ('$setor','$localizacao')";
+            $sql = "INSERT INTO SETORES (setor) VALUES ('$setor')";
             $resultado = mysqli_query($con, $sql);
 
             if ($resultado) {
@@ -158,7 +158,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 
     <!-- Modal -->
     <div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cadastrar Setor/OM</h5>
@@ -168,7 +168,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                     <form>
                         <input type="hidden" class="form-control" id="id" name="id">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="setor" class="form-label">Setor/OM:</label>
                                 <input type="text" class="form-control" id="setor" name="setor">
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
