@@ -200,6 +200,5 @@ CREATE TABLE `subsecoes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `subsecao` varchar(30) NOT NULL,
   `setor_superior` int(11) NOT NULL,
-  `atividade` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

@@ -19,8 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $dados[] = [
                     'id' => $row['id'],
                     'subsecao' => $row['subsecao'],
-                    'setor' => $row['setor'],
-                    'atividade' => $row['atividade']
+                    'setor' => $row['setor']
                 ];
             }
 
@@ -45,11 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $_REQUEST['id'] ?? '';
         $subsecao = $_REQUEST['subsecao'] ?? '';
         $setor_superior = $_REQUEST['setor_superior'] ?? '';
-        $atividade = $_REQUEST['atividade'] ?? '';
 
         if (!empty($id)) {
 
-            $sql = "UPDATE subsecoes SET subsecao='$subsecao',setor_superior='$setor_superior',atividade='$atividade' WHERE id = '$id' ";
+            $sql = "UPDATE subsecoes SET subsecao='$subsecao',setor_superior='$setor_superior' WHERE id = '$id' ";
             $resultado = mysqli_query($con, $sql);
 
             if ($resultado) {
@@ -60,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } else {
 
-            $sql = "INSERT INTO subsecoes(subsecao, setor_superior, atividade) VALUES ('$subsecao','$setor_superior','$atividade')";
+            $sql = "INSERT INTO subsecoes(subsecao, setor_superior) VALUES ('$subsecao','$setor_superior')";
 
             $resultado = mysqli_query($con, $sql);
 
@@ -89,10 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $dados[] = [
                 'id' => $row['id'],
                 'subsecao' => $row['subsecao'],
-                'setor' => $row['setor_superior'],
-                'atividade' => $row['atividade']
+                'setor' => $row['setor_superior']
             ];
-
 
             if (empty($dados)) {
                 echo json_encode(["error" => "Consulta não retornou dados."]);
@@ -158,7 +154,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                             <tr>
                                 <th>Subseção</th>
                                 <th>Setor Superior</th>
-                                <th>Atividades</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -171,7 +166,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
         </div>
     </div><!-- Modal -->
     <div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cadastrar Subseção</h5>
@@ -182,30 +177,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                     <form>
                         <input type="hidden" class="form-control" id="id" name="id">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="subsecao" class="form-label">Subseção:</label>
                                 <input type="text" class="form-control" id="subsecao" name="subsecao" value="">
-                                <span style="font-size: 12px;">30 caracteres restantes</span> <!-- Exibe caracteres restantes -->
+                                <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
-                            <div class="col-md-6">
-                                <label for="setor_superior" class="form-label">Setor Superior:</label>
-                                <select class="form-select ml-2" id="setor_superior" name="setor_superior" required>
-                                    <option value="" disabled selected>Selecione um setor superior...</option>
-                                    <?php
-                                    $con = connect_local_mysqli('gestao_ambiental');
-                                    $sql = "SELECT * FROM setores";
-                                    $resultado = mysqli_query($con, $sql);
-                                    while ($row = mysqli_fetch_assoc($resultado)) {
-                                        echo "<option value='" . $row['id'] . "'>" . $row['setor'] . "</option>";
-                                    }
-                                    ?>
-                                </select>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="setor_superior" class="form-label">Setor Superior:</label>
+                                    <select class="form-select ml-2" id="setor_superior" name="setor_superior" required>
+                                        <option value="" disabled selected>Selecione um setor superior...</option>
+                                        <?php
+                                        $con = connect_local_mysqli('gestao_ambiental');
+                                        $sql = "SELECT * FROM setores";
+                                        $resultado = mysqli_query($con, $sql);
+                                        while ($row = mysqli_fetch_assoc($resultado)) {
+                                            echo "<option value='" . $row['id'] . "'>" . $row['setor'] . "</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="atividade" class="form-label">Atividades:</label>
-                            <textarea class="form-control" id="atividade" name="atividade" rows="3" max="50"></textarea>
-                            <span style="font-size: 12px;">200 caracteres restantes</span> <!-- Exibe caracteres restantes -->
                         </div>
                     </form>
                 </div>
@@ -235,10 +227,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
         $('#id').val('');
         $('#subsecao').val('');
         $('#setorsuperior').prop('selectedIndex', 0);
-        $('#atividade').val('');
 
         const subsecaoInput = document.getElementById('subsecao');
-        const atividadeInput = document.getElementById('atividade');
 
         function enforceMaxLength(inputElement, maxChars, spanElement) {
             inputElement.addEventListener('input', function() {
@@ -252,11 +242,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
         }
 
         const subsecaoCharCount = subsecaoInput.nextElementSibling;
-        const atividadeCharCount = atividadeInput.nextElementSibling;
 
         enforceMaxLength(subsecaoInput, 30, subsecaoCharCount);
-        enforceMaxLength(atividadeInput, 200, atividadeCharCount);
-
 
         $(document).ready(function() {
 
@@ -281,9 +268,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                         },
                         {
                             "data": "setor"
-                        },
-                        {
-                            "data": "atividade"
                         },
                         {
                             "data": null,
@@ -336,7 +320,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                                         $('#id').val(data.id);
                                         $('#subsecao').val(data.subsecao);
                                         $('#setor_superior').val(data.setor);
-                                        $('#atividade').val(data.atividade);
 
                                         $('#modal01').modal('show');
                                     } else {
@@ -414,7 +397,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
             var id = $('#id').val();
             var subsecao = $('#subsecao').val();
             var setor_superior = $('#setor_superior').val();
-            var atividade = $('#atividade').val();
 
             $.ajax({
                 url: 'subsecao.php',
@@ -423,7 +405,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                     id: id,
                     subsecao: subsecao,
                     setor_superior: setor_superior,
-                    atividade: atividade,
                     carregarDados: 'nao'
                 },
                 success: function(response) {
@@ -439,7 +420,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                     $('#id').val('');
                     $('#subsecao').val('');
                     $('#setor_superior').val('');
-                    $('#atividade').val('');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
