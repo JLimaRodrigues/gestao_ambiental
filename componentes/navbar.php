@@ -25,6 +25,16 @@
                         <li><a class="dropdown-item" href="/cadastros/local_ocorrencia.php">Local/Ocorrência</a></li>
                     </ul>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Listas
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="/cadastros/listas/castanheira.php">Castanheira</a></li>
+                        <li><a class="dropdown-item" href="/cadastros/listas/imbauba.php">Imbaúba</a></li>
+                        <li><a class="dropdown-item" href="/cadastros/listas/paubrasil.php">Pau Brasil</a></li>
+                    </ul>
+                </li>
                 <!-- Botão de Backup -->
                 <li class="nav-item">
                     <a class="nav-link btn btn-danger text-white fw-bold" href="#" role="button" onclick="confirmBackup()">Backup</a>
