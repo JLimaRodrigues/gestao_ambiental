@@ -9,11 +9,8 @@ CREATE TABLE `fotos` (
   `observacao` varchar(200) NOT NULL,
   `conforme` varchar(1) NOT NULL,
   `lcastanheira` int(11) DEFAULT NULL,
-  `evicastanheira` varchar(200) DEFAULT NULL,
   `limbauba` int(11) DEFAULT NULL,
-  `eviimbauba` varchar(200) DEFAULT NULL,
   `lpaubrasil` int(11) DEFAULT NULL,
-  `evipaubrasil` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id_fotos`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -180,13 +177,12 @@ INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('28', '28'
 CREATE TABLE `local` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `local` varchar(30) NOT NULL,
-  `descricao` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 CREATE TABLE `ocorrencia` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ocorrencia` varchar(30) NOT NULL,
+  `ocorrencia` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

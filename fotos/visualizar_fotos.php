@@ -24,6 +24,9 @@ $subsecao = '';
 $local = '';
 $ocorrencia = '';
 $conforme = '';
+$limbauba = '';
+$lcastanheira = '';
+$lpaubrasil = '';
 
 $url_base = "http://gestaoambiental.com.br/fotos/registrar_fotos.php?foto=";
 
@@ -37,6 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $local = $_REQUEST['local'] ?? '';
     $ocorrencia = $_REQUEST['ocorrencia'] ?? '';
     $conforme = $_REQUEST['conforme'] ?? '';
+    $limbauba = $_REQUEST['imbauba'] ?? '';
+    $lcastanheira = $_REQUEST['castanheira'] ?? '';
+    $lpaubrasil = $_REQUEST['paubrasil'] ?? '';
 }
 
 ?>
@@ -138,20 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
 
                     <div class="row w-100 justify-content-center align-items-end">
-                        <div class="form-group col-md-2">
-                            <label for="castanheira" class="form-label"><strong>Castanheira:</strong></label>
-                            <select class="form-select ml-2" id="castanheira" name="castanheira" data-placeholder="Selecione um item...">
-                                <option value="" disabled <?= empty($castanheira) ? 'selected' : '' ?>>Selecione um item...</option>
-                                <?php
-                                $con = connect_local_mysqli('gestao_ambiental');
-                                $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
-                                $resultado = mysqli_query($con, $sql);
-                                while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
+
                         <div class="form-group col-md-2">
                             <label for="imbauba" class="form-label"><strong>Imbaúba:</strong></label>
                             <select class="form-select ml-2" id="imbauba" name="imbauba" data-placeholder="Selecione um item...">
@@ -166,8 +159,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ?>
                             </select>
                         </div>
+
                         <div class="form-group col-md-2">
-                            <label for="paubrasil" class="form-label"><strong>Pau Brasil:</strong></label>
+                            <label for="castanheira" class="form-label"><strong>Castanheira:</strong></label>
+                            <select class="form-select ml-2" id="castanheira" name="castanheira" data-placeholder="Selecione um item...">
+                                <option value="" disabled <?= empty($castanheira) ? 'selected' : '' ?>>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group col-md-2">
+                            <label for="paubrasil" class="form-label"><strong>Pau-brasil:</strong></label>
                             <select class="form-select ml-2" id="paubrasil" name="paubrasil" data-placeholder="Selecione um item...">
                                 <option value="" disabled <?= empty($paubrasil) ? 'selected' : '' ?>>Selecione um item...</option>
                                 <?php
@@ -197,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="row justify-content-center align-items-center">
             <div class="col-md-12">
                 <?php
-                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme) {
+                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme || $limbauba || $lcastanheira || $lpaubrasil) {
 
                     $filtroData = '';
                     $filtroSetor = '';
@@ -205,6 +214,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $filtroLocal = '';
                     $filtroOcorrencia = '';
                     $filtroConforme = '';
+                    $filtroImbauba = '';
+                    $filtroCastanheira = '';
+                    $filtroPauBrasil = '';
 
                     if ($datade && $dataate) {
                         $filtroData = " AND data BETWEEN '$datade' AND '$dataate'";
@@ -230,6 +242,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $filtroConforme = " AND conforme = '$conforme' ";
                     }
 
+                    if ($limbauba) {
+                        $filtroImbauba = " AND limbauba = '$limbauba' ";
+                    }
+
+                    if ($lcastanheira) {
+                        $filtroCastanheira = " AND lcastanheira = '$lcastanheira' ";
+                    }
+
+                    if ($lpaubrasil) {
+                        $filtroPauBrasil = " AND lpau$lpaubrasil = '$lpaubrasil' ";
+                    }
+
                     $sql = "SELECT nome_arquivo, 
                                 setor, 
                                 subsecao, 
@@ -238,11 +262,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 data, 
                                 conforme,
                                 lista_castanheira.item as item_cast,
-                                evicastanheira as desc_cast,
                                 lista_imbauba.item as item_imb,
-                                eviimbauba desc_imb,
                                 lista_pau_brasil.item as item_pau,
-                                evipaubrasil as desc_pau
+                                observacao
                             FROM fotos
                             LEFT JOIN setores on id_setor = setores.id
                             LEFT JOIN subsecoes on id_subsecao = subsecoes.id
@@ -257,7 +279,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         . $filtroSubsecao
                         . $filtroLocal
                         . $filtroOcorrencia
-                        . $filtroConforme;
+                        . $filtroConforme
+                        . $filtroImbauba
+                        . $filtroCastanheira
+                        . $filtroPauBrasil;
 
                     $resultado = mysqli_query($con, $sql);
 
@@ -272,7 +297,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         . $filtroSubsecao
                         . $filtroLocal
                         . $filtroOcorrencia
-                        . $filtroConforme;
+                        . $filtroConforme
+                        . $filtroImbauba
+                        . $filtroCastanheira
+                        . $filtroPauBrasil;
                     $resultadoT = mysqli_query($con, $sqlT);
 
                     if (!$resultadoT) {
@@ -309,6 +337,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $castanheira = [];
                     $imbauba = [];
                     $paubrasil = [];
+                    $observacao = [];
 
                     if ($resultado != null) {
                         while ($row = mysqli_fetch_assoc($resultado)) {
@@ -336,7 +365,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             } else {
                                 $subsecao[] = '';
                             }
-
 
                             if (isset($row['local'])) {
                                 $local[] = $row['local'];
@@ -372,21 +400,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             }
 
                             if (isset($row['item_cast'])) {
-                                $castanheira[] = $row['item_cast'] . (!empty($row['desc_cast']) ? ' - ' . $row['desc_cast'] : '');
+                                $castanheira[] = "Item " . $row['item_cast'];
                             } else {
                                 $castanheira[] = '';
                             }
 
                             if (isset($row['item_imb'])) {
-                                $imbauba[] = $row['item_imb'] . (!empty($row['desc_imb']) ? ' - ' . $row['desc_imb'] : '');
+                                $imbauba[] = "Item " . $row['item_imb'];
                             } else {
                                 $imbauba[] = '';
                             }
 
                             if (isset($row['item_pau'])) {
-                                $paubrasil[] = $row['item_pau'] . (!empty($row['desc_pau']) ? ' - ' . $row['desc_pau'] : '');
+                                $paubrasil[] = "Item " . $row['item_pau'] . (!empty($row['desc_pau']) ? ' - ' . $row['desc_pau'] : '');
                             } else {
                                 $paubrasil[] = '';
+                            }
+
+                            if (isset($row['observacao'])) {
+                                $observacao[] = $row['observacao'];
+                            } else {
+                                $observacao[] = '';
                             }
                         }
                     }
@@ -432,21 +466,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             echo '<p class="info local" style="margin: 5px 0;"><b>Local:</b> ' . $local[$contador] . '</p>';
                         }
 
-                        if (!empty($ocorrencia[$contador]) && $ocorrencia[$contador] !== '-') {
-                            echo '<p class="info ocorrencia" style="margin: 5px 0;"><b>Ocorrência:</b> ' . $ocorrencia[$contador] . '</p>';
+                        if (!empty($imbauba[$contador]) && $imbauba[$contador] !== '-') {
+                            echo '<p class="info imbauba" style="margin: 5px 0;"><b>Imbaúba:</b> ' . $imbauba[$contador] . '</p>';
                         }
 
                         if (!empty($castanheira[$contador]) && $castanheira[$contador] !== '-') {
-                            echo '<p class="info castanheira" style="margin: 5px 0;"><b>L.Castanheira:</b> ' . $castanheira[$contador] . '</p>';
-                        }
-
-                        if (!empty($imbauba[$contador]) && $imbauba[$contador] !== '-') {
-                            echo '<p class="info imbauba" style="margin: 5px 0;"><b>L.Imbaúba:</b> ' . $imbauba[$contador] . '</p>';
+                            echo '<p class="info castanheira" style="margin: 5px 0;"><b>Castanheira:</b> ' . $castanheira[$contador] . '</p>';
                         }
 
                         if (!empty($paubrasil[$contador]) && $paubrasil[$contador] !== '-') {
-                            echo '<p class="info paubrasil" style="margin: 5px 0;"><b>L.Pau Brasil:</b> ' . $paubrasil[$contador] . '</p>';
+                            echo '<p class="info paubrasil" style="margin: 5px 0;"><b>Pau Brasil:</b> ' . $paubrasil[$contador] . '</p>';
                         }
+
+                        if (!empty($ocorrencia[$contador]) && $ocorrencia[$contador] !== '-') {
+                            echo '<p class="info ocorrencia" style="margin: 5px 0;"><b>Evidência:</b> ' . $ocorrencia[$contador] . '</p>';
+                        }
+
+                        if (!empty($observacao[$contador]) && $observacao[$contador] !== '-') {
+                            echo '<p class="info observacao" style="margin: 5px 0;"><b>Ação corretiva:</b> ' . $observacao[$contador] . '</p>';
+                        }
+
 
 
                         echo '</div>';

@@ -35,11 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'observacao' => $row['observacao'],
                     'conforme' => $row['conforme'],
                     'lcastanheira' => $row['lcastanheira'],
-                    'evicastanheira' => $row['evicastanheira'],
-                    'limbauba' => $row['limbauba'],
-                    'eviimbauba' => $row['eviimbauba'],
                     'lpaubrasil' => $row['lpaubrasil'],
-                    'evipaubrasil' => $row['evipaubrasil']
+                    'limbauba' => $row['limbauba']
                 ];
             }
 
@@ -66,11 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $castanheira = $_REQUEST['castanheira'] ?? '';
         $imbauba = $_REQUEST['imbauba'] ?? '';
         $paubrasil = $_REQUEST['paubrasil'] ?? '';
-        $evicastanheira = $_REQUEST['evicastanheira'] ?? '';
-        $eviimbauba = $_REQUEST['eviimbauba'] ?? '';
-        $evipaubrasil = $_REQUEST['evipaubrasil'] ?? '';
-
-
+    
         $dataFormatada = date('dmY', strtotime($data));
         $timestamp = time();
         $nome_arquivo = "SGA_{$dataFormatada}_{$timestamp}.jpg";
@@ -83,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Move o arquivo para o novo diretório com o novo nome
             if (move_uploaded_file($temp_path, $destination_path)) {
                 // Insere novo registro no banco de dados
-                $sql = "INSERT INTO fotos (nome_arquivo, data, id_setor, id_subsecao, id_local, id_ocorrencia, observacao, conforme, lcastanheira, evicastanheira, limbauba, eviimbauba, lpaubrasil, evipaubrasil) 
-                        VALUES ('$nome_arquivo', '$data', '$id_setor', '$id_subsecao', '$id_local', '$id_ocorrencia', '$observacao', '$conforme', '$castanheira', '$evicastanheira', '$imbauba', '$eviimbauba', '$paubrasil', '$evipaubrasil')";
+                $sql = "INSERT INTO fotos (nome_arquivo, data, id_setor, id_subsecao, id_local, id_ocorrencia, observacao, conforme, lcastanheira, limbauba, lpaubrasil) 
+                        VALUES ('$nome_arquivo', '$data', '$id_setor', '$id_subsecao', '$id_local', '$id_ocorrencia', '$observacao', '$conforme', '$castanheira', '$imbauba', '$paubrasil')";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -134,11 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'data' => $row['data'],
                 'conforme' => $row['conforme'],
                 'lcastanheira' => $row['lcastanheira'],
-                'evicastanheira' => $row['evicastanheira'],
                 'limbauba' => $row['limbauba'],
-                'eviimbauba' => $row['eviimbauba'],
-                'lpaubrasil' => $row['lpaubrasil'],
-                'evipaubrasil' => $row['evipaubrasil']
+                'lpaubrasil' => $row['lpaubrasil']
             ];
 
 
@@ -186,7 +176,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 if (isset($_GET['foto'])) {
-    define('FOTOS_DIR', 'E:/armazenamento_fotos/');
+    define('FOTOS_DIR', 'D:/fotos_gestao_ambiental');
     $foto = basename($_GET['foto']);
     $caminhoCompleto = FOTOS_DIR . $foto;
 
@@ -335,7 +325,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                     <option value="" disabled selected>Selecione uma opção...</option>
                                     <option value="S">Sim</option>
                                     <option value="N">Não</option>
-                                    <option value="P">Parcial</option>
                                 </select>
                             </div>
                         </div>
@@ -381,26 +370,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                     }
                                     ?>
                                 </select>
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="eviimbauba" class="form-label"><strong>Evidência Imbaúba:</strong></label>
-                                <textarea class="form-control" id="eviimbauba" name="eviimbauba" rows="3" max="200"></textarea>
-                                <div id="charCount2" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="evicastanheira" class="form-label"><strong>Evidência Castanheira:</strong></label>
-                                <textarea class="form-control" id="evicastanheira" name="evicastanheira" rows="3" max="200"></textarea>
-                                <div id="charCount1" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="evipaubrasil" class="form-label"><strong>Evidência Pau Brasil:</strong></label>
-                                <textarea class="form-control" id="evipaubrasil" name="evipaubrasil" rows="3" max="200"></textarea>
-                                <div id="charCount3" class="text-end" style="font-size: 12px;">200 caracteres restantes</div>
                             </div>
                         </div>
 
@@ -504,7 +473,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 <option value="" disabled selected>Selecione uma opção...</option>
                                 <option value="S">Sim</option>
                                 <option value="N">Não</option>
-                                <option value="P">Parcial</option>
                             </select>
                         </div>
                     </div>
@@ -551,21 +519,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                 }
                                 ?>
                             </select>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <label for="eviimbaubaV" class="form-label"><strong>Evidência Imbaúba:</strong></label>
-                                <textarea class="form-control" id="eviimbaubaV" name="eviimbaubaV" rows="3" max="200" disabled></textarea>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="evicastanheiraV" class="form-label"><strong>Evidência Castanheira:</strong></label>
-                                <textarea class="form-control" id="evicastanheiraV" name="evicastanheiraV" rows="3" max="200" disabled></textarea>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="evipaubrasilV" class="form-label"><strong>Evidência Pau Brasil:</strong></label>
-                                <textarea class="form-control" id="evipaubrasilV" name="evipaubrasilV" rows="3" max="200" disabled></textarea>
-                            </div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -623,13 +576,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
         $('#castanheira').val('');
         $('#imbauba').val('');
         $('#paubrasil').val('');
-        $('#evicastanheira').val('');
-        $('#eviimbauba').val('');
-        $('#evipaubrasil').val('');
-
-        const evicastanheira = document.getElementById('evicastanheira');
-        const eviimbauba = document.getElementById('eviimbauba');
-        const evipaubrasil = document.getElementById('evipaubrasil');
+        
         const observacao = document.getElementById('observacao');
         const maxChars = 200;
 
@@ -646,9 +593,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             });
         }
 
-        enforceMaxLength(evicastanheira);
-        enforceMaxLength(eviimbauba);
-        enforceMaxLength(evipaubrasil);
         enforceMaxLength(observacao);
 
         $(document).ready(function() {
@@ -799,9 +743,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                                         $('#castanheiraV').val(data.lcastanheira);
                                         $('#imbaubaV').val(data.limbauba);
                                         $('#paubrasilV').val(data.lpaubrasil);
-                                        $('#evicastanheiraV').val(data.evicastanheira);
-                                        $('#eviimbaubaV').val(data.eviimbauba);
-                                        $('#evipaubrasilV').val(data.evipaubrasil);
 
                                         $('#modal02').modal('show');
                                     } else {
@@ -889,9 +830,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             var castanheira = $('#castanheira').val();
             var imbauba = $('#imbauba').val();
             var paubrasil = $('#paubrasil').val();
-            var evicastanheira = $('#evicastanheira').val();
-            var eviimbauba = $('#eviimbauba').val();
-            var evipaubrasil = $('#evipaubrasil').val();
 
             formData.append('imagem', fileInput);
             formData.append('conforme', conforme);
@@ -904,9 +842,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
             formData.append('castanheira', castanheira);
             formData.append('paubrasil', paubrasil);
             formData.append('imbauba', imbauba);
-            formData.append('evicastanheira', evicastanheira);
-            formData.append('eviimbauba', eviimbauba);
-            formData.append('evipaubrasil', evipaubrasil);
             formData.append('carregarDados', 'nao');
 
             $.ajax({

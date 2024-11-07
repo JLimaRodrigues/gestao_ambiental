@@ -13,9 +13,9 @@ Adicione o seguinte código ao final do arquivo:
 
 ```apache
 <VirtualHost *:80>
-    DocumentRoot "E:/xampp/htdocs/gestao_ambiental"
+    DocumentRoot "D:/fotos_gestao_ambiental"
     ServerName gestaoambiental.com.br
-    <Directory "E:/xampp/htdocs/gestao_ambiental">
+    <Directory "D:/fotos_gestao_ambiental">
         Options Indexes FollowSymLinks
         AllowOverride All
         Require all granted

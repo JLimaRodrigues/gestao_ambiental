@@ -178,13 +178,13 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
                         <input type="hidden" class="form-control" id="id" name="id">
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <label for="subsecao" class="form-label">Subseção:</label>
+                                <label for="subsecao" class="form-label"><strong>Subseção:</strong></label>
                                 <input type="text" class="form-control" id="subsecao" name="subsecao" value="">
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="setor_superior" class="form-label">Setor Superior:</label>
+                                    <label for="setor_superior" class="form-label"><strong>Setor Superior:</strong></label>
                                     <select class="form-select ml-2" id="setor_superior" name="setor_superior" required>
                                         <option value="" disabled selected>Selecione um setor superior...</option>
                                         <?php

@@ -21,8 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 while ($row = mysqli_fetch_assoc($resultado)) {
                     $dados[] = [
                         'id' => $row['id'],
-                        'local' => $row['local'],
-                        'descricao' => $row['descricao']
+                        'local' => $row['local']
                     ];
                 }
 
@@ -40,11 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($carregarDados == 'nao') {
             $id = $_REQUEST['id'] ?? '';
             $local = $_REQUEST['local'] ?? '';
-            $descricao = $_REQUEST['descricao'] ?? '';
 
             if (!empty($id)) {
 
-                $sql = "UPDATE local SET LOCAL='$local', descricao='$descricao' WHERE id = '$id'";
+                $sql = "UPDATE local SET LOCAL='$local' WHERE id = '$id'";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -55,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             } else {
 
-                $sql = "INSERT INTO LOCAL (local, descricao) VALUES ('$local','$descricao')";
+                $sql = "INSERT INTO LOCAL (local) VALUES ('$local')";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -82,8 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $dados[] = [
                     'id' => $row['id'],
-                    'local' => $row['local'],
-                    'descricao' => $row['descricao']
+                    'local' => $row['local']
                 ];
 
 
@@ -257,7 +254,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                         <thead>
                             <tr>
                                 <th>Local</th>
-                                <th>Descrição</th>
                                 <th>Opções</th>
                             </tr>
                         </thead>
@@ -303,17 +299,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                     <form>
                         <input type="hidden" class="form-control" id="id_local" name="id_local">
                         <div class="row mb-3">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <label for="local" class="form-label">Local:</label>
                                 <input type="text" class="form-control" id="local" name="local" value="">
                                 <span style="font-size: 12px;">30 caracteres restantes</span>
                             </div>
 
-                            <div class="col-md-6">
-                                <label for="descricao" class="form-label">Descrição:</label>
-                                <input type="text" class="form-control" id="descricao" name="descricao">
-                                <span style="font-size: 12px;">30 caracteres restantes</span>
-                            </div>
                         </div>
                     </form>
                 </div>
@@ -341,7 +332,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                             <div class="col-md-12">
                                 <label for="ocorrencia" class="form-label">Evidência:</label>
                                 <input type="text" class="form-control" id="ocorrencia" name="ocorrencia" value="">
-                                <span style="font-size: 12px;">30 caracteres restantes</span>
+                                <span style="font-size: 12px;">100 caracteres restantes</span>
                             </div>
                         </div>
                     </form>
@@ -374,7 +365,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
         $('#id_local').val('');
         $('#local').val('');
-        $('#descricao').val('');
 
         $('#id_ocorrencia').val('');
         $('#ocorrencia').val('');
@@ -393,26 +383,38 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
         });
 
         const local = document.getElementById('local');
-        const descricao = document.getElementById('descricao');
-        const ocorrencia = document.getElementById('ocorrencia');
         const maxChars = 30;
-
+        
         function enforceMaxLength(input) {
             input.addEventListener('input', function() {
                 if (input.value.length > maxChars) {
-                    alert("Você ultrapassou o limite de 30 caracteres.");
+                    alert("Você ultrapassou o limite de 100 caracteres.");
                     input.value = input.value.substring(0, maxChars);
                 }
-
+                
                 const remainingChars = maxChars - input.value.length;
+                const charCountElement = input.nextElementSibling;
+                charCountElement.textContent = `${remainingChars} caracteres restantes`;
+            });
+        }
+        
+        const ocorrencia = document.getElementById('ocorrencia');
+        const maxChars1 = 100;
+        function enforceMaxLength1(input) {
+            input.addEventListener('input', function() {
+                if (input.value.length > maxChars1) {
+                    alert("Você ultrapassou o limite de 100 caracteres.");
+                    input.value = input.value.substring(0, maxChars1);
+                }
+
+                const remainingChars = maxChars1 - input.value.length;
                 const charCountElement = input.nextElementSibling;
                 charCountElement.textContent = `${remainingChars} caracteres restantes`;
             });
         }
 
         enforceMaxLength(local);
-        enforceMaxLength(descricao);
-        enforceMaxLength(ocorrencia);
+        enforceMaxLength1(ocorrencia);
 
 
         /*----------------FUNÇÕES PARA O CRUD LOCAL ----------------------------------*/
@@ -428,9 +430,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                     data: data,
                     columns: [{
                             "data": "local"
-                        },
-                        {
-                            "data": "descricao"
                         },
                         {
                             "data": null,
@@ -486,7 +485,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
                                         $('#id_local').val(data.id);
                                         $('#local').val(data.local);
-                                        $('#descricao').val(data.descricao);
 
                                         $('#modal01').modal('show');
                                     } else {
@@ -565,7 +563,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
         $('#modal01').on('click', '#saveBtnLocal', function() {
             var id = $('#id_local').val();
             var local = $('#local').val();
-            var descricao = $('#descricao').val();
 
             $.ajax({
                 url: 'local_ocorrencia.php',
@@ -573,7 +570,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
                 data: {
                     id: id,
                     local: local,
-                    descricao: descricao,
                     carregarDados: 'nao',
                     qual: "local"
                 },
@@ -589,7 +585,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php'; ?>
 
                     $('#id').val('');
                     $('#local').val('');
-                    $('#descricao').val('');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
