@@ -14,7 +14,9 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 require_once HOME_DIR . 'componentes/navbar.php';
+
 
 $con = connect_local_mysqli('gestao_ambiental');
 
@@ -28,6 +30,7 @@ $conforme = '';
 $limbauba = '';
 $lcastanheira = '';
 $lpaubrasil = '';
+$totalRegistros = '';
 
 $url_base = "http://gestaoambiental.com.br/fotos/registrar_fotos.php?foto=";
 
@@ -90,7 +93,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM setores ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['setor'] . "</option>";
+                                    $selected = ($row['id'] === $setor) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['setor'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -109,7 +113,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM subsecoes ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['subsecao'] . "</option>";
+                                    $selected = ($row['id'] === $subsecao) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['subsecao'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -123,7 +128,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM local ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['local'] . "</option>";
+                                    $selected = ($row['id'] === $local) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['local'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -137,7 +143,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM ocorrencia ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['ocorrencia'] . "</option>";
+                                    $selected = ($row['id'] === $ocorrencia) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['ocorrencia'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -158,7 +165,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM lista_imbauba ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    $selected = ($row['id'] === $limbauba) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -173,7 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM lista_castanheira ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    $selected = ($row['id'] === $lcastanheira) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -188,7 +197,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 $sql = "SELECT * FROM lista_pau_brasil ORDER BY 2 ASC";
                                 $resultado = mysqli_query($con, $sql);
                                 while ($row = mysqli_fetch_assoc($resultado)) {
-                                    echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    $selected = ($row['id'] === $lpaubrasil) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
                                 }
                                 ?>
                             </select>
@@ -255,7 +265,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
 
                     if ($lpaubrasil) {
-                        $filtroPauBrasil = " AND lpau$lpaubrasil = '$lpaubrasil' ";
+                        $filtroPauBrasil = " AND lpaubrasil = '$lpaubrasil' ";
                     }
 
                     $sql = "SELECT nome_arquivo, 
@@ -291,7 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $resultado = mysqli_query($con, $sql);
 
                     if (!$resultado) {
-                        $e = mysqli_error($conn);
+                        $e = mysqli_error($con);
                         echo "Erro ao executar a consulta de total: " . $e;
                     }
 
@@ -308,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $resultadoT = mysqli_query($con, $sqlT);
 
                     if (!$resultadoT) {
-                        $e = mysqli_error($conn);
+                        $e = mysqli_error($con);
                         echo "Erro ao executar a consulta de total: " . $e;
                     } else {
                         $total = mysqli_fetch_assoc($resultadoT);
@@ -539,6 +549,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $('#local').val("").trigger('change');
                 $('#ocorrencia').val("").trigger('change');
                 $('#conforme').val("").trigger('change');
+                $('#imbauba').val("").trigger('change');
+                $('#castanheira').val("").trigger('change');
+                $('#paubrasil').val("").trigger('change');
             });
 
             function restructureRows() {

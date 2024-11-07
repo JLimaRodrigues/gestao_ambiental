@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 if (isset($_GET['foto'])) {
-    define('FOTOS_DIR', 'C:/xampp/htdocs/gestao_ambiental/armazenamento');
+    define('FOTOS_DIR', 'C:/xampp/htdocs/gestao_ambiental/armazenamento/');
     $foto = basename($_GET['foto']);
     $caminhoCompleto = FOTOS_DIR . $foto;
 

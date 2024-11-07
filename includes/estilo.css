@@ -178,3 +178,58 @@ footer {
     font-weight: bold;
     font-size: 20px;
 }
+
+@media print {
+
+    .header {
+        padding-top: 0px;
+    }
+
+
+    .legenda {
+        color: black !important;
+        background-color: #d7b469 !important;
+        white-space: nowrap;
+    }
+
+    .legenda-pequena {
+        font-size: 16px !important;
+    }
+
+    .titulo {
+        font-size: 28px !important;
+        text-align: left !important;
+        margin-left: 65px !important;
+    }
+
+    .logo {
+        height: 100px;
+    }
+
+    .deletar-botao,
+    .remover-botao,
+    .registros,
+    .filtros {
+        display: none;
+    }
+
+    .card-container:nth-of-type(8n) {
+        page-break-after: always;
+    }
+
+    .card-container {
+        height: 50% !important;
+        padding: 5px;
+    }
+
+    .info {
+        margin: 3px 0 !important;
+        line-height: 1;
+        font-size: 12px !important;
+    }
+
+    .foto {
+        height: 290px !important;
+        width: 290px !important;
+    }
+}
