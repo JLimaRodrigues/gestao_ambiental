@@ -11,6 +11,79 @@
     <title>Visualizar fotos</title>
 
 </head>
+
+<style>
+    @media print {
+
+        .header {
+            padding-top: 0px;
+        }
+
+        .legenda {
+            color: black !important;
+            background-color: #d7b469 !important;
+            white-space: nowrap;
+        }
+
+        .legenda-pequena {
+            font-size: 16px !important;
+        }
+
+        .titulo {
+            font-size: 28px !important;
+            text-align: center !important;
+            /* Centraliza o título */
+            margin-left: 0 !important;
+            /* Remove a margem esquerda */
+            width: 100%;
+            /* Garante que o título ocupe toda a largura */
+        }
+
+        .logo {
+            position: absolute;
+            /* Garante o posicionamento absoluto */
+            right: 5px;
+            /* Posiciona o logo no canto superior direito */
+            top: 0px;
+            height: 75px;
+        }
+
+        .navbar,
+        .remover-botao,
+        .registros,
+        .filtros {
+            display: none;
+        }
+
+        .card-container {
+            height: auto !important;
+            /* Ajusta o tamanho para que todos tenham a mesma altura */
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            /* Distribui o conteúdo dentro do card */
+            page-break-inside: avoid;
+            /* Evita quebra de página dentro do card */
+        }
+
+        .card-container:nth-of-type(8n) {
+            page-break-after: always;
+        }
+
+        .info {
+            margin: 3px 0 !important;
+            line-height: 1;
+            font-size: 12px !important;
+        }
+
+        .foto {
+            height: 250px !important;
+            width: 250px !important;
+        }
+    }
+</style>
+
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
@@ -51,24 +124,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 ?>
 
-<style>
-
-</style>
-
 <body>
 
     &nbsp;
     <div id="main" class="container-fluid" style="margin:5px;padding: 0px;">
         <div class="header">
-            <div class="logo" style="position: absolute; top: 55px; left: 5px;">
-                <img class="logo" src="../includes/logo.ico" alt="Logo" style="max-height: 150px;">
-            </div>
             <div class="logo" style="position: absolute; top: 55px; right: 5px;">
                 <img class="logo" src="../includes/logo.ico" alt="Logo" style="max-height: 150px;">
             </div>
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-12 mb-2 text-center">
-                    <h1 class="titulo">Visualizar Fotos</h1>
+                    <h1 class="titulo">Relatório</h1>
                 </div>
             </div>
         </div>

@@ -276,7 +276,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
             } else {
                 datatable = $('#tabela').DataTable({
                     language: {
-                        "url": "/componentes/datatablesPortugues.json"
+                        "url": "/includes/datatablesPortugues.json"
                     },
                     data: data,
                     columns: [{

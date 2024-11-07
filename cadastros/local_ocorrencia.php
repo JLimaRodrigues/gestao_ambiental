@@ -426,7 +426,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
             } else {
                 datatable_local = $('#tabela_local').DataTable({
                     language: {
-                        "url": "/componentes/datatablesPortugues.json"
+                        "url": "/includes/datatablesPortugues.json"
                     },
                     data: data,
                     columns: [{
@@ -602,7 +602,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
             } else {
                 datatable_ocorrencia = $('#tabela_ocorrencia').DataTable({
                     language: {
-                        "url": "/componentes/datatablesPortugues.json"
+                        "url": "/includes/datatablesPortugues.json"
                     },
                     data: data,
                     columns: [{

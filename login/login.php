@@ -152,6 +152,7 @@ function login($login, $senha)
             $_SESSION['nome'] = mb_convert_case($resp['usuario'], MB_CASE_TITLE);
             $_SESSION['email'] = $resp['email'];
             $_SESSION['usuario'] = $resp['usuario'];
+            $_SESSION['admin'] = $resp['admin'];
             $_SESSION['timeout'] = strtotime('+2 hours');
 
             setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', ".gestaoambiental.com.br", false, true);

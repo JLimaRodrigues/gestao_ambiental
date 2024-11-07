@@ -85,6 +85,9 @@
                  <li class="nav-item">
                      <a class="nav-link active" aria-current="page" href="/login/logout.php">Logout</a>
                  </li>
+                 <li class="nav-item">
+                     <a class="nav-link active" aria-current="page" href="/info.php">Info</a>
+                 </li>
              </ul>
          </div>
      </div>
