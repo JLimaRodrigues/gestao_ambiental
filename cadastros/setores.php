@@ -1,6 +1,4 @@
 <?php
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
@@ -110,6 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
+require_once HOME_DIR . 'componentes/navbar.php';
 ?>
 
 <!DOCTYPE html>

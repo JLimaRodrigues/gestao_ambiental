@@ -2,3 +2,7 @@
 *.opt
 *.frm
 *.ibd
+
+
+# Ignora a pasta 'armazenamento'
+armazenamento/

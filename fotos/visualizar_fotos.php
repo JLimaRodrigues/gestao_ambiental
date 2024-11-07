@@ -14,6 +14,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
+require_once HOME_DIR . 'componentes/navbar.php';
 
 $con = connect_local_mysqli('gestao_ambiental');
 
@@ -56,7 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     &nbsp;
     <div id="main" class="container-fluid" style="margin:5px;padding: 0px;">
         <div class="header">
-            <div class="logo" style="position: absolute; top: 100px; right: 35px;">
+            <div class="logo" style="position: absolute; top: 55px; left: 5px;">
+                <img class="logo" src="../includes/logo.ico" alt="Logo" style="max-height: 150px;">
+            </div>
+            <div class="logo" style="position: absolute; top: 55px; right: 5px;">
                 <img class="logo" src="../includes/logo.ico" alt="Logo" style="max-height: 150px;">
             </div>
             <div class="row justify-content-center align-items-center">
@@ -174,7 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 ?>
                             </select>
                         </div>
-                        
+
                         <div class="form-group col-md-2">
                             <label for="paubrasil" class="form-label"><strong>Pau-brasil:</strong></label>
                             <select class="form-select ml-2" id="paubrasil" name="paubrasil" data-placeholder="Selecione um item...">

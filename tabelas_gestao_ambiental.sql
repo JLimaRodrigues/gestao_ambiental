@@ -1,3 +1,12 @@
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    admin VARCHAR(1) NOT NULL UNIQUE
+);
+
 CREATE TABLE `fotos` (
   `id_fotos` int(11) NOT NULL AUTO_INCREMENT,
   `nome_arquivo` varchar(50) NOT NULL,
@@ -21,6 +30,50 @@ CREATE TABLE `lista_castanheira` (
   `descricao` text DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `lista_imbauba` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item` varchar(10) NOT NULL,
+  `desc_item` varchar(255) NOT NULL,
+  `descricao` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `lista_pau_brasil` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item` varchar(10) NOT NULL,
+  `desc_item` varchar(255) NOT NULL,
+  `descricao` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `local` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `local` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `ocorrencia` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ocorrencia` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `setores` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `setor` varchar(30) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `subsecoes` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subsecao` varchar(30) NOT NULL,
+  `setor_superior` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `usuarios` (`id`, `nome`, `usuario`, `senha`, `email`, `admin`) VALUES
+(1, 'douglas', 'douglas', '$2y$10$JcW/MUHytTPl6/.XxVWTYuwYk7c7Qf9bawSa95twUkl7vqo3E9HXy', 'douglas.marcondes@gmail.com', 'S');
 
 INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('1', '01', 'Plano de Gestão Ambiental', 'Possui o Plano de Gestão Ambiental atualizado conforme IR 50-20.');
 INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('2', '02', 'Capacitação para Impactos Ambientais', 'Envolvidos em atividades de impacto ambiental negativo possuem capacitação específica.');
@@ -73,13 +126,6 @@ INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('48', '48
 INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('49', '49', 'Ventilação e Iluminação Natural', 'A OM prioriza o uso de ventilação e iluminação natural.');
 INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('50', '50', 'Controle Integrado de Pragas e Vetores', 'A OM possui programa integrado de controle de pragas e vetores.');
 
-CREATE TABLE `lista_imbauba` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item` varchar(10) NOT NULL,
-  `desc_item` varchar(255) NOT NULL,
-  `descricao` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('1', '01', 'Materiais de Amianto', 'A OM ainda possui telhas, caixas d´água ou qualquer material de amianto?');
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('2', '02', 'Publicação do Responsável Ambiental', 'O responsável pelo meio ambiente foi publicado em boletim junto com seu substituto?');
@@ -137,13 +183,6 @@ INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('53', '53', '
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('54', '54', 'Recuperação da Cobertura Vegetal no Estande de Tiro', 'Prevê-se recuperação da cobertura vegetal nas áreas de erosão.');
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('55', '55', 'Uso de Cal nas Áreas de Latrina', 'Cal e material seco são colocados nas áreas de latrina durante instruções.');
 
-CREATE TABLE `lista_pau_brasil` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item` varchar(10) NOT NULL,
-  `desc_item` varchar(255) NOT NULL,
-  `descricao` text DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('1', '01', 'Objetivos e Metas', 'Os objetivos e metas foram definidos de forma desafiadora e alcançável no PGA.');
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('2', '02', 'Controle de Recursos Naturais', 'A OM controla o consumo de todos os recursos naturais, como água e energia, por indicadores.');
@@ -173,28 +212,3 @@ INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('25', '25'
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('26', '26', 'Destinação de Resíduos de Construção Civil', 'A OM vincula ao contrato de obra a destinação correta dos resíduos de construção civil.');
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('27', '27', 'Plantio de Árvores', 'A OM realiza o plantio de mudas e árvores.');
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('28', '28', 'Reuso de Água para Lavagem de Veículos', 'A OM utiliza água de captação de chuvas para lavagem de viaturas.');
-
-CREATE TABLE `local` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `local` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `ocorrencia` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `ocorrencia` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `setores` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `setor` varchar(30) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-CREATE TABLE `subsecoes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `subsecao` varchar(30) NOT NULL,
-  `setor_superior` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

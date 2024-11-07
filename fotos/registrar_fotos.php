@@ -1,6 +1,4 @@
 <?php
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
@@ -176,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 if (isset($_GET['foto'])) {
-    define('FOTOS_DIR', 'D:/fotos_gestao_ambiental');
+    define('FOTOS_DIR', 'C:/xampp/htdocs/gestao_ambiental/armazenamento');
     $foto = basename($_GET['foto']);
     $caminhoCompleto = FOTOS_DIR . $foto;
 
@@ -191,7 +189,7 @@ if (isset($_GET['foto'])) {
 }
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
-
+require_once HOME_DIR . 'componentes/navbar.php';
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
