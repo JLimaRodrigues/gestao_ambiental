@@ -25,7 +25,7 @@
     ?>
 
     <title>Sistema de Gestão Ambiental</title>
-    <link rel="icon" href="<?php echo HOME_URL; ?>favicon.ico">
+    <link rel="icon" href="/includes/logo.ico">
 </head>
 
 <style>
