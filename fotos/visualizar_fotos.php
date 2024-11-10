@@ -285,42 +285,42 @@ require_once HOME_DIR . 'componentes/navbar.php';
         <div class="row justify-content-center align-items-center">
             <div class="col-md-12">
                 <?php
-    if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme || $limbauba || $lcastanheira || $lpaubrasil) {
+                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme || $limbauba || $lcastanheira || $lpaubrasil) {
 
-        // Initialize filter variables
-        $filtroData = $filtroSetor = $filtroSubsecao = $filtroLocal = $filtroOcorrencia = $filtroConforme = $filtroImbauba = $filtroCastanheira = $filtroPauBrasil = '';
+                    // Initialize filter variables
+                    $filtroData = $filtroSetor = $filtroSubsecao = $filtroLocal = $filtroOcorrencia = $filtroConforme = $filtroImbauba = $filtroCastanheira = $filtroPauBrasil = '';
 
-        // Apply filters if values are set
-        if ($datade && $dataate) {
-            $filtroData = " AND data BETWEEN '$datade' AND '$dataate'";
-        }
-        if ($setor) {
-            $filtroSetor = " AND id_setor = '$setor'";
-        }
-        if ($subsecao) {
-            $filtroSubsecao = " AND id_subsecao = '$subsecao'";
-        }
-        if ($local) {
-            $filtroLocal = " AND id_local = '$local'";
-        }
-        if ($ocorrencia) {
-            $filtroOcorrencia = " AND id_ocorrencia = '$ocorrencia'";
-        }
-        if ($conforme) {
-            $filtroConforme = " AND conforme = '$conforme'";
-        }
-        if ($limbauba) {
-            $filtroImbauba = " AND limbauba = '$limbauba'";
-        }
-        if ($lcastanheira) {
-            $filtroCastanheira = " AND lcastanheira = '$lcastanheira'";
-        }
-        if ($lpaubrasil) {
-            $filtroPauBrasil = " AND lpaubrasil = '$lpaubrasil'";
-        }
+                    // Apply filters if values are set
+                    if ($datade && $dataate) {
+                        $filtroData = " AND data BETWEEN '$datade' AND '$dataate'";
+                    }
+                    if ($setor) {
+                        $filtroSetor = " AND id_setor = '$setor'";
+                    }
+                    if ($subsecao) {
+                        $filtroSubsecao = " AND id_subsecao = '$subsecao'";
+                    }
+                    if ($local) {
+                        $filtroLocal = " AND id_local = '$local'";
+                    }
+                    if ($ocorrencia) {
+                        $filtroOcorrencia = " AND id_ocorrencia = '$ocorrencia'";
+                    }
+                    if ($conforme) {
+                        $filtroConforme = " AND conforme = '$conforme'";
+                    }
+                    if ($limbauba) {
+                        $filtroImbauba = " AND limbauba = '$limbauba'";
+                    }
+                    if ($lcastanheira) {
+                        $filtroCastanheira = " AND lcastanheira = '$lcastanheira'";
+                    }
+                    if ($lpaubrasil) {
+                        $filtroPauBrasil = " AND lpaubrasil = '$lpaubrasil'";
+                    }
 
-        // Construct the query with the filters
-        $sql = "SELECT nome_arquivo, setor, subsecao, local, ocorrencia, data, conforme, 
+                    // Construct the query with the filters
+                    $sql = "SELECT nome_arquivo, setor, subsecao, local, ocorrencia, data, conforme, 
                 lista_castanheira.item as item_cast, lista_imbauba.item as item_imb, 
                 lista_pau_brasil.item as item_pau, observacao
                 FROM fotos
@@ -332,45 +332,45 @@ require_once HOME_DIR . 'componentes/navbar.php';
                 LEFT JOIN lista_imbauba on limbauba = lista_imbauba.id
                 LEFT JOIN lista_pau_brasil on lpaubrasil = lista_pau_brasil.id
                 WHERE 1=1"
-                . $filtroData
-                . $filtroSetor
-                . $filtroSubsecao
-                . $filtroLocal
-                . $filtroOcorrencia
-                . $filtroConforme
-                . $filtroImbauba
-                . $filtroCastanheira
-                . $filtroPauBrasil;
+                        . $filtroData
+                        . $filtroSetor
+                        . $filtroSubsecao
+                        . $filtroLocal
+                        . $filtroOcorrencia
+                        . $filtroConforme
+                        . $filtroImbauba
+                        . $filtroCastanheira
+                        . $filtroPauBrasil;
 
-        // Execute the query and handle any errors
-        $resultado = mysqli_query($con, $sql);
-        if (!$resultado) {
-            $e = mysqli_error($con);
-            echo "Erro ao executar a consulta: " . htmlspecialchars($e);
-        }
+                    // Execute the query and handle any errors
+                    $resultado = mysqli_query($con, $sql);
+                    if (!$resultado) {
+                        $e = mysqli_error($con);
+                        echo "Erro ao executar a consulta: " . htmlspecialchars($e);
+                    }
 
-        // Count the total number of records
-        $sqlT = "SELECT COUNT(1) AS TOTAL FROM fotos WHERE 1=1"
-                . $filtroData
-                . $filtroSetor
-                . $filtroSubsecao
-                . $filtroLocal
-                . $filtroOcorrencia
-                . $filtroConforme
-                . $filtroImbauba
-                . $filtroCastanheira
-                . $filtroPauBrasil;
-        $resultadoT = mysqli_query($con, $sqlT);
-        if (!$resultadoT) {
-            $e = mysqli_error($con);
-            echo "Erro ao executar a consulta de total: " . htmlspecialchars($e);
-        } else {
-            $total = mysqli_fetch_assoc($resultadoT);
-            $totalRegistros = isset($total['TOTAL']) ? $total['TOTAL'] : 0;
-        }
+                    // Count the total number of records
+                    $sqlT = "SELECT COUNT(1) AS TOTAL FROM fotos WHERE 1=1"
+                        . $filtroData
+                        . $filtroSetor
+                        . $filtroSubsecao
+                        . $filtroLocal
+                        . $filtroOcorrencia
+                        . $filtroConforme
+                        . $filtroImbauba
+                        . $filtroCastanheira
+                        . $filtroPauBrasil;
+                    $resultadoT = mysqli_query($con, $sqlT);
+                    if (!$resultadoT) {
+                        $e = mysqli_error($con);
+                        echo "Erro ao executar a consulta de total: " . htmlspecialchars($e);
+                    } else {
+                        $total = mysqli_fetch_assoc($resultadoT);
+                        $totalRegistros = isset($total['TOTAL']) ? $total['TOTAL'] : 0;
+                    }
 
-        // Output the total number of records
-        echo '<table class="registros" style="width: 100%;" role="grid">
+                    // Output the total number of records
+                    echo '<table class="registros" style="width: 100%;" role="grid">
                 <tbody>
                     <tr role="row">
                         <td role="gridcell">
