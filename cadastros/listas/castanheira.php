@@ -167,7 +167,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
 
     <!-- Modal -->
     <div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cadastrar Item</h5>
@@ -192,7 +192,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
                         <div class="col-md-12">
                             <label for="descricao" class="form-label">Descrição:</label>
                             <input type="text" class="form-control" id="descricao" name="descricao">
-                            <span style="font-size: 12px;">500 caracteres restantes</span>
+                            <span style="font-size: 12px;">100 caracteres restantes</span>
                         </div>
                     </form>
                 </div>

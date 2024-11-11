@@ -4,7 +4,6 @@ session_regenerate_id(true);
 function login($login, $senha)
 {
     global $con, $notfy;
-    $desenvolvimento = 'sim';
 
     $sql = "SELECT * FROM usuarios WHERE usuario=?";
     $stmt = mysqli_prepare($con, $sql);
@@ -29,13 +28,10 @@ function login($login, $senha)
             $_SESSION['admin'] = $resp['admin'];
             $_SESSION['timeout'] = strtotime('+2 hours');
 
-            if ($desenvolvimento == 'sim') {
-                setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', '', false, true);
-                header("Location: http://localhost:8000/fotos/visualizar_fotos.php");
-            } else {
+                // setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', '', false, true);
+                // header("Location: http://localhost:8000/fotos/visualizar_fotos.php");
                 setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', ".gestambi.com.br", false, true);
-                header("Location: http://gestambi.com.br/fotos/visualizar_fotos.php");
-            }
+                header("Location: ".HOME_URL."/fotos/visualizar_fotos.php");
 
             exit;
         } else {

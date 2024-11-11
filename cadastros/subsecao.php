@@ -168,7 +168,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
         </div>
     </div><!-- Modal -->
     <div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Cadastrar Subseção</h5>
