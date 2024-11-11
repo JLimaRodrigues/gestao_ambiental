@@ -114,9 +114,10 @@ $conforme = '';
 $limbauba = '';
 $lcastanheira = '';
 $lpaubrasil = '';
+$campo_atuacao = '';
 $totalRegistros = '';
 
-$url_base = "http://gestambi.com.br/fotos/registrar_fotos.php?foto=";
+$url_base = "https://gestambi.com.br/fotos/registrar_fotos.php?foto=";
 
 $total = '';
 
@@ -131,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $limbauba = $_REQUEST['imbauba'] ?? '';
     $lcastanheira = $_REQUEST['castanheira'] ?? '';
     $lpaubrasil = $_REQUEST['paubrasil'] ?? '';
+    $campo_atuacao = $_REQUEST['campo_atuacao'] ?? '';
 }
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/global_constraints.php';
 require_once HOME_DIR . 'componentes/navbar.php';
@@ -164,6 +166,13 @@ require_once HOME_DIR . 'componentes/navbar.php';
                             <label for="dataate" class="form-label"><strong>Até:</strong></label>
                             <input type="date" class="form-control form-control-sm" id="dataate" name="dataate" value="<?= $dataate ?>">
                         </div>
+
+                        <div class="col-md-2 mt-4"></div>
+
+                        <div class="col-md-2 mt-4"></div>
+
+                    </div>
+                    <div class="row w-100 justify-content-center align-items-end">
                         <div class="form-group col-md-2">
                             <label for="setor"><strong>Setor</strong></label>
                             <select class="form-select ml-2" id="setor" name="setor" data-placeholder="Selecione um setor...">
@@ -179,11 +188,6 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                 ?>
                             </select>
                         </div>
-                        <div class="col-md-2 mt-4">
-                            <button type="button" class="btn btn-dark w-100 btn" id="pesquisarBtn" onclick="document.getElementById('form1').submit();">Pesquisar</button>
-                        </div>
-                    </div>
-                    <div class="row w-100 justify-content-center align-items-end">
                         <div class="form-group col-md-2">
                             <label for="subsecao" class="form-label"><strong>Subseção:</strong></label>
                             <select class="form-select ml-2" id="subsecao" name="subsecao" data-placeholder="Selecione uma subseção...">
@@ -214,24 +218,9 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                 ?>
                             </select>
                         </div>
-                        <div class="form-group col-md-2">
-                            <label for="ocorrencia" class="form-label"><strong>Ocorrência:</strong></label>
-                            <select class="form-select ml-2" id="ocorrencia" name="ocorrencia" data-placeholder="Selecione uma ocorrência...">
-                                <option value="" disabled <?= empty($ocorrencia) ? 'selected' : '' ?>>Selecione um ocorrëncia...</option>
-                                <?php
-                                $con = connect_local_mysqli('gestao_ambiental');
-                                $sql = "SELECT * FROM ocorrencia ORDER BY 2 ASC";
-                                $resultado = mysqli_query($con, $sql);
-                                while ($row = mysqli_fetch_assoc($resultado)) {
-                                    $selected = ($row['id'] === $ocorrencia) ? 'selected' : '';
-                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['ocorrencia'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mt-4">
-                            <button type="button" class="btn btn-danger w-100 btn" id="resetBtn">Resetar</button>
-                        </div>
+
+                        <div class="col-md-2 mt-4"></div>
+
                     </div>
 
                     <div class="row w-100 justify-content-center align-items-end">
@@ -283,6 +272,48 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                 ?>
                             </select>
                         </div>
+
+                        <div class="col-md-2 mt-4">
+                            <button type="button" class="btn btn-dark w-100 btn" id="pesquisarBtn" onclick="document.getElementById('form1').submit();">Pesquisar</button>
+                        </div>
+
+                    </div>
+
+                    <div class="row w-100 justify-content-center align-items-end">
+
+                        <div class="form-group col-md-2">
+                            <label for="ocorrencia" class="form-label"><strong>Ocorrência:</strong></label>
+                            <select class="form-select ml-2" id="ocorrencia" name="ocorrencia" data-placeholder="Selecione uma ocorrência...">
+                                <option value="" disabled <?= empty($ocorrencia) ? 'selected' : '' ?>>Selecione um ocorrëncia...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM ocorrencia ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    $selected = ($row['id'] === $ocorrencia) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['ocorrencia'] . "</option>";
+                                }
+                                ?>
+                            </select>
+
+                        </div>
+
+                        <div class="form-group col-md-2">
+                            <label for="campo_atuacao" class="form-label"><strong>Campo de Atuação:</strong></label>
+                            <select class="form-select ml-2" id="campo_atuacao" name="campo_atuacao" data-placeholder="Selecione uma ocorrência...">
+                                <option value="" disabled <?= empty($campo_atuacao) ? 'selected' : '' ?>>Selecione um campo de atuação...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM campo_atuacao ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    $selected = ($row['id'] === $campo_atuacao) ? 'selected' : '';
+                                    echo "<option value='" . $row['id'] . "' $selected>" . $row['descricao'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+
                         <div class="form-group col-md-2">
                             <label for="conforme" class="form-label"><strong>Conforme:</strong></label>
                             <select class="form-select ml-2" id="conforme" name="conforme" data-placeholder="Selecione uma opção...">
@@ -292,7 +323,12 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                 <option value="P">Parcial</option>
                             </select>
                         </div>
+
+                        <div class="col-md-2 mt-4">
+                            <button type="button" class="btn btn-danger w-100 btn" id="resetBtn">Resetar</button>
+                        </div>
                     </div>
+
                 </div>
             </form>
         </div>
@@ -300,10 +336,10 @@ require_once HOME_DIR . 'componentes/navbar.php';
         <div class="row justify-content-center align-items-center">
             <div class="col-md-12">
                 <?php
-                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme || $limbauba || $lcastanheira || $lpaubrasil) {
+                if (($datade && $dataate) || $setor || $subsecao || $local || $ocorrencia || $conforme || $limbauba || $lcastanheira || $lpaubrasil || $campo_atuacao) {
 
                     // Initialize filter variables
-                    $filtroData = $filtroSetor = $filtroSubsecao = $filtroLocal = $filtroOcorrencia = $filtroConforme = $filtroImbauba = $filtroCastanheira = $filtroPauBrasil = '';
+                    $filtroData = $filtroSetor = $filtroSubsecao = $filtroLocal = $filtroOcorrencia = $filtroConforme = $filtroImbauba = $filtroCastanheira = $filtroPauBrasil = $filtroCampoAtuacao = '';
 
                     // Apply filters if values are set
                     if ($datade && $dataate) {
@@ -333,20 +369,24 @@ require_once HOME_DIR . 'componentes/navbar.php';
                     if ($lpaubrasil) {
                         $filtroPauBrasil = " AND lpaubrasil = '$lpaubrasil'";
                     }
+                    if ($campo_atuacao) {
+                        $filtroCampoAtuacao = " AND id_campo_atuacao = '$campo_atuacao'";
+                    }
 
                     // Construct the query with the filters
                     $sql = "SELECT nome_arquivo, setor, subsecao, local, ocorrencia, data, conforme, 
-                lista_castanheira.item as item_cast, lista_imbauba.item as item_imb, 
-                lista_pau_brasil.item as item_pau, observacao
-                FROM fotos
-                LEFT JOIN setores on id_setor = setores.id
-                LEFT JOIN subsecoes on id_subsecao = subsecoes.id
-                LEFT JOIN local on id_local = local.id
-                LEFT JOIN ocorrencia on id_ocorrencia = ocorrencia.id
-                LEFT JOIN lista_castanheira on lcastanheira = lista_castanheira.id
-                LEFT JOIN lista_imbauba on limbauba = lista_imbauba.id
-                LEFT JOIN lista_pau_brasil on lpaubrasil = lista_pau_brasil.id
-                WHERE 1=1"
+                            lista_castanheira.item as item_cast, lista_imbauba.item as item_imb, 
+                            lista_pau_brasil.item as item_pau, observacao, campo_atuacao.descricao as campo_atuacao
+                            FROM fotos
+                            LEFT JOIN setores on id_setor = setores.id
+                            LEFT JOIN subsecoes on id_subsecao = subsecoes.id
+                            LEFT JOIN local on id_local = local.id
+                            LEFT JOIN ocorrencia on id_ocorrencia = ocorrencia.id
+                            LEFT JOIN lista_castanheira on lcastanheira = lista_castanheira.id
+                            LEFT JOIN lista_imbauba on limbauba = lista_imbauba.id
+                            LEFT JOIN lista_pau_brasil on lpaubrasil = lista_pau_brasil.id
+                            LEFT JOIN campo_atuacao ON campo_atuacao.id = fotos.id_campo_atuacao
+                            WHERE 1=1"
                         . $filtroData
                         . $filtroSetor
                         . $filtroSubsecao
@@ -355,7 +395,8 @@ require_once HOME_DIR . 'componentes/navbar.php';
                         . $filtroConforme
                         . $filtroImbauba
                         . $filtroCastanheira
-                        . $filtroPauBrasil;
+                        . $filtroPauBrasil
+                        . $filtroCampoAtuacao;
 
                     // Execute the query and handle any errors
                     $resultado = mysqli_query($con, $sql);
@@ -374,7 +415,8 @@ require_once HOME_DIR . 'componentes/navbar.php';
                         . $filtroConforme
                         . $filtroImbauba
                         . $filtroCastanheira
-                        . $filtroPauBrasil;
+                        . $filtroPauBrasil
+                        . $filtroCampoAtuacao;
                     $resultadoT = mysqli_query($con, $sqlT);
                     if (!$resultadoT) {
                         $e = mysqli_error($con);
@@ -408,6 +450,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
                     $imbauba = [];
                     $paubrasil = [];
                     $observacao = [];
+                    $campo_atuacao = [];
 
                     if ($resultado != null) {
                         while ($row = mysqli_fetch_assoc($resultado)) {
@@ -492,6 +535,12 @@ require_once HOME_DIR . 'componentes/navbar.php';
                             } else {
                                 $observacao[] = '';
                             }
+
+                            if (isset($row['campo_atuacao'])) {
+                                $campo_atuacao[] = $row['campo_atuacao'];
+                            } else {
+                                $campo_atuacao[] = '';
+                            }
                         }
                     }
 
@@ -556,6 +605,10 @@ require_once HOME_DIR . 'componentes/navbar.php';
                             echo '<p class="info observacao" style="margin: 5px 0;"><b>Ação corretiva:</b> ' . $observacao[$contador] . '</p>';
                         }
 
+                        if (!empty($campo_atuacao[$contador]) && $campo_atuacao[$contador] !== '-') {
+                            echo '<p class="info campo_$campo_atuacao" style="margin: 5px 0;"><b>Campo de atuação:</b> ' . $campo_atuacao[$contador] . '</p>';
+                        }
+
 
 
                         echo '</div>';
@@ -578,7 +631,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
         <script type="text/javascript" charset="utf-8">
             $(document).ready(function() {
 
-                $('#setor, #subsecao, #local, #ocorrencia, #conforme, #castanheira, #imbauba, #paubrasil').select2({
+                $('#setor, #subsecao, #local, #ocorrencia, #conforme, #castanheira, #imbauba, #paubrasil, #campo_atuacao').select2({
                     placeholder: function() {
                         return $(this).data('placeholder');
                     },
@@ -591,12 +644,10 @@ require_once HOME_DIR . 'componentes/navbar.php';
                     'line-height': '40px',
                     'padding-top': '0px'
                 });
-
             });
 
             $("#resetBtn").click(function(event) {
                 event.preventDefault();
-
 
                 $('#datade').val("").trigger('change');
                 $('#dataate').val("").trigger('change');
@@ -608,6 +659,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
                 $('#imbauba').val("").trigger('change');
                 $('#castanheira').val("").trigger('change');
                 $('#paubrasil').val("").trigger('change');
+                $('#campo_atuacao').val("").trigger('change');
             });
 
             function restructureRows() {
