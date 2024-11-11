@@ -333,7 +333,7 @@ CREATE TABLE `usuarios` (
 INSERT INTO `usuarios` (`id`, `nome`, `usuario`, `senha`, `email`, `admin`) VALUES
 (1, 'douglas', 'douglas', '$2y$10$JcW/MUHytTPl6/.XxVWTYuwYk7c7Qf9bawSa95twUkl7vqo3E9HXy', 'douglas.marcondes@gmail.com', 'S'),
 (2, 'marcondes', 'marcondes', '$2y$10$wDbSJga88QL.pxgtzeoHouxOKzuHOoBP00kYXfP8QG9NnFDf.35X6', 'celcavmarcondes@gmail.com', 'S'),
-(3, 'admin', 'admin', '$2y$10$m0pLBg9mmKSHtbdz8vQOXe51fMCUSe5RnMGkDbeETNwgdZPVIuHNO', 'admin@gmail.com', 'S');
+(3, 'admin', 'admin', '$2y$10$.rGf9MCJolUXfo.RLutJY.lzF3byCbBKUn5DTGG2YsakI7txBPJIC', 'admin@gmail.com', 'S');
 
 --
 -- Índices para tabelas despejadas
