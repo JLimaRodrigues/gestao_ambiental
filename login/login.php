@@ -4,9 +4,9 @@ session_regenerate_id(true);
 function login($login, $senha)
 {
     global $con, $notfy;
-    
-    // Ajuste para verificar se a consulta foi preparada com sucesso
-    $sql = "SELECT * FROM usuarios WHERE usuario=? ";
+    $desenvolvimento = 'sim';
+
+    $sql = "SELECT * FROM usuarios WHERE usuario=?";
     $stmt = mysqli_prepare($con, $sql);
 
     if ($stmt === false) {
@@ -15,13 +15,8 @@ function login($login, $senha)
         return;
     }
 
-    // Bind dos parâmetros
     mysqli_stmt_bind_param($stmt, 's', $login);
-
-    // Executa a consulta
     mysqli_stmt_execute($stmt);
-
-    // Obtém o resultado
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) != 0) {
@@ -33,10 +28,15 @@ function login($login, $senha)
             $_SESSION['usuario'] = $resp['usuario'];
             $_SESSION['admin'] = $resp['admin'];
             $_SESSION['timeout'] = strtotime('+2 hours');
-            
-            
-            setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', ".gestambi.com.br", false, true);
-            header("Location: http://gestambi.com.br/fotos/visualizar_fotos.php");
+
+            if ($desenvolvimento == 'sim') {
+                setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', '', false, true);
+                header("Location: http://localhost:8000/fotos/visualizar_fotos.php");
+            } else {
+                setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', ".gestambi.com.br", false, true);
+                header("Location: http://gestambi.com.br/fotos/visualizar_fotos.php");
+            }
+
             exit;
         } else {
             $notfy = 'var notyf = new Notyf({delay: 5000});'
@@ -49,6 +49,7 @@ function login($login, $senha)
 
     mysqli_close($con);
 }
+
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
     $con = connect_local_mysqli("gestao_ambiental");

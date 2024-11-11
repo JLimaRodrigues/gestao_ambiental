@@ -126,7 +126,6 @@ INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('48', '48
 INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('49', '49', 'Ventilação e Iluminação Natural', 'A OM prioriza o uso de ventilação e iluminação natural.');
 INSERT INTO lista_castanheira (id, item, desc_item, descricao) VALUES ('50', '50', 'Controle Integrado de Pragas e Vetores', 'A OM possui programa integrado de controle de pragas e vetores.');
 
-
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('1', '01', 'Materiais de Amianto', 'A OM ainda possui telhas, caixas d´água ou qualquer material de amianto?');
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('2', '02', 'Publicação do Responsável Ambiental', 'O responsável pelo meio ambiente foi publicado em boletim junto com seu substituto?');
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('3', '03', 'Capacitação em Gestão Ambiental', 'Os responsáveis pela gestão ambiental possuem capacitação pelo AVPIMA?');
@@ -182,7 +181,6 @@ INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('52', '52', '
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('53', '53', 'Cuidados Ambientais em Ordens de Instrução', 'Ordens de instrução incluem cuidados ambientais.');
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('54', '54', 'Recuperação da Cobertura Vegetal no Estande de Tiro', 'Prevê-se recuperação da cobertura vegetal nas áreas de erosão.');
 INSERT INTO lista_imbauba (id, item, desc_item, descricao) VALUES ('55', '55', 'Uso de Cal nas Áreas de Latrina', 'Cal e material seco são colocados nas áreas de latrina durante instruções.');
-
 
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('1', '01', 'Objetivos e Metas', 'Os objetivos e metas foram definidos de forma desafiadora e alcançável no PGA.');
 INSERT INTO lista_pau_brasil (id, item, desc_item, descricao) VALUES ('2', '02', 'Controle de Recursos Naturais', 'A OM controla o consumo de todos os recursos naturais, como água e energia, por indicadores.');
