@@ -57,9 +57,10 @@
                          Cadastros
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                         <li><a class="dropdown-item" href="/cadastros/campo_atuacao.php">Campo de Atuação</a></li>
+                         <li><a class="dropdown-item" href="/cadastros/local_ocorrencia.php">Local/Ocorrência</a></li>
                          <li><a class="dropdown-item" href="/cadastros/setores.php">Setores</a></li>
                          <li><a class="dropdown-item" href="/cadastros/subsecao.php">Subseção</a></li>
-                         <li><a class="dropdown-item" href="/cadastros/local_ocorrencia.php">Local/Ocorrência</a></li>
                      </ul>
                  </li>
                  <li class="nav-item dropdown">
@@ -79,7 +80,6 @@
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                          <li><a class="dropdown-item" href="#" role="button" data-bs-toggle="modal" data-bs-target="#registerUserModal">Registrar usuário</a></li>
-                         <li><a class="dropdown-item" href="#" role="button" onclick="confirmBackup()">Backup</a></li>
                      </ul>
                  </li>
                  <li class="nav-item">

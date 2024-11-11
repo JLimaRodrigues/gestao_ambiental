@@ -1,4 +1,15 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION['usuario'])) {
+    echo json_encode(["status" => "false", "message" => "Usuário não autenticado."]);
+    exit;
+}
+
+$usuario = $_SESSION['usuario'];
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     require_once $_SERVER['DOCUMENT_ROOT'] . '/config/conexao.php';
@@ -11,11 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($carregarDados == 'sim') {
 
-        $sql = "SELECT fotos.*, setor, subsecao, local, ocorrencia FROM fotos
+        $sql = "SELECT fotos.*, setor, subsecao, local, ocorrencia, campo_atuacao.descricao FROM fotos
                 LEFT JOIN setores ON setores.id = fotos.id_setor
                 LEFT JOIN subsecoes ON subsecoes.id = fotos.id_subsecao
                 LEFT JOIN local ON local.id = fotos.id_local
-                LEFT JOIN ocorrencia ON ocorrencia.id = fotos.id_ocorrencia";
+                LEFT JOIN ocorrencia ON ocorrencia.id = fotos.id_ocorrencia
+                LEFT JOIN campo_atuacao ON campo_atuacao.id = fotos.id_campo_atuacao";
         $resultado = mysqli_query($con, $sql);
 
         $dados = [];
@@ -34,7 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'conforme' => $row['conforme'],
                     'lcastanheira' => $row['lcastanheira'],
                     'lpaubrasil' => $row['lpaubrasil'],
-                    'limbauba' => $row['limbauba']
+                    'limbauba' => $row['limbauba'],
+                    'campo_atuacao' => $row['descricao'],
+                    'usuario' => $row['usuario']
                 ];
             }
 
@@ -61,7 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $castanheira = $_REQUEST['castanheira'] ?? '';
         $imbauba = $_REQUEST['imbauba'] ?? '';
         $paubrasil = $_REQUEST['paubrasil'] ?? '';
-    
+        $campo_atuacao = $_REQUEST['campo_atuacao'] ?? '';
+
         $dataFormatada = date('dmY', strtotime($data));
         $timestamp = time();
         $nome_arquivo = "SGA_{$dataFormatada}_{$timestamp}.jpg";
@@ -74,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Move o arquivo para o novo diretório com o novo nome
             if (move_uploaded_file($temp_path, $destination_path)) {
                 // Insere novo registro no banco de dados
-                $sql = "INSERT INTO fotos (nome_arquivo, data, id_setor, id_subsecao, id_local, id_ocorrencia, observacao, conforme, lcastanheira, limbauba, lpaubrasil) 
-                        VALUES ('$nome_arquivo', '$data', '$id_setor', '$id_subsecao', '$id_local', '$id_ocorrencia', '$observacao', '$conforme', '$castanheira', '$imbauba', '$paubrasil')";
+                $sql = "INSERT INTO fotos (nome_arquivo, data, id_setor, id_subsecao, id_local, id_ocorrencia, observacao, conforme, lcastanheira, limbauba, lpaubrasil, id_campo_atuacao, usuario) 
+                        VALUES ('$nome_arquivo', '$data', '$id_setor', '$id_subsecao', '$id_local', '$id_ocorrencia', '$observacao', '$conforme', '$castanheira', '$imbauba', '$paubrasil', '$campo_atuacao', '$usuario')";
                 $resultado = mysqli_query($con, $sql);
 
                 if ($resultado) {
@@ -104,6 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 LEFT JOIN subsecoes ON subsecoes.id = fotos.id_subsecao
                 LEFT JOIN local ON local.id = fotos.id_local
                 LEFT JOIN ocorrencia ON ocorrencia.id = fotos.id_ocorrencia
+                LEFT JOIN campo_atuacao ON campo_atuacao.id = fotos.id_campo_atuacao
                 WHERE id_fotos = '$id' ";
 
         $resultado = mysqli_query($con, $sql);
@@ -126,7 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'conforme' => $row['conforme'],
                 'lcastanheira' => $row['lcastanheira'],
                 'limbauba' => $row['limbauba'],
-                'lpaubrasil' => $row['lpaubrasil']
+                'lpaubrasil' => $row['lpaubrasil'],
+                'campo_atuacao' => $row['id_campo_atuacao'],
+                'usuario' => $row['usuario']
             ];
 
 
@@ -174,7 +192,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 if (isset($_GET['foto'])) {
-    define('FOTOS_DIR', $_SERVER['DOCUMENT_ROOT'] . '/armazenamento/');
     $foto = basename($_GET['foto']);
     $caminhoCompleto = FOTOS_DIR . $foto;
 
@@ -187,6 +204,7 @@ if (isset($_GET['foto'])) {
         echo "Imagem não encontrada.";
     }
 }
+
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 require_once HOME_DIR . 'componentes/navbar.php';
@@ -231,6 +249,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                 <th>Subseção</th>
                                 <th>Local</th>
                                 <th>Ocorrência</th>
+                                <th>Campo Atuação</th>
                                 <th>Data</th>
                             </tr>
                         </thead>
@@ -366,6 +385,23 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                     $resultado = mysqli_query($con, $sql);
                                     while ($row = mysqli_fetch_assoc($resultado)) {
                                         echo "<option value='" . $row['id'] . "'>" . $row['item'] . " - " . $row['desc_item'] . "</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="campo_atuacao" class="form-label"><strong>Campo de Atuação:</strong></label>
+                                <select class="form-select ml-2" id="campo_atuacao" name="campo_atuacao" required>
+                                    <option value="" disabled selected>Selecione um item...</option>
+                                    <?php
+                                    $con = connect_local_mysqli('gestao_ambiental');
+                                    $sql = "SELECT * FROM campo_atuacao ORDER BY 2 ASC";
+                                    $resultado = mysqli_query($con, $sql);
+                                    while ($row = mysqli_fetch_assoc($resultado)) {
+                                        echo "<option value='" . $row['id'] . "'>" . $row['descricao'] . "</option>";
                                     }
                                     ?>
                                 </select>
@@ -520,6 +556,22 @@ require_once HOME_DIR . 'componentes/navbar.php';
                             </select>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="campo_atuacaoV" class="form-label"><strong>Campo de Atuação:</strong></label>
+                            <select class="form-select ml-2" id="campo_atuacaoV" name="campo_atuacaoV" required disabled>
+                                <option value="" disabled selected>Selecione um item...</option>
+                                <?php
+                                $con = connect_local_mysqli('gestao_ambiental');
+                                $sql = "SELECT * FROM campo_atuacao ORDER BY 2 ASC";
+                                $resultado = mysqli_query($con, $sql);
+                                while ($row = mysqli_fetch_assoc($resultado)) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['descricao'] . "</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="mb-3">
                         <label for="observacaoV" class="form-label"><strong>Ação Corretiva:</strong></label>
                         <textarea class="form-control" id="observacaoV" name="observacaoV" rows="3" max="200" disabled></textarea>
@@ -575,7 +627,8 @@ require_once HOME_DIR . 'componentes/navbar.php';
         $('#castanheira').val('');
         $('#imbauba').val('');
         $('#paubrasil').val('');
-        
+        $('#campo_atuacao').val('');
+
         const observacao = document.getElementById('observacao');
         const maxChars = 200;
 
@@ -604,13 +657,10 @@ require_once HOME_DIR . 'componentes/navbar.php';
             $('#tabela_fotos').on('click', '.foto-link', function(event) {
                 event.preventDefault();
 
-                // Obtém o nome do arquivo a partir do atributo data-foto
                 const nomeArquivo = $(this).data('foto');
 
-                // Monta a URL para o PHP que exibirá a imagem
-		const caminhoFoto = 'http://gestambi.com.br/armazenamento/' + encodeURIComponent(nomeArquivo);
+                const caminhoFoto = 'http://gestambi.com.br/armazenamento/' + encodeURIComponent(nomeArquivo);
 
-                // Define o src da imagem na modal e exibe a modal
                 $('#fotoModalImg').attr('src', caminhoFoto);
                 $('#fotoModal').modal('show');
             });
@@ -653,6 +703,10 @@ require_once HOME_DIR . 'componentes/navbar.php';
                         },
                         {
                             "data": "ocorrencia",
+                            "defaultContent": "-",
+                        },
+                        {
+                            "data": "campo_atuacao",
                             "defaultContent": "-",
                         },
                         {
@@ -742,6 +796,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                         $('#castanheiraV').val(data.lcastanheira);
                                         $('#imbaubaV').val(data.limbauba);
                                         $('#paubrasilV').val(data.lpaubrasil);
+                                        $('#campo_atuacaoV').val(data.campo_atuacao);
 
                                         $('#modal02').modal('show');
                                     } else {
@@ -829,6 +884,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
             var castanheira = $('#castanheira').val();
             var imbauba = $('#imbauba').val();
             var paubrasil = $('#paubrasil').val();
+            var campo_atuacao = $('#campo_atuacao').val();
 
             formData.append('imagem', fileInput);
             formData.append('conforme', conforme);
@@ -839,8 +895,9 @@ require_once HOME_DIR . 'componentes/navbar.php';
             formData.append('ocorrencia', ocorrencia);
             formData.append('observacao', observacao);
             formData.append('castanheira', castanheira);
-            formData.append('paubrasil', paubrasil);
             formData.append('imbauba', imbauba);
+            formData.append('paubrasil', paubrasil);
+            formData.append('campo_atuacao', campo_atuacao);
             formData.append('carregarDados', 'nao');
 
             $.ajax({
