@@ -190,10 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-
 if (isset($_GET['foto'])) {
     $foto = basename($_GET['foto']);
-    $caminhoCompleto = FOTOS_DIR . $foto;
+    $caminhoCompleto = $_SERVER['DOCUMENT_ROOT'] . "/armazenamento/$foto";
 
     if (file_exists($caminhoCompleto)) {
         header('Content-Type: image/jpeg');
@@ -202,9 +201,9 @@ if (isset($_GET['foto'])) {
     } else {
         http_response_code(404);
         echo "Imagem não encontrada.";
+        exit;
     }
 }
-
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
 require_once HOME_DIR . 'componentes/navbar.php';
@@ -659,7 +658,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
 
                 const nomeArquivo = $(this).data('foto');
 
-                const caminhoFoto = 'http://gestambi.com.br/armazenamento/' + encodeURIComponent(nomeArquivo);
+                const caminhoFoto = 'https://gestambi.com.br/armazenamento/' + encodeURIComponent(nomeArquivo);
 
                 $('#fotoModalImg').attr('src', caminhoFoto);
                 $('#fotoModal').modal('show');
