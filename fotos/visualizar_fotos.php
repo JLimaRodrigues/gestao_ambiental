@@ -116,8 +116,9 @@ $lcastanheira = '';
 $lpaubrasil = '';
 $campo_atuacao = '';
 $totalRegistros = '';
+$foto = '';
 
-$url_base = "https://gestambi.com.br/fotos/registrar_fotos.php?foto=";
+$url_base = HOME_URL . "/armazenamento/$foto";
 
 $total = '';
 
