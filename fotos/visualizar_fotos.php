@@ -321,7 +321,6 @@ require_once HOME_DIR . 'componentes/navbar.php';
                                 <option value="" disabled <?= empty($conforme) ? 'selected' : '' ?>>Selecione uma opção...</option>
                                 <option value="S">Sim</option>
                                 <option value="N">Não</option>
-                                <option value="P">Parcial</option>
                             </select>
                         </div>
 

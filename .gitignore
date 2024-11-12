@@ -7,3 +7,5 @@
 # Ignora a pasta 'armazenamento'
 armazenamento/
 .vscode
+
+config/conexao.php
