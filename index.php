@@ -2,7 +2,7 @@
 session_start();
 
 if (isset($_SESSION['usuario'])) {
-    header("Location: /fotos/visualizar_fotos.php");
+    header("Location: /inicio/inicio.php");
     exit;
 } else {
     header("Location: /login/login.php");

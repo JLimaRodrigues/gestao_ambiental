@@ -149,7 +149,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
 <body>
 
     <div class="container">
-        <div class="container-fluid">
+        <div class="container-fluid" style="margin-top: 60px;">
             <h1>Setores</h1>
         </div>
 

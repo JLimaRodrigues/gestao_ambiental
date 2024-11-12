@@ -35,25 +35,25 @@
  </div>
  <div id="alertPlaceholder"></div>
 
- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
      <div class="container">
          <img class="logo" src="/includes/logo.ico" alt="Logo" style="max-height: 25px;">
          <div class="collapse navbar-collapse" id="navbarSupportedContent">
              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                  <li class="nav-item">
-                     <a class="nav-link active" aria-current="page" href="/index.php">Início</a>
+                     <a class="nav-link active" aria-current="page" href="/inicio/inicio.php">Início</a>
                  </li>
                  <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                          Fotos
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                          <li><a class="dropdown-item" href="/fotos/visualizar_fotos.php">Relatório</a></li>
-                         <li><a class="dropdown-item" href="/fotos/registrar_fotos.php">Registrar</a></li>
+                         <li><a class="dropdown-item" href="/fotos/registrar_fotos.php">Registro</a></li>
                      </ul>
                  </li>
                  <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                          Cadastros
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -64,24 +64,26 @@
                      </ul>
                  </li>
                  <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                          Listas
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                         <li><a class="dropdown-item" href="/cadastros/listas/castanheira.php">Castanheira</a></li>
                          <li><a class="dropdown-item" href="/cadastros/listas/imbauba.php">Imbaúba</a></li>
+                         <li><a class="dropdown-item" href="/cadastros/listas/castanheira.php">Castanheira</a></li>
                          <li><a class="dropdown-item" href="/cadastros/listas/paubrasil.php">Pau Brasil</a></li>
                      </ul>
                  </li>
 
                  <li class="nav-item dropdown">
-                     <a class="nav-link dropdown-toggle text-white fw-bold" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                         <strong>Opções</strong>
+                     <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                         Administração
                      </a>
                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                         <li><a class="dropdown-item" href="/login/visualizar_usuarios.php">Visualizar Usuários</a></li>
                          <li><a class="dropdown-item" href="#" role="button" data-bs-toggle="modal" data-bs-target="#registerUserModal">Registrar usuário</a></li>
                      </ul>
                  </li>
+
                  <li class="nav-item">
                      <a class="nav-link active" aria-current="page" href="/login/logout.php">Logout</a>
                  </li>

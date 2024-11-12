@@ -298,7 +298,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
 
     <div class="container">
         <div class="container-fluid">
-            <div class="container">
+            <div class="container" style="margin-top: 60px;">
                 <h1>Local/Ocorrência</h1>
             </div>
             <div class="row">

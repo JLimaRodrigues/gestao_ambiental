@@ -31,7 +31,7 @@ function login($login, $senha)
                 // setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', '', false, true);
                 // header("Location: http://localhost:8000/fotos/visualizar_fotos.php");
                 setcookie("sess", base64_encode(serialize($_SESSION)), 0, '/', ".gestambi.com.br", false, true);
-                header("Location: ".HOME_URL."/fotos/visualizar_fotos.php");
+                header("Location: ".HOME_URL."/inicio/inicio.php");
 
             exit;
         } else {
@@ -147,9 +147,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config/autoload.php';
                             <a href="<?php echo HOME_URL; ?>login/recuperar_senha.php">Esqueci Minha Senha</a>
                         </div>
                     </form>
-                    <div class="form-links">
-                        <a href="<?php echo HOME_URL; ?>login/registrar.php">Não possui uma conta? Cadastre-se</a>
-                    </div>
                 </section>
             </div>
             <div class="col-md-4"></div>

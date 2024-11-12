@@ -49,11 +49,8 @@ if (!isset($_SESSION['usuario'])) {
         .titulo {
             font-size: 28px !important;
             text-align: center !important;
-            /* Centraliza o título */
             margin-left: 0 !important;
-            /* Remove a margem esquerda */
             width: 100%;
-            /* Garante que o título ocupe toda a largura */
         }
 
         .logo {
@@ -149,7 +146,7 @@ require_once HOME_DIR . 'componentes/navbar.php';
                 <img class="logo" src="../includes/logo.ico" alt="Logo" style="max-height: 150px;">
             </div>
             <div class="row justify-content-center align-items-center">
-                <div class="col-md-12 mb-2 text-center">
+                <div class="col-md-12 mb-2 text-center" style="margin-top: 40px;">
                     <h1 class="titulo">Relatório</h1>
                 </div>
             </div>
