@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/assets/bootstrap/5.3.2/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!--DATATABLE-->
+   <link rel="stylesheet" href="/assets/Datatable/1.13.7/css/jquery.dataTables.min.css" />
+   <link rel="stylesheet" href="/assets/Datatable/1.13.7/buttons/2.4.2/css/buttons.dataTables.min.css" />
+
+
+    <link href="/assets/css/estilo.css" rel="stylesheet">
+    <link rel="icon" href="/assets/img/logo.ico">
+    <title>Sistema de Gestão Ambiental</title>
+
+    {% block css %}{% endblock %}
+
+</head>
+<body>
+
+    {% include "navbar.html" %}
+
+    {% block conteudo %}{% endblock %}
+
+<footer> Código Desenvolvido por Douglas Marcondes e refatorado pela Seção de Sistemas - DTSIC.</footer>
+
+<script src="/assets/bootstrap/5.3.2/bootstrap.bundle.min.js"></script>
+
+<!--DATATABLE-->
+<script src="/assets/Datatable/1.13.7/jquery-3.7.0.js"></script>
+<script src="/assets/Datatable/1.13.7/js/jquery.dataTables.min.js"></script>
+<script src="/assets/Datatable/1.13.7/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+<script src="/assets/Datatable/1.13.7/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="/assets/Datatable/1.13.7/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="/assets/Datatable/1.13.7/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="/assets/Datatable/1.13.7/buttons/2.4.2/js/buttons.html5.min.js"></script>
+<script src="/assets/Datatable/1.13.7/buttons/2.4.2/js/buttons.colVis.min.js"></script>
+
+<script>
+    const maxChars = 200;
+    const getElement = (id) => document.getElementById(id);
+
+        const carregarDatatable = (nome, data) => {
+            if ($.fn.DataTable.isDataTable(nome)) {
+                $(nome).DataTable().clear().rows.add(data).draw();
+            } else {
+                $(nome).DataTable({
+                    data,
+                    columns: getTableColumns(),
+                    columnDefs: getColumnDefs(),
+                    language: { url: "/assets/datatablesPortugues.json" },
+                    ordering: true,
+                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'Todos']],
+                });
+            }
+        };
+
+        const fetchJSON = async (url, method, body = {}) => {
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body),
+                });
+                return response.json();
+            } catch (error) {
+                console.error(`Erro ao acessar ${url}:`, error);
+                throw error;
+            }
+        };
+
+        const enforceMaxLength = (input, max) => {
+            input.addEventListener('input', () => {
+                if (input.value.length > max) {
+                    alert(`Você ultrapassou o limite de ${max} caracteres.`);
+                    input.value = input.value.slice(0, max);
+                }
+                const charCount = input.nextElementSibling;
+                if (charCount) charCount.textContent = `${max - input.value.length} caracteres restantes`;
+            });
+        };
+</script>
+
+{% block javascript %}{% endblock %}
+
+</body>
+
+</html>

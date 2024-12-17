@@ -1,0 +1,31 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="container-fluid">
+    <div class="header d-flex flex-column flex-md-row align-items-center justify-content-between py-3">
+
+        <div class="logo">
+            <img 
+                src="/assets/img/logo.ico" 
+                alt="Logo" 
+                class="img-fluid" 
+                style="max-height: 100px;">
+        </div>
+
+        <div class="text-center mt-3 mt-md-0 flex-grow-1">
+            <h1 class="titulo text-wrap">Sistema de Gestão Ambiental</h1>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-center mt-4">
+        <div class="col-md-8 position-relative p-4" style="background-color: #f8f9fa; border-radius: 10px;">
+            <p class="fw-semibold">Sistema desenvolvido para o envio e visualização de fotos, permitindo o acompanhamento detalhado do progresso das atividades do departamento de meio ambiente.</p>
+            <img 
+                src="/assets/img/capa.jpg" 
+                alt="Capa" 
+                class="img-fluid rounded" 
+                style="width: 100%; height: auto; opacity: 0.9;">
+        </div>
+    </div>
+</div>
+{% endblock %}

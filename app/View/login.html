@@ -1,0 +1,107 @@
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <meta name="description" content="Sistema de Gestão Ambiental">
+
+    <link href="/assets/bootstrap/5.3.2/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Sistema de Gestão Ambiental</title>
+    <link rel="icon" href="/assets/img/logo.ico">
+</head>
+
+<style>
+    * {
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    .form-control {
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    body {
+        background-size: cover;
+    }
+
+    .login-form {
+        margin-top: 60px;
+    }
+
+    form[role=login] {
+        color: #5d5d5d;
+        background: #f2f2f2;
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    form[role=login] img {
+        display: block;
+        margin: 0 auto;
+    }
+
+    form[role=login] input,
+    form[role=login] button {
+        font-size: 18px;
+        margin: 16px 0;
+    }
+
+    form[role=login]>div {
+        text-align: center;
+    }
+
+    .form-links {
+        text-align: center;
+        margin-top: 1em;
+    }
+
+    .form-links a {
+        color: #5d5d5d;
+        text-decoration: underline;
+    }
+
+    .login-button {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="row" id="pwd-container">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <section class="login-form">
+                    <form method="POST" action="{{ url_for('logar') }}" role="login">
+                        <img class="logo" src="/assets/img/logo.ico" alt="Logo" style="max-height: 200px;">
+                        <div id="title" style="font-family: 'Philosopher', sans-serif; font-size: 2.5em; text-align: center;">Sistema de Gestão Ambiental</div>
+                        
+                            <input type="text" class="form-control input-lg" name="login" id="login" placeholder="Login" required="required" />
+                            <input type="password" class="form-control input-lg" name="senha" id="senha" placeholder="Senha" required="required" />
+
+                            {% include "resultado.html" %}
+
+                            <button type="submit" class="btn btn-lg btn-success login-button">Login</button>
+                        <div>
+                            <a href="#">Esqueci Minha Senha</a>
+                        </div>
+                    </form>
+                    <div class="form-links">
+                        <a href="#">Não possui uma conta? Cadastre-se</a>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+</body>
+
+<script src="/assets/bootstrap/5.3.2/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</html>

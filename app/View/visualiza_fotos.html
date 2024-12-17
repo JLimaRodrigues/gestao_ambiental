@@ -1,0 +1,274 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div id="main" class="container-fluid" style="margin:5px;padding: 0px;">
+    <div class="header d-flex flex-column flex-md-row align-items-center justify-content-between py-3">
+
+        <div class="logo">
+            <img 
+                src="/assets/img/logo.ico" 
+                alt="Logo" 
+                class="img-fluid" 
+                style="max-height: 100px;">
+        </div>
+
+        <div class="text-center mt-3 mt-md-0 flex-grow-1">
+            <h1 class="titulo text-wrap">Relatório</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center align-items-center filtros">
+        <form method="POST" action="#" id="filterForm" autocomplete="off" class="d-flex flex-wrap justify-content-center">
+
+            <div class="container">
+                <div class="row w-100 justify-content-center align-items-end">
+                    <div class="form-group col-md-2">
+                        <label for="datade" class="form-label"><strong>De:</strong></label>
+                        <input type="date" class="form-control form-control-sm" id="datade" name="datade">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="dataate" class="form-label"><strong>Até:</strong></label>
+                        <input type="date" class="form-control form-control-sm" id="dataate" name="dataate">
+                    </div>
+
+                    <div class="col-md-2 mt-4"></div>
+
+                    <div class="col-md-2 mt-4"></div>
+
+                </div>
+                <div class="row w-100 justify-content-center align-items-end">
+                    <div class="form-group col-md-2">
+                        <label for="setor"><strong>Setor</strong></label>
+                        <select class="form-select ml-2" id="setor" name="setor" data-placeholder="Selecione um setor...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for setor in setoresOpcoes %}
+                                <option value='{{ setor.id }}'>{{ setor.setor }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="subsecao" class="form-label"><strong>Subseção:</strong></label>
+                        <select class="form-select ml-2" id="subsecao" name="subsecao" data-placeholder="Selecione uma subseção...">
+                            <option value="" disabled>Selecione um item...</option>
+                                {% for subsecao in subsecoesOpcoes %}
+                                    <option value='{{ subsecao.id }}'>{{ subsecao.subsecao }}</option>
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="local" class="form-label"><strong>Local:</strong></label>
+                        <select class="form-select ml-2" id="local" name="local" data-placeholder="Selecione um local...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for local in localOpcoes %}
+                                <option value='{{ local.id }}'>{{ local.local }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mt-4"></div>
+
+                </div>
+
+                <div class="row w-100 justify-content-center align-items-end">
+
+                    <div class="form-group col-md-2">
+                        <label for="imbauba" class="form-label"><strong>Imbaúba:</strong></label>
+                        <select class="form-select ml-2" id="imbauba" name="imbauba" data-placeholder="Selecione um item...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for imbauba in imbaubaOpcoes %}
+                                <option value='{{ imbauba.id }}'>{{ imbauba.item }} - {{ imbauba.desc_item }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="castanheira" class="form-label"><strong>Castanheira:</strong></label>
+                        <select class="form-select ml-2" id="castanheira" name="castanheira" data-placeholder="Selecione um item...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for castanheira in castanheiraOpcoes %}
+                                <option value='{{ castanheira.id }}'>{{ castanheira.item }} - {{ castanheira.desc_item }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="paubrasil" class="form-label"><strong>Pau-brasil:</strong></label>
+                        <select class="form-select ml-2" id="paubrasil" name="paubrasil" data-placeholder="Selecione um item...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for pauBrasil in pauBrasilOpcoes %}
+                                <option value='{{ pauBrasil.id }}'>{{ pauBrasil.item }} - {{ pauBrasil.desc_item }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mt-4">
+                        <button type="submit" class="btn btn-dark w-100 btn" id="pesquisarBtn">Pesquisar</button>
+                    </div>
+
+                </div>
+
+                <div class="row w-100 justify-content-center align-items-end">
+
+                    <div class="form-group col-md-2">
+                        <label for="ocorrencia" class="form-label"><strong>Ocorrência:</strong></label>
+                        <select class="form-select ml-2" id="ocorrencia" name="ocorrencia" data-placeholder="Selecione uma ocorrência...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for ocorrencia in ocorrenciasOpcoes %}
+                                <option value='{{ ocorrencia.id }}'>{{ ocorrencia.ocorrencia }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="campo_atuacao" class="form-label"><strong>Campo de Atuação:</strong></label>
+                        <select class="form-select ml-2" id="campo_atuacao" name="campo_atuacao" data-placeholder="Selecione uma ocorrência...">
+                            <option value="" disabled>Selecione um item...</option>
+                            {% for campoAtuacao in campoAtuacaoOpcoes %}
+                                <option value='{{ campoAtuacao.id }}'>{{ campoAtuacao.descricao }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <label for="conforme" class="form-label"><strong>Conforme:</strong></label>
+                        <select class="form-select ml-2" id="conforme" name="conforme" data-placeholder="Selecione uma opção...">
+                            <option value="" disabled>Selecione um item...</option>
+                            <option value="S">Sim</option>
+                            <option value="N">Não</option>
+                            <option value="P">Parcial</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mt-4">
+                        <button type="button" class="btn btn-danger w-100 btn" id="resetBtn">Resetar</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-12">
+
+            <table id="resultsTable" class="registros" style="width: 100%;" role="grid">
+                <thead>
+                    <tr>
+                        <th>Setor</th>
+                        <th>Subseção</th>
+                        <th>Local</th>
+                        <th>Ocorrência</th>
+                        <th>Data</th>
+                        <th>Conforme</th>
+                        <th>Castanheira</th>
+                        <th>Imbaúba</th>
+                        <th>Pau Brasil</th>
+                        <th>Observação</th>
+                        <th>Campo de Atuação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+    
+{% block javascript %}
+<script type="text/javascript" charset="utf-8">
+    $(document).ready(function() {
+
+        $('#setor, #subsecao, #local, #ocorrencia, #conforme, #castanheira, #imbauba, #paubrasil, #campo_atuacao').select2({
+            placeholder: function() {
+                return $(this).data('placeholder');
+            },
+            allowClear: true,
+            width: '100%'
+        });
+
+        $('.select2-selection').css('height', '40px');
+        $('.select2-selection__rendered').css({
+            'line-height': '40px',
+            'padding-top': '0px'
+        });
+    });
+
+    $("#resetBtn").click(function(event) {
+        event.preventDefault();
+
+        $('#datade').val("").trigger('change');
+        $('#dataate').val("").trigger('change');
+        $('#setor').val("").trigger('change');
+        $('#subsecao').val("").trigger('change');
+        $('#local').val("").trigger('change');
+        $('#ocorrencia').val("").trigger('change');
+        $('#conforme').val("").trigger('change');
+        $('#imbauba').val("").trigger('change');
+        $('#castanheira').val("").trigger('change');
+        $('#paubrasil').val("").trigger('change');
+        $('#campo_atuacao').val("").trigger('change');
+    });
+
+    document.querySelector('#filterForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const filters = {
+        datade: document.querySelector('#datade').value,
+        dataate: document.querySelector('#dataate').value,
+        setor: document.querySelector('#setor').value,
+        subsecao: document.querySelector('#subsecao').value,
+        local: document.querySelector('#local').value,
+        ocorrencia: document.querySelector('#ocorrencia').value,
+        conforme: document.querySelector('#conforme').value,
+        limbauba: document.querySelector('#imbauba').value,
+        lcastanheira: document.querySelector('#castanheira').value,
+        lpaubrasil: document.querySelector('#paubrasil').value,
+        campo_atuacao: document.querySelector('#campo_atuacao').value,
+    };
+
+    const response = await fetch(`{{ url_for('filtrosDasFotos') }}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(filters),
+    });
+
+    const data = await response.json();
+
+    const tableBody = document.querySelector('#resultsTable tbody');
+    tableBody.innerHTML = ''; // Clear previous results
+
+    console.log(data.length)
+
+    if(console.length){
+        data.forEach((row) => {
+        const conformeColor = row.conforme === 'S' ? 'green' : row.conforme === 'N' ? 'red' : 'orange';
+        const tableRow = `
+            <tr>
+                <td>${row.setor || '-'}</td>
+                <td>${row.subsecao || '-'}</td>
+                <td>${row.local || '-'}</td>
+                <td>${row.ocorrencia || '-'}</td>
+                <td>${row.data || '-'}</td>
+                <td style="color: ${conformeColor};">${row.conforme || '-'}</td>
+                <td>${row.item_cast || '-'}</td>
+                <td>${row.item_imb || '-'}</td>
+                <td>${row.item_pau || '-'}</td>
+                <td>${row.observacao || '-'}</td>
+                <td>${row.campo_atuacao || '-'}</td>
+            </tr>
+        `;
+        tableBody.innerHTML += tableRow;
+    });
+    } else {
+        const tableRow = `
+            <tr class='text-center'>
+                <td colspan='11'>Nenhum registro encontrado</td>
+            </tr>
+        `;
+        tableBody.innerHTML += tableRow;
+    }
+    
+});
+
+</script>
+{% endblock %}

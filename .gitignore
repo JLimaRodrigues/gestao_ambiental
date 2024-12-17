@@ -1,0 +1,7 @@
+.env
+/vendor
+/composer.lock
+/log
+/gestao_ambiental--
+/fotos
+/car_registration_system
