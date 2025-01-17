@@ -48,8 +48,17 @@ return [
             'cache' => false,
         ]);
 
+        // Recupera o serviço do usuário (UsuarioSessao)
+        $usuarioService = $container->get(UsuarioSessao::class);
+
+        // Calcula valores para as variáveis globais
+        $autenticado = $usuarioService->getAutenticado();
+        $tempoRestante = $usuarioService->getTempoRestante();
+
         $environmnent = $twig->getEnvironment();
         $environmnent->addGlobal('flash', $container->get('flash'));
+        $environmnent->addGlobal('autenticado', $autenticado);
+        $environmnent->addGlobal('tempoRestante', $tempoRestante);
 
         return $twig;
     },
@@ -98,6 +107,10 @@ return [
         $secretKey = SECRET_KEY;
     
         return new \App\Middleware\AuthMiddleware($responseFactory, $secretKey, $container);
+    },
+
+    UsuarioSessao::class => function (ContainerInterface $container) {
+        return new \App\Services\UsuarioSessao();
     },
 
     //LoginController

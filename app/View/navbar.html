@@ -38,6 +38,9 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <img class="logo" src="/assets/img/logo.ico" alt="Logo" style="max-height: 25px;">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
@@ -82,10 +85,21 @@
                         <li><a class="dropdown-item" href="#" role="button" data-bs-toggle="modal" data-bs-target="#registerUserModal">Registrar usuário</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{ url_for('logout') }}">Logout</a>
-                </li>
             </ul>
+
+            <div class="d-flex align-items-center">
+                <!-- Usuário e sessão -->
+                <div class="dropdown">
+                    <button class="btn text-white text-decoration-none" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-user"></i> <!-- Ícone de usuário do FontAwesome -->
+                        <span id="tempoRestante" class="ms-2">30 min</span> <!-- Exemplo de tempo de sessão -->
+                    </button>
+                    <!-- Adicionando a classe dropdown-menu-end para alinhar o menu à direita -->
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

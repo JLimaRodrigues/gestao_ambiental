@@ -82,6 +82,36 @@
                 if (charCount) charCount.textContent = `${max - input.value.length} caracteres restantes`;
             });
         };
+
+    const tempoSessaoElemento = document.getElementById('tempoRestante');
+    const autenticadoClient = {{ autenticado|json_encode|raw }};
+    let tempoSessao = {{ tempoRestante|default(0)|raw }};
+
+    let sessaoIntervalo;
+
+    function atualizarTempoSessao(){
+        if(tempoSessao > 0){
+            const minutes = Math.floor(tempoSessao / 60);
+            const seconds = tempoSessao % 60;
+            tempoSessaoElemento.textContent = `${minutes}m ${seconds}s`;
+
+            tempoSessao--; //decrementa corretamente o tempo restante
+        } else {
+            tempoSessaoElemento.textContent = "Sessão Expirada";
+            limparIntervalo(sessaoIntervalo);
+
+            //redireciona o usuário para a tela de login ao expirar
+            setTimeout(() => {
+                window.location.href = `{{ url_for('login') }}`;
+            }, 3000); //espera 3 segundos antes do redirecionamento
+        }
+    }
+
+    if (autenticadoClient && tempoSessaoElemento) {
+        atualizarTempoSessao(); // Atualiza imediatamente ao carregar
+        sessaoIntervalo = setInterval(atualizarTempoSessao, 1000); // Atualiza a cada segundo
+    }
+
 </script>
 
 {% block javascript %}{% endblock %}
