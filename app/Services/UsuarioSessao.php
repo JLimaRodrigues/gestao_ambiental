@@ -38,4 +38,19 @@ class UsuarioSessao
             return 0;
         }
     }
+
+    public function getLogin(): ?string
+    {
+        $token = $_SESSION['jwt'] ?? null;
+        if (!$token) {
+            return null;
+        }
+
+        try {
+            $decoded = JWT::decode($token, new Key(SECRET_KEY, 'HS256'));
+            return $decoded->data->login ?? null;  // Retorna o login do payload
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
 }

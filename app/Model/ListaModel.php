@@ -19,7 +19,7 @@ class ListaModel extends ModelPadrao
 
     public function buscarPorId($id)
     {
-        return $this->find($id, $this->tabela, 'id_fotos');
+        return $this->find($id, $this->tabela, 'id');
     }
 
     public function buscarPorItem($item)

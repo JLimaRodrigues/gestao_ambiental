@@ -52,13 +52,15 @@ return [
         $usuarioService = $container->get(UsuarioSessao::class);
 
         // Calcula valores para as variáveis globais
-        $autenticado = $usuarioService->getAutenticado();
+        $autenticado   = $usuarioService->getAutenticado();
         $tempoRestante = $usuarioService->getTempoRestante();
+        $login         = $usuarioService->getLogin();
 
         $environmnent = $twig->getEnvironment();
         $environmnent->addGlobal('flash', $container->get('flash'));
         $environmnent->addGlobal('autenticado', $autenticado);
         $environmnent->addGlobal('tempoRestante', $tempoRestante);
+        $environmnent->addGlobal('login', $login);
 
         return $twig;
     },

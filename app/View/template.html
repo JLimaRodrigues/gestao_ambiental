@@ -98,7 +98,7 @@
             tempoSessao--; //decrementa corretamente o tempo restante
         } else {
             tempoSessaoElemento.textContent = "Sessão Expirada";
-            limparIntervalo(sessaoIntervalo);
+            clearInterval(sessaoIntervalo);
 
             //redireciona o usuário para a tela de login ao expirar
             setTimeout(() => {

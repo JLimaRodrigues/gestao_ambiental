@@ -159,27 +159,28 @@ class FotosController extends Controller {
         if ($lpaubrasil) $filtros[] = "lpaubrasil = '$lpaubrasil'";
         if ($campo_atuacao) $filtros[] = "id_campo_atuacao = '$campo_atuacao'";
     
-        $whereClause = !empty($filtros) ? ' WHERE 1=1 AND ' . implode(' AND ', $filtros) : '';
-    
-        $sql = "SELECT nome_arquivo, setor, subsecao, local, ocorrencia, data, conforme,
+        $whereClause = !empty($filtros) ? implode(' AND ', $filtros) : '';
+
+        $fotos = (new ModelPadrao)->select('nome_arquivo, setor, subsecao, local, ocorrencia, data, conforme,
                         lista_castanheira.item AS item_cast, lista_imbauba.item AS item_imb,
-                        lista_pau_brasil.item AS item_pau, observacao, campo_atuacao.descricao AS campo_atuacao
-                FROM fotos
-                LEFT JOIN setores ON id_setor = setores.id
-                LEFT JOIN subsecoes ON id_subsecao = subsecoes.id
-                LEFT JOIN local ON id_local = local.id
-                LEFT JOIN ocorrencia ON id_ocorrencia = ocorrencia.id
-                LEFT JOIN lista_castanheira ON lcastanheira = lista_castanheira.id
-                LEFT JOIN lista_imbauba ON limbauba = lista_imbauba.id
-                LEFT JOIN lista_pau_brasil ON lpaubrasil = lista_pau_brasil.id
-                LEFT JOIN campo_atuacao ON campo_atuacao.id = fotos.id_campo_atuacao
-                $whereClause";
+                        lista_pau_brasil.item AS item_pau, observacao, campo_atuacao.descricao AS campo_atuacao')
+                        ->from('fotos')
+                        ->join('LEFT', 'setores', 'setores.id = fotos.id_setor')
+                        ->join('LEFT', 'subsecoes', 'subsecoes.id = fotos.id_subsecao')
+                        ->join('LEFT', 'local', 'local.id = fotos.id_local')
+                        ->join('LEFT', 'ocorrencia', 'ocorrencia.id = fotos.id_ocorrencia')
+                        ->join('LEFT', 'lista_castanheira', 'lcastanheira = lista_castanheira.id')
+                        ->join('LEFT', 'lista_imbauba', 'limbauba = lista_imbauba.id')
+                        ->join('LEFT', 'lista_pau_brasil', 'lpaubrasil = lista_pau_brasil.id')
+                        ->join('LEFT', 'campo_atuacao', 'campo_atuacao.id = fotos.id_campo_atuacao');
+
+        if (!empty($filtros)) {
+            $fotos->where($whereClause);
+        }
+        
+        $fotos = $fotos->execute();
     
-        $conexao = Conexao::getInstancia();
-        $stmt = $conexao->query($sql);
-        $results = $stmt->fetchAll();
-    
-        $response->getBody()->write(json_encode($results));
+        $response->getBody()->write(json_encode($fotos));
         return $response
             ->withHeader('Content-Type', 'application/json');
     }
