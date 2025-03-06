@@ -44,8 +44,18 @@ return function (App $app) {
         $group->post('/fotos/filtros', [FotosController::class, 'filtrosDasFotos'])->setName('filtrosDasFotos');
         $group->get('/registrarFotos', [FotosController::class, 'registrarFotos'])->setName('registrarFotos');
 
-        //rotas de cadastro
+        //rotas de campo atuação
         $group->get('/campoAtuacao', [CampoAtuacaoController::class, 'campoAtuacao'])->setName('campoAtuacao');
+
+        //rotas de Local/Ocorrencia
+        $group->get('/localOcorrencia', [LocalOcorrenciaController::class, 'localOcorrencia'])->setName('localOcorrencia');
+
+        //rotas de setores
+        $group->get('/setores', [SetoresController::class, 'setores'])->setName('setores');
+
+        //rotas de subsecao
+        $group->get('/subsecao', [SubSecaoController::class, 'subsecao'])->setName('subsecao');
+
 
     })->add('authMiddleware');
 };

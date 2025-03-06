@@ -1,0 +1,74 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="container">
+    <div class="container-fluid">
+        <h1>Subseção</h1>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-md-3 d-flex justify-content-end">
+                <button type="button" class="btn btn-dark" id="addBtnSubSecao">Cadastrar Subseção</button>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <table width="100%" id="tabela_subsecao" class="table table-striped tabela">
+                    <thead>
+                        <tr>
+                            <th>Subseção</th>
+                            <th>Setor Superior</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Seus dados do data table aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div><!-- Modal -->
+<div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastrar Subseção</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Formulário dentro do modal -->
+                <form>
+                    <input type="hidden" class="form-control" id="id" name="id">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="subsecao" class="form-label"><strong>Subseção:</strong></label>
+                            <input type="text" class="form-control" id="subsecao" name="subsecao" value="">
+                            <span style="font-size: 12px;">30 caracteres restantes</span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="setor_superior" class="form-label"><strong>Setor Superior:</strong></label>
+                                <select class="form-select ml-2" id="setor_superior" name="setor_superior" required>
+                                    <option value="" disabled selected>Selecione um setor superior...</option>
+                                    <!-- Opções de select -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-dark" id="saveBtn">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    
+{% block javascript %}
+
+{% endblock %}
