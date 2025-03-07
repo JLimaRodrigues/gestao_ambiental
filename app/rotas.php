@@ -11,7 +11,8 @@ use App\Controller\{
     CampoAtuacaoController,
     LocalOcorrenciaController,
     SetoresController,
-    SubsecaoController
+    SubsecaoController,
+    ListaController
     };
 
 use Slim\Routing\RouteContext;
@@ -54,7 +55,21 @@ return function (App $app) {
         $group->get('/setores', [SetoresController::class, 'setores'])->setName('setores');
 
         //rotas de subsecao
-        $group->get('/subsecao', [SubSecaoController::class, 'subsecao'])->setName('subsecao');
+        $group->get('/subsecao', [SubsecaoController::class, 'subsecao'])->setName('subsecao');
+
+        //listas
+        $group->group('/lista', function ($lista){
+
+            //Castanheira
+            $lista->get('/castanheira', [ListaController::class, 'listarCastanheira'])->setName('listarCastanheira');
+
+            //Imbauba
+            $lista->get('/imbauba', [ListaController::class, 'listarImbauba'])->setName('listarImbauba');
+
+            //Pau Brasil
+            $lista->get('/pauBrasil', [ListaController::class, 'listarPauBrasil'])->setName('listarPauBrasil');
+
+        });
 
 
     })->add('authMiddleware');

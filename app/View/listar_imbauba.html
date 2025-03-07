@@ -1,0 +1,79 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="container">
+    <div class="container-fluid">
+        <h1>Lista Imbaúba</h1>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-md-3 d-flex justify-content-end">
+                <button type="button" class="btn btn-dark" id="addBtn">Cadastrar Item</button>
+            </div>
+        </div>
+        <br>
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <table width="100%" id="tabela" class="table table-striped tabela">
+                    <thead>
+                        <tr>
+                            <th type="hidden"></th>
+                            <th>Item</th>
+                            <th>Resumo</th>
+                            <th>Descrição</th>
+                            <th>Opções</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dados serão preenchidos pelo DataTables -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastrar Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" class="form-control" id="id" name="id">
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="item" class="form-label">Item:</label>
+                            <input type="text" class="form-control" id="item" name="item">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="desc_item" class="form-label">Resumo:</label>
+                            <input type="text" class="form-control" id="desc_item" name="desc_item">
+                            <span style="font-size: 12px;">100 caracteres restantes</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="descricao" class="form-label">Descrição:</label>
+                        <input type="text" class="form-control" id="descricao" name="descricao">
+                        <span style="font-size: 12px;">100 caracteres restantes</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-dark" id="saveBtn">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+    
+{% block javascript %}
+
+{% endblock %}
