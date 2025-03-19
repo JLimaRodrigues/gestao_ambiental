@@ -15,19 +15,7 @@
         <br>
         <div class="row justify-content-center">
             <div class="col-md-12">
-                <table width="100%" id="tabela" class="table table-striped tabela">
-                    <thead>
-                        <tr>
-                            <th type="hidden"></th>
-                            <th>Item</th>
-                            <th>Resumo</th>
-                            <th>Descrição</th>
-                            <th>Opções</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dados serão preenchidos pelo DataTables -->
-                    </tbody>
+                <table width="100%" id="lista_castanheira" class="table table-striped tabela">
                 </table>
             </div>
         </div>
@@ -75,5 +63,21 @@
 {% endblock %}
     
 {% block javascript %}
+<script>
 
+const getColumnDefs = () => [
+    { targets: '_all', className: 'text-center' },
+];
+
+const getTableColumns = () => [
+    { data: 'item', title: 'Item' },
+    { data: 'desc_item', title: 'Resumo' },
+    { data: 'descricao', title: 'Descrição' },
+    { data: null, title: 'Ações', defaultContent: '' },
+];
+
+carregarDadosDatatable(`{{ url_for('listaDeCastanheira') }}`).then((dados) => {
+    carregarDatatable('#lista_castanheira', dados);
+});
+</script>
 {% endblock %}

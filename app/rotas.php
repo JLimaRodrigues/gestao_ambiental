@@ -62,12 +62,15 @@ return function (App $app) {
 
             //Castanheira
             $lista->get('/castanheira', [ListaController::class, 'listarCastanheira'])->setName('listarCastanheira');
+            $lista->get('/listaDeCastanheira', [ListaController::class, 'listaDeCastanheira'])->setName('listaDeCastanheira');
 
             //Imbauba
             $lista->get('/imbauba', [ListaController::class, 'listarImbauba'])->setName('listarImbauba');
+            $lista->get('/listaDeImbauba', [ListaController::class, 'listaDeImbauba'])->setName('listaDeImbauba');
 
             //Pau Brasil
             $lista->get('/pauBrasil', [ListaController::class, 'listarPauBrasil'])->setName('listarPauBrasil');
+            $lista->get('/listaDePauBrasil', [ListaController::class, 'listaDePauBrasil'])->setName('listaDePauBrasil');
 
         });
 
