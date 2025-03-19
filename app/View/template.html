@@ -43,62 +43,78 @@
     const maxChars = 200;
     const getElement = (id) => document.getElementById(id);
 
-        const carregarDatatable = (nome, data) => {
-            if ($.fn.DataTable.isDataTable(nome)) {
-                $(nome).DataTable().clear().rows.add(data).draw();
-            } else {
-                $(nome).DataTable({
-                    data,
-                    columns: getTableColumns(),
-                    columnDefs: getColumnDefs(),
-                    language: { url: "/assets/datatablesPortugues.json" },
-                    ordering: true,
-                    lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'Todos']],
-                });
-            }
+    const obterFiltros = () => {
+        return {
+            datade: document.querySelector('#datade').value,
+            dataate: document.querySelector('#dataate').value,
+            setor: document.querySelector('#setor').value,
+            subsecao: document.querySelector('#subsecao').value,
+            local: document.querySelector('#local').value,
+            ocorrencia: document.querySelector('#ocorrencia').value,
+            conforme: document.querySelector('#conforme').value,
+            limbauba: document.querySelector('#imbauba').value,
+            lcastanheira: document.querySelector('#castanheira').value,
+            lpaubrasil: document.querySelector('#paubrasil').value,
+            campo_atuacao: document.querySelector('#campo_atuacao').value,
         };
+    }
 
-        const carregarDadosDatatable = async (linkDados) => {
-            const url = linkDados;
-
-            try {
-                const response = await fetch(url);
-                if (!response.ok) {
-                    throw new Error(`Response status: ${response.status}`);
-                }
-
-                const json = await response.json();
-                return json;
-            } catch (error) {
-                console.error(error.message);
-                return [];
-            }
-        };
-
-        const fetchJSON = async (url, method, body = {}) => {
-            try {
-                const response = await fetch(url, {
-                    method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(body),
-                });
-                return response.json();
-            } catch (error) {
-                console.error(`Erro ao acessar ${url}:`, error);
-                throw error;
-            }
-        };
-
-        const enforceMaxLength = (input, max) => {
-            input.addEventListener('input', () => {
-                if (input.value.length > max) {
-                    alert(`Você ultrapassou o limite de ${max} caracteres.`);
-                    input.value = input.value.slice(0, max);
-                }
-                const charCount = input.nextElementSibling;
-                if (charCount) charCount.textContent = `${max - input.value.length} caracteres restantes`;
+    const carregarDatatable = (nome, data) => {
+        if ($.fn.DataTable.isDataTable(nome)) {
+            $(nome).DataTable().clear().rows.add(data).draw();
+        } else {
+            $(nome).DataTable({
+                data,
+                columns: getTableColumns(),
+                columnDefs: getColumnDefs(),
+                language: { url: "/assets/datatablesPortugues.json" },
+                ordering: true,
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, 'Todos']],
             });
-        };
+        }
+    };
+
+    const carregarDadosDatatable = async (linkDados) => {
+        const url = linkDados;
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const json = await response.json();
+            return json;
+        } catch (error) {
+            console.error(error.message);
+            return [];
+        }
+    };
+
+    const fetchJSON = async (url, method, body = {}) => {
+        try {
+            const response = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            return response.json();
+        } catch (error) {
+            console.error(`Erro ao acessar ${url}:`, error);
+            throw error;
+        }
+    };
+
+    const enforceMaxLength = (input, max) => {
+        input.addEventListener('input', () => {
+            if (input.value.length > max) {
+                alert(`Você ultrapassou o limite de ${max} caracteres.`);
+                input.value = input.value.slice(0, max);
+            }
+            const charCount = input.nextElementSibling;
+            if (charCount) charCount.textContent = `${max - input.value.length} caracteres restantes`;
+        });
+    };
 
     const tempoSessaoElemento = document.getElementById('tempoRestante');
     const autenticadoClient = {{ autenticado|json_encode|raw }};

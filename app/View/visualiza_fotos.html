@@ -152,23 +152,6 @@
         <div class="col-md-12">
 
             <table id="resultsTable" class="registros" style="width: 100%;" role="grid">
-                <thead>
-                    <tr>
-                        <th>Setor</th>
-                        <th>Subseção</th>
-                        <th>Local</th>
-                        <th>Ocorrência</th>
-                        <th>Data</th>
-                        <th>Conforme</th>
-                        <th>Castanheira</th>
-                        <th>Imbaúba</th>
-                        <th>Pau Brasil</th>
-                        <th>Observação</th>
-                        <th>Campo de Atuação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
             </table>
         </div>
     </div>
@@ -193,6 +176,8 @@
         });
     });
 
+    var data = [];
+
     $("#resetBtn").click(function(event) {
         event.preventDefault();
 
@@ -210,65 +195,52 @@
     });
 
     document.querySelector('#filterForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    const filters = {
-        datade: document.querySelector('#datade').value,
-        dataate: document.querySelector('#dataate').value,
-        setor: document.querySelector('#setor').value,
-        subsecao: document.querySelector('#subsecao').value,
-        local: document.querySelector('#local').value,
-        ocorrencia: document.querySelector('#ocorrencia').value,
-        conforme: document.querySelector('#conforme').value,
-        limbauba: document.querySelector('#imbauba').value,
-        lcastanheira: document.querySelector('#castanheira').value,
-        lpaubrasil: document.querySelector('#paubrasil').value,
-        campo_atuacao: document.querySelector('#campo_atuacao').value,
-    };
+        const filters = {
+            datade: document.querySelector('#datade').value,
+            dataate: document.querySelector('#dataate').value,
+            setor: document.querySelector('#setor').value,
+            subsecao: document.querySelector('#subsecao').value,
+            local: document.querySelector('#local').value,
+            ocorrencia: document.querySelector('#ocorrencia').value,
+            conforme: document.querySelector('#conforme').value,
+            limbauba: document.querySelector('#imbauba').value,
+            lcastanheira: document.querySelector('#castanheira').value,
+            lpaubrasil: document.querySelector('#paubrasil').value,
+            campo_atuacao: document.querySelector('#campo_atuacao').value,
+        };
 
-    const response = await fetch(`{{ url_for('filtrosDasFotos') }}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(filters),
+        const response = await fetch(`{{ url_for('filtrosDasFotos') }}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(filters),
+        });
+
+        data = await response.json();
+
+        carregarDatatable('#resultsTable', data);
     });
 
-    const data = await response.json();
+    const getColumnDefs = () => [
+        { targets: '_all', className: 'text-center' },
+    ];
 
-    const tableBody = document.querySelector('#resultsTable tbody');
-    tableBody.innerHTML = ''; // Clear previous results
+    const getTableColumns = () => [
+        { data: 'setor', title: 'Setor' },
+        { data: 'subsecao', title: 'Subseção' },
+        { data: 'ocorrencia', title: 'Ocorrência'},
+        { data: 'local', title: 'Local' },
+        { data: 'data', title: 'Data' },
+        { data: 'conforme', title: 'Conforme' },
+        { data: 'item_cast', title: 'Castanheira' },
+        { data: 'item_imb', title: 'Imbaúba' },
+        { data: 'item_pau', title: 'Pau Brasil' },
+        { data: 'observacao', title: 'Observação' },
+        { data: 'campo_atuacao', title: 'Campo de Atuação' },
+    ];
 
-    console.log(data.length)
-
-    if(data.length){
-        data.forEach((row) => {
-        const conformeColor = row.conforme === 'S' ? 'green' : row.conforme === 'N' ? 'red' : 'orange';
-        const tableRow = `
-            <tr>
-                <td>${row.setor || '-'}</td>
-                <td>${row.subsecao || '-'}</td>
-                <td>${row.local || '-'}</td>
-                <td>${row.ocorrencia || '-'}</td>
-                <td>${row.data || '-'}</td>
-                <td style="color: ${conformeColor};">${row.conforme || '-'}</td>
-                <td>${row.item_cast || '-'}</td>
-                <td>${row.item_imb || '-'}</td>
-                <td>${row.item_pau || '-'}</td>
-                <td>${row.observacao || '-'}</td>
-                <td>${row.campo_atuacao || '-'}</td>
-            </tr>
-        `;
-        tableBody.innerHTML += tableRow;
-    });
-    } else {
-        const tableRow = `
-            <tr class='text-center'>
-                <td colspan='11'>Nenhum registro encontrado</td>
-            </tr>
-        `;
-        tableBody.innerHTML += tableRow;
-    }
-    
-});
+    carregarDatatable('#resultsTable', data);
 
 </script>
 {% endblock %}
