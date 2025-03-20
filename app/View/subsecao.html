@@ -16,16 +16,6 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <table width="100%" id="tabela_subsecao" class="table table-striped tabela">
-                    <thead>
-                        <tr>
-                            <th>Subseção</th>
-                            <th>Setor Superior</th>
-                            <th>Opções</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Seus dados do data table aqui -->
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -70,5 +60,20 @@
 {% endblock %}
     
 {% block javascript %}
+<script>
 
+const getColumnDefs = () => [
+    { targets: '_all', className: 'text-center' },
+];
+
+const getTableColumns = () => [
+    { data: 'subsecao', title: 'Subseção' },
+    { data: 'setor', title: 'Setor Superior' },
+    { data: null, title: 'Ações', defaultContent: '' },
+];
+
+carregarDadosDatatable(`{{ url_for('listaDeSubsecao') }}`).then((dados) => {
+    carregarDatatable('#tabela_subsecao', dados);
+});
+</script>
 {% endblock %}

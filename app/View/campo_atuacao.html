@@ -16,15 +16,6 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <table width="100%" id="tabela_ca" class="table table-striped tabela">
-                    <thead>
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Opções</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Dados serão preenchidos pelo DataTables -->
-                    </tbody>
                 </table>
             </div>
         </div>
@@ -61,5 +52,19 @@
 {% endblock %}
     
 {% block javascript %}
+<script>
 
+const getColumnDefs = () => [
+    { targets: '_all', className: 'text-center' },
+];
+
+const getTableColumns = () => [
+    { data: 'descricao', title: 'Descrição' },
+    { data: null, title: 'Ações', defaultContent: '' },
+];
+
+carregarDadosDatatable(`{{ url_for('listaDeCampoAtuacao') }}`).then((dados) => {
+    carregarDatatable('#tabela_ca', dados);
+});
+</script>
 {% endblock %}

@@ -17,4 +17,28 @@ class LocalOcorrenciaController extends Controller {
     {
         return $this->view->render($response, 'local_ocorrencia.html');
     }
+
+    /**
+     * return @var Local[]
+    */
+    public function listaDeLocal(Request $request, Response $response)
+    {
+        $modelPadrao = new ModelPadrao();
+
+        $response->getBody()->write(json_encode($modelPadrao->listAll('local')));
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
+
+    /**
+     * return @var Ocorrencia[]
+    */
+    public function listaDeOcorrencia(Request $request, Response $response)
+    {
+        $modelPadrao = new ModelPadrao();
+
+        $response->getBody()->write(json_encode($modelPadrao->listAll('ocorrencia')));
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
 }

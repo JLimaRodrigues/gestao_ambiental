@@ -17,4 +17,16 @@ class SetoresController extends Controller {
     {
         return $this->view->render($response, 'setores.html');
     }
+
+    /**
+     * return @var Setores[]
+    */
+    public function listaDeSetores(Request $request, Response $response)
+    {
+        $modelPadrao = new ModelPadrao();
+
+        $response->getBody()->write(json_encode($modelPadrao->listAll('setores')));
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
 }

@@ -17,4 +17,24 @@ class SubsecaoController extends Controller {
     {
         return $this->view->render($response, 'subsecao.html');
     }
+
+    /**
+     * return @var Subsecao[]
+    */
+    public function listaDeSubsecao(Request $request, Response $response)
+    {
+        $modelPadrao = new ModelPadrao();
+
+        // $sql = "SELECT subsecoes.*, setores.setor FROM subsecoes INNER JOIN setores on setores.id = subsecoes.setor_superior";
+
+        $dados = $modelPadrao->select('subsecoes.*, setores.setor')
+                    ->from('subsecoes')
+                    ->join('left', 'setores', 'setores.id = subsecoes.setor_superior')
+                    ->execute();
+
+
+        $response->getBody()->write(json_encode($dados));
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
 }

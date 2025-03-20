@@ -18,4 +18,16 @@ class CampoAtuacaoController extends Controller {
         
         return $this->view->render($response, 'campo_atuacao.html');
     }
+
+    /**
+     * return @var CampoAtuacao[]
+    */
+    public function listaDeCampoAtuacao(Request $request, Response $response)
+    {
+        $modelPadrao = new ModelPadrao();
+
+        $response->getBody()->write(json_encode($modelPadrao->listAll('campo_atuacao')));
+        return $response
+          ->withHeader('Content-Type', 'application/json');
+    }
 }

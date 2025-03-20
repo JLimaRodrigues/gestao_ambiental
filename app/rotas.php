@@ -47,15 +47,21 @@ return function (App $app) {
 
         //rotas de campo atuação
         $group->get('/campoAtuacao', [CampoAtuacaoController::class, 'campoAtuacao'])->setName('campoAtuacao');
+        $group->get('/listaDeCampoAtuacao', [CampoAtuacaoController::class, 'listaDeCampoAtuacao'])->setName('listaDeCampoAtuacao');
 
         //rotas de Local/Ocorrencia
         $group->get('/localOcorrencia', [LocalOcorrenciaController::class, 'localOcorrencia'])->setName('localOcorrencia');
+        $group->get('/listaDeLocal', [LocalOcorrenciaController::class, 'listaDeLocal'])->setName('listaDeLocal');
+        $group->get('/listaDeOcorrencia', [LocalOcorrenciaController::class, 'listaDeOcorrencia'])->setName('listaDeOcorrencia');
 
         //rotas de setores
         $group->get('/setores', [SetoresController::class, 'setores'])->setName('setores');
+        $group->get('/listaDeSetores', [SetoresController::class, 'listaDeSetores'])->setName('listaDeSetores');
+
 
         //rotas de subsecao
         $group->get('/subsecao', [SubsecaoController::class, 'subsecao'])->setName('subsecao');
+        $group->get('/listaDeSubsecao', [SubsecaoController::class, 'listaDeSubsecao'])->setName('listaDeSubsecao');
 
         //listas
         $group->group('/lista', function ($lista){
