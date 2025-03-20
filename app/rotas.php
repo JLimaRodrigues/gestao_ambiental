@@ -62,6 +62,7 @@ return function (App $app) {
         //rotas de subsecao
         $group->get('/subsecao', [SubsecaoController::class, 'subsecao'])->setName('subsecao');
         $group->post('/editar', [SubsecaoController::class, 'editarSubsecao'])->setName('editarSubsecao');
+        $group->post('/excluir', [SubsecaoController::class, 'excluirSubsecao'])->setName('excluirSubsecao');
         $group->get('/listaDeSubsecao', [SubsecaoController::class, 'listaDeSubsecao'])->setName('listaDeSubsecao');
 
         //listas

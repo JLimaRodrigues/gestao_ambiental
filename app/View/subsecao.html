@@ -161,18 +161,9 @@
                 setor_superior: $('#editar-setor').val(),
             };
 
-            $.ajax({
-                url: `{{ url_for('editarSubsecao') }}`,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(formData),
-                success: function (response) {
-                    $('#modal-editar').modal('hide');
-                    window.location.reload();
-                },
-                error: function () {
-                    alert('Erro ao editar a subseção.');
-                }
+            ajaxAtualizar(`{{ url_for('editarSubsecao') }}`, formData, function(response) {
+                $('#modal-editar').modal('hide');
+                window.location.reload();
             });
         });
 
@@ -187,20 +178,13 @@
         $('#confirmar-exclusao').on('click', function() {
             let id = $('#excluir-id').val();
 
-            $.ajax({
-                url: `{{ url_for('excluirSubsecao') }}`,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify({ id }),
-                success: function (response) {
-                    $('#modal-excluir').modal('hide');
-                    window.location.reload();
-                },
-                error: function () {
-                    alert('Erro ao excluir a subseção.');
-                }
+            ajaxDeletar(`{{ url_for('excluirSubsecao') }}`, id, function(response) {
+                $('#modal-excluir').modal('hide');
+                window.location.reload();
             });
         });
+
+    })
 
 const getColumnDefs = () => [
     { targets: '_all', className: 'text-center' },

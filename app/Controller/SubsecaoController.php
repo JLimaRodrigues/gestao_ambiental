@@ -70,6 +70,47 @@ class SubsecaoController extends Controller {
         
     }
 
+    public function excluirSubsecao(Request $request, Response $response)
+    {
+        $data = $request->getParsedBody();
+
+        $errors = [];
+        if (empty($data['id'])) {
+            $errors[] = "ID é obrigatório para excluir a subseção.";
+        }
+
+        if (!empty($errors)) {
+            $result = [
+                "success" => false,
+                "errors"  => $errors
+            ];
+            $response->getBody()->write(json_encode($result));
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(400);
+        }
+
+        $id = intval($data['id']);
+
+        $modelPadrao = new ModelPadrao();
+        $deleted = $modelPadrao->delete('subsecoes', "id = {$id}");
+
+        if ($deleted) {
+            $result = [
+                "success" => true,
+                "message" => "Subseção excluída com sucesso!"
+            ];
+        } else {
+            $result = [
+                "success" => false,
+                "message" => "Falha ao excluir a subseção."
+            ];
+        }
+
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+        
+    }
+
     /**
      * return @var Subsecao[]
     */
