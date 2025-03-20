@@ -6,8 +6,8 @@ use App\Model\Conexao;
 
 class ModelPadrao
 {
-    private $atributos;
-    private $queryParts = []; // Armazena partes da query dinamicamente
+    private $atributos = [];
+    private $queryParts = [];
 
     public function __construct() {}
 
@@ -27,7 +27,6 @@ class ModelPadrao
         return isset($this->atributos[$atributo]);
     }
 
-    // Escapar valores
     protected function escapar($dados)
     {
         if (is_string($dados) && !empty($dados)) {
@@ -41,54 +40,46 @@ class ModelPadrao
         }
     }
 
-    // Monta SELECT básico
-    public function select($columns = '*')
+    public function select($colunas = '*')
     {
-        $this->queryParts['select'] = "SELECT {$columns}";
+        $this->queryParts['select'] = "SELECT {$colunas}";
         return $this;
     }
 
-    // Define a tabela principal
-    public function from($table)
+    public function from($tabela)
     {
-        $this->queryParts['from'] = "FROM {$table}";
+        $this->queryParts['from'] = "FROM {$tabela}";
         return $this;
     }
 
-    // Adiciona JOINs
-    public function join($type, $table, $on)
+    public function join($tipo, $tabela, $condicao)
     {
-        $this->queryParts['join'][] = strtoupper($type) . " JOIN {$table} ON {$on}";
+        $this->queryParts['join'][] = strtoupper($tipo) . " JOIN {$tabela} ON {$condicao}";
         return $this;
     }
 
-    // Adiciona cláusula WHERE
-    public function where($condition)
+    public function where($condicao)
     {
-        $this->queryParts['where'][] = $condition;
+        $this->queryParts['where'][] = $condicao;
         return $this;
     }
 
-    // Adiciona ORDER BY
-    public function orderBy($column, $direction = 'ASC')
+    public function orderBy($coluna, $direcao = 'ASC')
     {
-        $this->queryParts['order'] = "ORDER BY {$column} {$direction}";
+        $this->queryParts['order'] = "ORDER BY {$coluna} {$direcao}";
         return $this;
     }
 
-    // Adiciona LIMIT
     public function limit($count)
     {
         $this->queryParts['limit'] = "LIMIT {$count}";
         return $this;
     }
 
-    // Executa a query final
     public function execute()
     {
         $conexao = Conexao::getInstancia();
 
-        // Constrói a query completa
         $query = implode(' ', [
             $this->queryParts['select'] ?? '',
             $this->queryParts['from'] ?? '',
@@ -100,7 +91,6 @@ class ModelPadrao
 
         $stmt = $conexao->prepare($query);
 
-        // Atribua valores se necessário
         if (!empty($this->atributos)) {
             foreach ($this->atributos as $key => $value) {
                 $stmt->bindValue(":{$key}", $value, is_null($value) ? \PDO::PARAM_NULL : (is_int($value) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
@@ -109,24 +99,51 @@ class ModelPadrao
 
         $stmt->execute();
 
-        // Limpa partes da query após execução
         $this->queryParts = [];
 
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
 
-    public function listAll($table)
+    public function listAll($tabela)
     {
         return $this->select('*')
-                    ->from($table)
+                    ->from($tabela)
                     ->execute();
     }
 
-    public function find($id, $table, $pk)
+    public function find($id, $tabela, $pk)
     {
         return $this->select('*')
-        ->from($table)
-        ->where("$pk = '$id'")
-        ->execute();
+                    ->from($tabela)
+                    ->where("$pk = '$id'")
+                    ->execute();
+    }
+
+    public function update($tabela, array $data, $where)
+    {
+        $setParts = [];
+        foreach ($data as $col => $valor) {
+            $setParts[] = "{$col} = :{$col}";
+            $this->atributos[$col] = $this->escapar($valor);
+        }
+        $setClause = implode(', ', $setParts);
+        $query = "UPDATE {$tabela} SET {$setClause} WHERE {$where}";
+
+        $conexao = Conexao::getInstancia();
+        $stmt = $conexao->prepare($query);
+
+        foreach ($data as $col => $valor) {
+            $stmt->bindValue(":{$col}", $valor, is_null($valor) ? \PDO::PARAM_NULL : (is_int($valor) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+        }
+
+        return $stmt->execute();
+    }
+
+    public function delete($tabela, $where)
+    {
+        $query = "DELETE FROM {$tabela} WHERE {$where}";
+        $conexao = Conexao::getInstancia();
+        $stmt = $conexao->prepare($query);
+        return $stmt->execute();
     }
 }

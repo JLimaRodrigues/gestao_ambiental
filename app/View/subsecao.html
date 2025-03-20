@@ -20,7 +20,9 @@
             </div>
         </div>
     </div>
-</div><!-- Modal -->
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -57,10 +59,148 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Editar SubSecao-->
+<div class="modal fade" id="modal-editar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Subseção</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-editar">
+            <input type="hidden" id="editar-id">
+            <div class="mb-3">
+              <label for="editar-subsecao" class="form-label">Subseção</label>
+              <input type="text" class="form-control" id="editar-subsecao" required>
+            </div>
+            <div class="mb-3">
+              <label for="editar-setor" class="form-label">Setor Superior</label>
+              <select class="form-select form-select-lg" name="setor" id="editar-setor" required></select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" id="salvar-edicao">Salvar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal Excluir Subseção -->
+<div class="modal fade" id="modal-excluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Excluir Subseção</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir a subseção <strong id="nome-subsecao-excluir"></strong>?</p>
+          <input type="hidden" id="excluir-id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}
     
 {% block javascript %}
 <script>
+
+    $(document).ready(() => {
+
+        $('#editar-setor').select2({
+            width: '100%',
+            placeholder: 'Selecione um setor...',
+            allowClear: true,
+            dropdownParent: $('#modal-editar')
+        });
+
+        function carregarSetores(selected) {
+            $.ajax({
+                url: `{{ url_for('listaDeSetores') }}`,
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#editar-setor').empty();
+                    // Para cada setor retornado, adiciona uma opção.
+                    data.forEach(setor => {
+                        $('#editar-setor').append(`<option value="${setor.id}">${setor.setor}</option>`);
+                    });
+                    // // Se houver um valor a ser selecionado, define-o e atualiza o Select2
+                    if (selected) {
+                        $('#editar-setor').val(selected).trigger('change');
+                    }
+                },
+                error: function () {
+                    console.error("Erro ao carregar setores.");
+                }
+            });
+        }
+
+        $(document).on('click', '.btn-editar', function() {
+            let id = $(this).data('id');
+            let subsecao = $(this).data('subsecao');
+            let setor_valor = $(this).data('setor');
+
+            $('#editar-id').val(id);
+            $('#editar-subsecao').val(subsecao);
+            carregarSetores(setor_valor);
+        });
+
+        $('#salvar-edicao').on('click', function () {
+            let formData = {
+                id: $('#editar-id').val(),
+                subsecao: $('#editar-subsecao').val(),
+                setor_superior: $('#editar-setor').val(),
+            };
+
+            $.ajax({
+                url: `{{ url_for('editarSubsecao') }}`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    $('#modal-editar').modal('hide');
+                    window.location.reload();
+                },
+                error: function () {
+                    alert('Erro ao editar a subseção.');
+                }
+            });
+        });
+
+        $(document).on('click', '.btn-excluir', function() {
+            let id = $(this).data('id');
+            let subsecao = $(this).data('subsecao');
+
+            $('#excluir-id').val(id);
+            $('#nome-subsecao-excluir').text(subsecao);
+        });
+
+        $('#confirmar-exclusao').on('click', function() {
+            let id = $('#excluir-id').val();
+
+            $.ajax({
+                url: `{{ url_for('excluirSubsecao') }}`,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ id }),
+                success: function (response) {
+                    $('#modal-excluir').modal('hide');
+                    window.location.reload();
+                },
+                error: function () {
+                    alert('Erro ao excluir a subseção.');
+                }
+            });
+        });
 
 const getColumnDefs = () => [
     { targets: '_all', className: 'text-center' },
@@ -69,7 +209,29 @@ const getColumnDefs = () => [
 const getTableColumns = () => [
     { data: 'subsecao', title: 'Subseção' },
     { data: 'setor', title: 'Setor Superior' },
-    { data: null, title: 'Ações', defaultContent: '' },
+    { data: null, title: 'Ações', 
+            render: function(data, type, row) {
+                    return `
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary me-1 btn-editar"
+                                data-id="${row.id}" 
+                                data-subsecao="${row.subsecao}" 
+                                data-setor="${row.setor_superior}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-editar">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-excluir"
+                                data-id="${row.id}" 
+                                data-subsecao="${row.subsecao}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-excluir">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                } 
+    },
 ];
 
 carregarDadosDatatable(`{{ url_for('listaDeSubsecao') }}`).then((dados) => {
