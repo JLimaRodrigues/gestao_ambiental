@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-md-3 d-flex justify-content-end">
-                <button type="button" class="btn btn-dark" id="addBtnSubSecao">Cadastrar Subseção</button>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modal-criar">Cadastrar Subseção</button>
             </div>
         </div>
         <br>
@@ -23,7 +23,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
+<div class="modal fade" id="modal-criar" tabindex="-1" aria-labelledby="modal-criar" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -45,7 +45,11 @@
                                 <label for="setor_superior" class="form-label"><strong>Setor Superior:</strong></label>
                                 <select class="form-select ml-2" id="setor_superior" name="setor_superior" required>
                                     <option value="" disabled selected>Selecione um setor superior...</option>
-                                    <!-- Opções de select -->
+                                    {% if setores %}
+                                        {% for setor in setores %}
+                                            <option value="{{ setor.id }}">{{ setor.setor }}</option>
+                                        {% endfor %}
+                                    {% endif %}
                                 </select>
                             </div>
                         </div>
@@ -54,7 +58,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-dark" id="saveBtn">Salvar</button>
+                <button type="button" class="btn btn-dark" id="criar-subsecao">Salvar</button>
             </div>
         </div>
     </div>
@@ -115,6 +119,13 @@
 
     $(document).ready(() => {
 
+        $('#setor_superior').select2({
+            width: '100%', 
+            placeholder: 'Selecione um setor superior...',
+            allowClear: true,
+            dropdownParent: $('#modal-criar')
+        });
+
         $('#editar-setor').select2({
             width: '100%',
             placeholder: 'Selecione um setor...',
@@ -129,11 +140,9 @@
                 dataType: 'json',
                 success: function (data) {
                     $('#editar-setor').empty();
-                    // Para cada setor retornado, adiciona uma opção.
                     data.forEach(setor => {
                         $('#editar-setor').append(`<option value="${setor.id}">${setor.setor}</option>`);
                     });
-                    // // Se houver um valor a ser selecionado, define-o e atualiza o Select2
                     if (selected) {
                         $('#editar-setor').val(selected).trigger('change');
                     }
@@ -180,6 +189,18 @@
 
             ajaxDeletar(`{{ url_for('excluirSubsecao') }}`, id, function(response) {
                 $('#modal-excluir').modal('hide');
+                window.location.reload();
+            });
+        });
+
+        $('#criar-subsecao').on('click', function () {
+            let formData = {
+                subsecao: $('#subsecao').val(),
+                setor_superior: $('#setor_superior').val(),
+            };
+
+            ajaxCriar(`{{ url_for('criarSubsecao') }}`, formData, function(response) {
+                $('#modal-editar').modal('hide');
                 window.location.reload();
             });
         });

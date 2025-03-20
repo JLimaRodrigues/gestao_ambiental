@@ -119,6 +119,23 @@ class ModelPadrao
                     ->execute();
     }
 
+    public function insert($tabela, array $data)
+    {
+        $colunas = implode(', ', array_keys($data));
+        $placeholders = ':' . implode(', :', array_keys($data));
+
+        $query = "INSERT INTO {$tabela} ({$colunas}) VALUES ({$placeholders})";
+
+        $conexao = Conexao::getInstancia();
+        $stmt = $conexao->prepare($query);
+
+        foreach ($data as $col => $valor) {
+            $stmt->bindValue(":{$col}", $this->escapar($valor), is_null($valor) ? \PDO::PARAM_NULL : (is_int($valor) ? \PDO::PARAM_INT : \PDO::PARAM_STR));
+        }
+
+        return $stmt->execute();
+    }
+
     public function update($tabela, array $data, $where)
     {
         $setParts = [];

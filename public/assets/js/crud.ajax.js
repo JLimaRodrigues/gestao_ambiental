@@ -6,7 +6,7 @@
  * @param {Object} data - Dados a serem enviados (um objeto com os campos).
  * @param {function} [callback] - Função a ser executada em caso de sucesso.
  */
-function criarAjax(url, data, callback = () => window.location.reload())
+function ajaxCriar(url, data, callback = () => window.location.reload())
 {
     $.ajax({
         url: url,

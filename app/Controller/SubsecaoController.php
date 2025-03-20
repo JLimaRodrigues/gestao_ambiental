@@ -15,7 +15,60 @@ class SubsecaoController extends Controller {
 
     public function subsecao(Request $request, Response $response)
     {
-        return $this->view->render($response, 'subsecao.html');
+        $modelPadrao = new ModelPadrao();
+
+        $setores =  $modelPadrao->listAll('setores');
+
+        return $this->view->render($response, 'subsecao.html', [
+            'setores' => $setores
+        ]);
+    }
+
+    public function criarSubsecao(Request $request, Response $response)
+    {
+        $data = $request->getParsedBody();
+
+        $errors = [];
+        if (empty($data['subsecao'])) {
+            $errors[] = "Subseção é obrigatória.";
+        }
+        if (empty($data['setor_superior'])) {
+            $errors[] = "Setor Superior é obrigatório.";
+        }
+
+        if (!empty($errors)) {
+            $result = [
+                "success" => false,
+                "errors"  => $errors
+            ];
+            $response->getBody()->write(json_encode($result));
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(400);
+        }
+
+        $data = [
+            'subsecao'       => $data['subsecao'],
+            'setor_superior' => intval($data['setor_superior']),
+        ];
+
+        $modelPadrao = new ModelPadrao();
+        $inserido = $modelPadrao->insert('subsecoes', $data);
+
+        if ($inserido) {
+            $result = [
+                "success" => true,
+                "message" => "Subseção atualizada com sucesso!"
+            ];
+        } else {
+            $result = [
+                "success" => false,
+                "message" => "Falha ao atualizar a subseção."
+            ];
+        }
+
+        $response->getBody()->write(json_encode($result));
+        return $response->withHeader('Content-Type', 'application/json');
+        
     }
 
     public function editarSubsecao(Request $request, Response $response)
