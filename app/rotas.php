@@ -55,9 +55,15 @@ return function (App $app) {
         $group->get('/listaDeOcorrencia', [LocalOcorrenciaController::class, 'listaDeOcorrencia'])->setName('listaDeOcorrencia');
 
         //rotas de setores
-        $group->get('/setores', [SetoresController::class, 'setores'])->setName('setores');
-        $group->get('/listaDeSetores', [SetoresController::class, 'listaDeSetores'])->setName('listaDeSetores');
+        $group->group('/setores', function ($setor){
 
+            $setor->get('', [SetoresController::class, 'setores'])->setName('setores');
+            $setor->post('/criar', [SetoresController::class, 'criarSetor'])->setName('criarSetor');
+            $setor->post('/editar', [SetoresController::class, 'editarSetor'])->setName('editarSetor');
+            $setor->post('/excluir', [SetoresController::class, 'excluirSetor'])->setName('excluirSetor');
+            $setor->get('/listaDeSetores', [SetoresController::class, 'listaDeSetores'])->setName('listaDeSetores');
+
+        });
 
         //rotas de subsecao
         $group->group('/subsecao', function ($subsecao){
@@ -67,7 +73,6 @@ return function (App $app) {
             $subsecao->post('/editar', [SubsecaoController::class, 'editarSubsecao'])->setName('editarSubsecao');
             $subsecao->post('/excluir', [SubsecaoController::class, 'excluirSubsecao'])->setName('excluirSubsecao');
             $subsecao->get('/listaDeSubsecao', [SubsecaoController::class, 'listaDeSubsecao'])->setName('listaDeSubsecao');
-
 
         });
         

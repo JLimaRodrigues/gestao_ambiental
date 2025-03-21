@@ -9,7 +9,7 @@
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-md-3 d-flex justify-content-end">
-                <button type="button" class="btn btn-dark" id="addBtnSetor">Cadastrar Setor/OM</button>
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modal-criar">Cadastrar Setor/OM</button>
             </div>
         </div>
         <br>
@@ -23,7 +23,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="modal01" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
+<div class="modal fade" id="modal-criar" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -44,15 +44,105 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" class="btn btn-dark" id="saveBtn">Salvar</button>
+                <button type="button" class="btn btn-dark" id="criar-setor">Salvar</button>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Modal Editar Setor-->
+<div class="modal fade" id="modal-editar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Setor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-editar">
+            <input type="hidden" id="editar-id">
+            <div class="mb-3">
+              <label for="editar-setor" class="form-label">Setor</label>
+              <input type="text" class="form-control" id="editar-setor" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" id="salvar-edicao">Salvar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal Excluir Setor -->
+<div class="modal fade" id="modal-excluir" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Excluir Setor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir o setor <strong id="nome-setor-excluir"></strong>?</p>
+          <input type="hidden" id="excluir-id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 {% endblock %}
     
 {% block javascript %}
 <script>
+
+$(document).ready(() => {
+
+$('#salvar-edicao').on('click', function () {
+    let formData = {
+        id: $('#editar-id').val(),
+        setor: $('#editar-setor').val(),
+    };
+
+    ajaxAtualizar(`{{ url_for('editarSetor') }}`, formData, function(response) {
+        $('#modal-editar').modal('hide');
+        window.location.reload();
+    });
+});
+
+$(document).on('click', '.btn-excluir', function() {
+    let id = $(this).data('id');
+    let setor = $(this).data('setor');
+
+    $('#excluir-id').val(id);
+    $('#nome-setor-excluir').text(setor);
+});
+
+$('#confirmar-exclusao').on('click', function() {
+    let id = $('#excluir-id').val();
+
+    ajaxDeletar(`{{ url_for('excluirSetor') }}`, id, function(response) {
+        $('#modal-excluir').modal('hide');
+        window.location.reload();
+    });
+});
+
+$('#criar-setor').on('click', function () {
+    let formData = {
+        setor: $('#setor').val(),
+    };
+
+    ajaxCriar(`{{ url_for('criarSetor') }}`, formData, function(response) {
+        $('#modal-editar').modal('hide');
+        window.location.reload();
+    });
+});
+
+})
 
 const getColumnDefs = () => [
     { targets: '_all', className: 'text-center' },
@@ -60,7 +150,27 @@ const getColumnDefs = () => [
 
 const getTableColumns = () => [
     { data: 'setor', title: 'Setor' },
-    { data: null, title: 'Ações', defaultContent: '' },
+    { data: null, title: 'Ações', 
+            render: function(data, type, row) {
+                    return `
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary me-1 btn-editar"
+                                data-id="${row.id}" 
+                                data-setor="${row.setor}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-editar">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-excluir"
+                                data-id="${row.id}" 
+                                data-setor="${row.setor}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-excluir">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                } },
 ];
 
 carregarDadosDatatable(`{{ url_for('listaDeSetores') }}`).then((dados) => {
