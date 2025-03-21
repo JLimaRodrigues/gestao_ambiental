@@ -102,6 +102,14 @@
 
 $(document).ready(() => {
 
+$(document).on('click', '.btn-editar', function() {
+    let id = $(this).data('id');
+    let setor = $(this).data('setor');
+
+    $('#editar-id').val(id);
+    $('#editar-setor').val(setor);
+});
+
 $('#salvar-edicao').on('click', function () {
     let formData = {
         id: $('#editar-id').val(),

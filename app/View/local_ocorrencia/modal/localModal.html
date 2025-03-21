@@ -1,0 +1,72 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-criar-local" tabindex="-1" aria-labelledby="modal01" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastrar Local</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="local" class="form-label">Local:</label>
+                            <input type="text" class="form-control" id="local" name="local" value="">
+                            <span style="font-size: 12px;">30 caracteres restantes</span>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-dark" id="criar-local">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Local-->
+<div class="modal fade" id="modal-editar-local" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Local</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="form-editar">
+            <input type="hidden" id="editar-id-local">
+            <div class="mb-3">
+              <label for="editar-local" class="form-label">Local</label>
+              <input type="text" class="form-control" id="editar-local" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button type="button" class="btn btn-primary" id="salvar-edicao-local">Salvar</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal Excluir Setor -->
+<div class="modal fade" id="modal-excluir-local" tabindex="-1" aria-labelledby="modalExcluirLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Excluir Local</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Tem certeza que deseja excluir o local <strong id="nome-local-excluir"></strong>?</p>
+          <input type="hidden" id="excluir-id">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="confirmar-exclusao">Excluir</button>
+        </div>
+      </div>
+    </div>
+</div>

@@ -50,9 +50,23 @@ return function (App $app) {
         $group->get('/listaDeCampoAtuacao', [CampoAtuacaoController::class, 'listaDeCampoAtuacao'])->setName('listaDeCampoAtuacao');
 
         //rotas de Local/Ocorrencia
-        $group->get('/localOcorrencia', [LocalOcorrenciaController::class, 'localOcorrencia'])->setName('localOcorrencia');
-        $group->get('/listaDeLocal', [LocalOcorrenciaController::class, 'listaDeLocal'])->setName('listaDeLocal');
-        $group->get('/listaDeOcorrencia', [LocalOcorrenciaController::class, 'listaDeOcorrencia'])->setName('listaDeOcorrencia');
+        $group->group('/localOcorrencia', function ($localOcorrencia){
+
+            $localOcorrencia->get('', [LocalOcorrenciaController::class, 'localOcorrencia'])->setName('localOcorrencia');
+
+            //rotas de Local
+            $localOcorrencia->post('/criarLocal', [LocalOcorrenciaController::class, 'criarLocal'])->setName('criarLocal');
+            $localOcorrencia->post('/editarLocal', [LocalOcorrenciaController::class, 'editarLocal'])->setName('editarLocal');
+            $localOcorrencia->post('/excluirLocal', [LocalOcorrenciaController::class, 'excluirLocal'])->setName('excluirLocal');
+            $localOcorrencia->get('/listaDeLocal', [LocalOcorrenciaController::class, 'listaDeLocal'])->setName('listaDeLocal');
+
+            //rotas de Ocorrencia
+            $localOcorrencia->post('/criarOcorrencia', [LocalOcorrenciaController::class, 'criarOcorrencia'])->setName('criarOcorrencia');
+            $localOcorrencia->post('/editarOcorrencia', [LocalOcorrenciaController::class, 'editarOcorrencia'])->setName('editarOcorrencia');
+            $localOcorrencia->post('/excluirOcorrencia', [LocalOcorrenciaController::class, 'excluirOcorrencia'])->setName('excluirOcorrencia');
+            $localOcorrencia->get('/listaDeOcorrencia', [LocalOcorrenciaController::class, 'listaDeOcorrencia'])->setName('listaDeOcorrencia');
+
+        });
 
         //rotas de setores
         $group->group('/setores', function ($setor){

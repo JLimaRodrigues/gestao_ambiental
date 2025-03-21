@@ -1,0 +1,111 @@
+{% extends "template.html" %}
+
+{% block conteudo %}
+<div class="container">
+    <div class="container-fluid">
+        <div class="container">
+            <h1>Local/Ocorrência</h1>
+        </div>
+        <div class="row">
+            <!-- Tabela de Setores -->
+            <div class="col-md-6 mt-3">
+                <div class="row justify-content-end mb-2">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modal-criar-local">Cadastrar Local</button>
+                    </div>
+                </div>
+                <table width="100%" id="tabela_local" class="table table-striped tabela">
+                </table>
+            </div>
+
+            <!-- Tabela de Ocorrência -->
+            <div class="col-md-6 mt-3">
+                <div class="row justify-content-end mb-2">
+                    <div class="col-auto">
+                        <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#modal-criar-ocorrencia">Cadastrar Ocorrência</button>
+                    </div>
+                </div>
+                <table width="100%" id="tabela_ocorrencia" class="table table-striped tabela">
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include "local_ocorrencia/modal/localModal.html" %}
+
+{% include "local_ocorrencia/modal/ocorrenciaModal.html" %}
+
+{% endblock %}
+    
+{% block javascript %}
+<script src="/assets/js/modules/local.crud.js"></script>
+<script src="/assets/js/modules/ocorrencia.crud.js"></script>
+
+<script>
+    const getColumnDefs = () => [
+        { targets: '_all', className: 'text-center' },
+    ];
+    
+    const getTableColumnsLocal = () => [
+        { data: 'local', title: 'Local' },
+        { data: null, title: 'Ações', 
+            render: function(data, type, row) {
+                    return `
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary me-1 btn-editar-local"
+                                data-id="${row.id}" 
+                                data-local="${row.local}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-editar-local">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-excluir-local"
+                                data-id="${row.id}" 
+                                data-local="${row.local}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-excluir-local">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                } },
+    ];
+    
+    const getTableColumnsOcorrencia = () => [
+        { data: 'ocorrencia', title: 'Ocorrência' },
+        { data: null, title: 'Ações', 
+            render: function(data, type, row) {
+                    return `
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary me-1 btn-editar-ocorrencia"
+                                data-id="${row.id}" 
+                                data-ocorrencia="${row.ocorrencia}"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-editar-ocorrencia">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-excluir-ocorrencia"
+                                data-id="${row.id}" 
+                                data-ocorrencia="${row.ocorrencia}" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#modal-excluir-ocorrencia">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                } },
+    ];
+    
+    Promise.all([
+        carregarDadosDatatable(`{{ url_for('listaDeLocal') }}`),
+        carregarDadosDatatable(`{{ url_for('listaDeOcorrencia') }}`)
+    ]).then(([dadosLocais, dadosOcorrencias]) => {
+        getTableColumns = getTableColumnsLocal;
+        carregarDatatable('#tabela_local', dadosLocais);
+    
+        getTableColumns = getTableColumnsOcorrencia;
+        carregarDatatable('#tabela_ocorrencia', dadosOcorrencias);
+    });
+    </script>
+{% endblock %}
